@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: ethiopia-conflict-backend
+    runtime: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false          # Set this manually in the Render dashboard
+      - key: DATA_PATH
+        value: /app/data
+      - key: CACHE_DIR
+        value: /app/cache
+      - key: ACLED_DATA_PATH
+        value: /app/acled_Ethiopia.csv
+      - key: CORS_ORIGINS
+        value: https://ethiopia-conflict-frontend.onrender.com,http://localhost:3000           # Tighten to frontend URL after first deploy
+
+  - type: web
+    name: ethiopia-conflict-frontend
+    runtime: docker
+    dockerContext: ./frontend
+    dockerfilePath: ./frontend/Dockerfile
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        sync: false          # Set to https://ethiopia-conflict-backend.onrender.com after backend deploys

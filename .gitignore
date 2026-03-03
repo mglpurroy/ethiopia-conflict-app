@@ -1,0 +1,29 @@
+# Environment
+.env
+*.env.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.python-version
+
+# Cache
+backend/cache/
+
+# Node
+frontend/node_modules/
+frontend/.next/
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# IDE
+.cursor/
+.vscode/
+
+# Logs
+*.log

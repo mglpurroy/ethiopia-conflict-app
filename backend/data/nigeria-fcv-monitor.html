@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nigeria FCV Risk Monitor — Q1 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700;900&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wb-blue: #002244;
+    --wb-blue-mid: #003366;
+    --wb-blue-light: #0071BC;
+    --wb-accent: #F4A100;
+    --wb-accent-light: #FFF3D6;
+    --wb-red: #C4161C;
+    --wb-red-light: #F8D7DA;
+    --wb-orange: #E87722;
+    --wb-green: #00884A;
+    --wb-green-light: #D4EDDA;
+    --wb-gray-100: #F7F8FA;
+    --wb-gray-200: #E9ECF0;
+    --wb-gray-300: #CED4DA;
+    --wb-gray-500: #6C757D;
+    --wb-gray-700: #495057;
+    --wb-gray-900: #212529;
+    --page-width: 1100px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #E9ECF0;
+    color: var(--wb-gray-900);
+    line-height: 1.5;
+  }
+
+  .page {
+    width: var(--page-width);
+    min-height: 1500px;
+    margin: 30px auto;
+    background: #fff;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* COVER PAGE */
+  .cover {
+    min-height: 1540px;
+    display: flex;
+    flex-direction: column;
+    background: var(--wb-blue);
+    color: #fff;
+    position: relative;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(0,113,188,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(244,161,0,0.15) 0%, transparent 40%);
+  }
+  .cover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 48px;
+    position: relative;
+    z-index: 1;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .cover-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--wb-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 18px;
+    color: var(--wb-blue);
+  }
+  .logo-text {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+  .cover-classification {
+    background: rgba(255,255,255,0.1);
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .cover-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 48px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-edition {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--wb-accent);
+    margin-bottom: 24px;
+  }
+  .cover-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .cover-country {
+    font-family: 'Source Serif 4', serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--wb-accent);
+    margin-bottom: 32px;
+  }
+  .cover-subtitle {
+    font-size: 20px;
+    font-weight: 300;
+    opacity: 0.8;
+    max-width: 550px;
+    line-height: 1.6;
+  }
+  .cover-meta {
+    padding: 32px 48px;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    gap: 48px;
+  }
+  .cover-meta-item {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.6;
+  }
+  .cover-meta-item span {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-top: 4px;
+    color: #fff;
+  }
+  .cover-stripe {
+    position: absolute;
+    left: 0; bottom: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--wb-accent) 0%, var(--wb-accent) 33%, var(--wb-green) 33%, var(--wb-green) 66%, var(--wb-blue-light) 66%);
+  }
+
+  /* INNER PAGES */
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 48px;
+    background: var(--wb-blue);
+    color: #fff;
+    font-size: 12px;
+  }
+  .page-header-left { font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  .page-header-right { opacity: 0.7; }
+  .page-number { position: absolute; bottom: 20px; right: 48px; font-size: 12px; color: var(--wb-gray-500); }
+  .page-content { padding: 36px 48px 60px; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--wb-blue-light); margin-bottom: 8px; }
+  .section-title { font-family: 'Source Serif 4', serif; font-size: 28px; font-weight: 700; color: var(--wb-blue); margin-bottom: 6px; }
+  .section-subtitle { font-size: 14px; color: var(--wb-gray-500); margin-bottom: 28px; }
+  .divider { height: 3px; background: var(--wb-accent); width: 50px; margin: 16px 0 28px; }
+
+  /* KEY FIGURES */
+  .key-figures { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .key-figure { background: var(--wb-gray-100); border-radius: 8px; padding: 20px; border-left: 4px solid var(--wb-blue-light); }
+  .key-figure.alert { border-left-color: var(--wb-red); }
+  .key-figure.warning { border-left-color: var(--wb-orange); }
+  .key-figure-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--wb-gray-500); margin-bottom: 6px; }
+  .key-figure-value { font-size: 32px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+  .key-figure-change { font-size: 12px; font-weight: 600; }
+  .kf-down { color: var(--wb-green); }
+  .kf-up-bad { color: var(--wb-red); }
+  .kf-up-warn { color: var(--wb-orange); }
+
+  /* MAP */
+  .map-container { background: var(--wb-gray-100); border-radius: 10px; padding: 24px; margin-bottom: 28px; }
+  .map-title { font-size: 14px; font-weight: 700; color: var(--wb-blue); margin-bottom: 16px; }
+  .map-area { width: 100%; height: 520px; background: #E8EFF5; border-radius: 8px; overflow: hidden; }
+  .nigeria-map { width: 100%; height: 100%; }
+  .map-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--wb-gray-200); }
+  .legend-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--wb-gray-500); width: 100%; margin-bottom: -8px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--wb-gray-700); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-triangle { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 10px solid; flex-shrink: 0; }
+  .legend-square { width: 10px; height: 10px; flex-shrink: 0; }
+  .legend-diamond { width: 10px; height: 10px; transform: rotate(45deg); flex-shrink: 0; }
+
+  /* TABLE */
+  .incident-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .incident-table thead th { background: var(--wb-blue); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .incident-table thead th:first-child { border-radius: 6px 0 0 0; }
+  .incident-table thead th:last-child { border-radius: 0 6px 0 0; }
+  .incident-table tbody td { padding: 10px 12px; border-bottom: 1px solid var(--wb-gray-200); vertical-align: top; }
+  .incident-table tbody tr:nth-child(even) { background: var(--wb-gray-100); }
+  .severity-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .severity-high { background: #FECDD3; color: #B91C1C; }
+  .severity-medium { background: #FED7AA; color: #C2410C; }
+  .severity-low { background: #FEF3C7; color: #92400E; }
+
+  /* CHARTS */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+  .chart-card { background: var(--wb-gray-100); border-radius: 10px; padding: 20px; }
+  .chart-card-title { font-size: 13px; font-weight: 700; color: var(--wb-blue); margin-bottom: 4px; }
+  .chart-card-subtitle { font-size: 11px; color: var(--wb-gray-500); margin-bottom: 16px; }
+  .chart-area { width: 100%; height: 200px; position: relative; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 170px; padding-bottom: 30px; position: relative; }
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; }
+  .bar { width: 100%; max-width: 40px; border-radius: 3px 3px 0 0; }
+  .bar-label { position: absolute; bottom: -24px; font-size: 9px; color: var(--wb-gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ZONE TABLE */
+  .zone-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 28px; }
+  .zone-table thead th { background: var(--wb-blue); color: #fff; padding: 8px 10px; text-align: center; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .zone-table thead th:first-child { text-align: left; border-radius: 6px 0 0 0; }
+  .zone-table thead th:last-child { border-radius: 0 6px 0 0; }
+  .zone-table tbody td { padding: 8px 10px; border-bottom: 1px solid var(--wb-gray-200); text-align: center; }
+  .zone-table tbody td:first-child { text-align: left; font-weight: 600; }
+  .zone-table tbody tr:nth-child(even) { background: var(--wb-gray-100); }
+  .mini-bar-container { display: inline-flex; align-items: flex-end; gap: 2px; height: 20px; vertical-align: middle; }
+  .mini-bar { width: 5px; border-radius: 1px 1px 0 0; }
+
+  /* ANALYSIS */
+  .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+  .analysis-card { background: var(--wb-gray-100); border-radius: 10px; padding: 24px; border-top: 4px solid var(--wb-blue-light); }
+  .analysis-card.alert-card { border-top-color: var(--wb-red); }
+  .analysis-card.warning-card { border-top-color: var(--wb-orange); }
+  .analysis-card-title { font-size: 14px; font-weight: 700; color: var(--wb-blue); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .analysis-card-title .icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #fff; background: var(--wb-blue-light); flex-shrink: 0; }
+  .alert-card .analysis-card-title .icon { background: var(--wb-red); }
+  .warning-card .analysis-card-title .icon { background: var(--wb-orange); }
+  .analysis-card p { font-size: 13px; color: var(--wb-gray-700); line-height: 1.65; margin-bottom: 8px; }
+
+  /* IMPLICATIONS */
+  .implications-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 28px; }
+  .implication-row { display: grid; grid-template-columns: 260px 1fr; background: var(--wb-gray-100); border-radius: 10px; overflow: hidden; }
+  .implication-risk { padding: 20px 24px; background: var(--wb-blue); color: #fff; display: flex; flex-direction: column; justify-content: center; }
+  .implication-risk-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.6; margin-bottom: 6px; }
+  .implication-risk-title { font-size: 15px; font-weight: 700; line-height: 1.35; }
+  .risk-level { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 11px; font-weight: 600; }
+  .risk-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .risk-high .risk-dot { background: #FCA5A5; }
+  .risk-medium .risk-dot { background: var(--wb-accent); }
+  .implication-content { padding: 20px 24px; }
+  .implication-content h4 { font-size: 12px; font-weight: 700; color: var(--wb-blue); margin-bottom: 6px; }
+  .implication-content p { font-size: 12.5px; color: var(--wb-gray-700); line-height: 1.6; margin-bottom: 10px; }
+  .measure-tag { display: inline-block; background: var(--wb-blue); color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 10px; font-weight: 600; margin-right: 6px; margin-bottom: 4px; }
+  .measure-tag.urgent { background: var(--wb-red); }
+  .measure-tag.monitor { background: var(--wb-orange); }
+
+  /* CALLOUT */
+  .callout { background: var(--wb-accent-light); border-left: 4px solid var(--wb-accent); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 28px; }
+  .callout-title { font-size: 12px; font-weight: 700; color: var(--wb-blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .callout p { font-size: 13px; color: var(--wb-gray-700); line-height: 1.6; }
+
+  /* FOOTER */
+  .page-footer { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 48px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--wb-gray-200); font-size: 10px; color: var(--wb-gray-500); }
+  .source-note { font-size: 10px; color: var(--wb-gray-500); font-style: italic; margin-top: 8px; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== PAGE 1: COVER ===== -->
+<div class="page cover">
+  <div class="cover-header">
+    <div class="cover-logo">
+      <div class="logo-icon">WB</div>
+      <div class="logo-text">World Bank Group</div>
+    </div>
+    <div class="cover-classification">Official Use Only</div>
+  </div>
+  <div class="cover-body">
+    <div class="cover-edition">First Edition · Q1 2025 (January – March)</div>
+    <div class="cover-title">FCV Risk Monitor</div>
+    <div class="cover-country">Nigeria</div>
+    <div class="cover-subtitle">
+      Quarterly monitoring of fragility, conflict and violence risks across Nigeria's six geopolitical zones — tracking conflict events, fatalities, displacement and implications for World Bank programming.
+    </div>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">Reporting Period<span>January 1 – March 31, 2025</span></div>
+    <div class="cover-meta-item">Data Sources<span>ACLED, UNHCR, IOM DTM, FEWS NET</span></div>
+    <div class="cover-meta-item">Prepared By<span>Nigeria CMU — FCV Team</span></div>
+    <div class="cover-meta-item">Next Edition<span>July 2025 (Q2)</span></div>
+  </div>
+  <div class="cover-stripe"></div>
+</div>
+
+<!-- ===== PAGE 2: MAP & KEY FIGURES ===== -->
+<div class="page" style="min-height:1540px;">
+  <div class="page-header">
+    <div class="page-header-left">Nigeria FCV Risk Monitor · Q1 2025</div>
+    <div class="page-header-right">Section 1 — Conflict Map & Overview</div>
+  </div>
+  <div class="page-content">
+    <div class="section-label">Section 1</div>
+    <div class="section-title">Q1 2025 Conflict & Displacement Overview</div>
+    <div class="section-subtitle">Key indicators and geographic distribution of conflict events, January–March 2025</div>
+
+    <div class="key-figures">
+      <div class="key-figure alert">
+        <div class="key-figure-label">Conflict Events</div>
+        <div class="key-figure-value">1,137</div>
+        <div class="key-figure-change kf-down">▼ 18% vs Q4 2024 (1,392)</div>
+      </div>
+      <div class="key-figure alert">
+        <div class="key-figure-label">Fatalities</div>
+        <div class="key-figure-value">2,760</div>
+        <div class="key-figure-change kf-up-bad">▲ 18% vs Q4 2024 (2,332)</div>
+      </div>
+      <div class="key-figure warning">
+        <div class="key-figure-label">New Displacements</div>
+        <div class="key-figure-value">~156K</div>
+        <div class="key-figure-change" style="color:var(--wb-gray-500);">Est. — see IOM DTM Q1 2025</div>
+      </div>
+      <div class="key-figure">
+        <div class="key-figure-label">Total IDPs (NE Nigeria)</div>
+        <div class="key-figure-value">~2.3M</div>
+        <div class="key-figure-change" style="color:var(--wb-gray-500);">IOM DTM / UNHCR estimate</div>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <div class="map-title">Geographic Distribution of Conflict Events & Fatalities by Zone — Q1 2025</div>
+      <div class="map-area">
+        <svg class="nigeria-map" viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+              <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+            </filter>
+          </defs>
+          <rect width="800" height="700" fill="#E8EFF5" rx="8"/>
+
+          <!-- Zones — shaded by fatality intensity -->
+          <!-- NW: 1,171 fatalities — darkest red -->
+          <path d="M160,120 L310,100 L340,160 L320,240 L260,260 L180,240 L140,180Z" fill="#FECDD3" stroke="#fff" stroke-width="2" filter="url(#shadow)"/>
+          <text x="230" y="168" text-anchor="middle" font-size="11" font-weight="700" fill="#991B1B">NORTH WEST</text>
+          <text x="230" y="182" text-anchor="middle" font-size="10" fill="#991B1B">398 events · 1,171 deaths</text>
+
+          <!-- NE: 894 fatalities — dark red -->
+          <path d="M340,100 L530,90 L580,160 L560,260 L480,280 L340,260 L340,160Z" fill="#FECDD3" stroke="#fff" stroke-width="2" filter="url(#shadow)"/>
+          <text x="450" y="163" text-anchor="middle" font-size="11" font-weight="700" fill="#991B1B">NORTH EAST</text>
+          <text x="450" y="177" text-anchor="middle" font-size="10" fill="#991B1B">160 events · 894 deaths</text>
+
+          <!-- NC: 282 fatalities — amber -->
+          <path d="M220,260 L420,260 L440,360 L380,400 L260,400 L200,340Z" fill="#FED7AA" stroke="#fff" stroke-width="2" filter="url(#shadow)"/>
+          <text x="320" y="318" text-anchor="middle" font-size="11" font-weight="700" fill="#9A3412">NORTH CENTRAL</text>
+          <text x="320" y="332" text-anchor="middle" font-size="10" fill="#9A3412">184 events · 282 deaths</text>
+
+          <!-- SW: 88 fatalities — light green -->
+          <path d="M140,400 L260,400 L270,480 L220,530 L130,510 L110,440Z" fill="#DCFCE7" stroke="#fff" stroke-width="2" filter="url(#shadow)"/>
+          <text x="190" y="453" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">SOUTH WEST</text>
+          <text x="190" y="467" text-anchor="middle" font-size="10" fill="#166534">129 events · 88 deaths</text>
+
+          <!-- SE: 172 fatalities — yellow -->
+          <path d="M380,400 L480,380 L510,460 L470,530 L390,520 L360,460Z" fill="#FEF3C7" stroke="#fff" stroke-width="2" filter="url(#shadow)"/>
+          <text x="430" y="448" text-anchor="middle" font-size="11" font-weight="700" fill="#854D0E">SOUTH EAST</text>
+          <text x="430" y="462" text-anchor="middle" font-size="10" fill="#854D0E">115 events · 172 deaths</text>
+
+          <!-- SS: 126 fatalities — light blue -->
+          <path d="M270,480 L370,470 L400,540 L360,600 L260,590 L230,530Z" fill="#E0E7FF" stroke="#fff" stroke-width="2" filter="url(#shadow)"/>
+          <text x="310" y="528" text-anchor="middle" font-size="11" font-weight="700" fill="#3730A3">SOUTH SOUTH</text>
+          <text x="310" y="542" text-anchor="middle" font-size="10" fill="#3730A3">136 events · 126 deaths</text>
+
+          <!-- Key hotspot markers (proportional to incident fatalities) -->
+          <!-- Borno (Kukawa, Bama, Damboa) — NE, ~300+ fatalities in major incidents -->
+          <circle cx="510" cy="155" r="18" fill="#C4161C" stroke="#fff" stroke-width="2" opacity="0.75"/>
+          <text x="510" y="159" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">BNO</text>
+          <!-- Zamfara (Kaura Namoda, Shinkafi) — NW -->
+          <circle cx="200" cy="185" r="15" fill="#E87722" stroke="#fff" stroke-width="2" opacity="0.75"/>
+          <text x="200" y="189" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">ZAM</text>
+          <!-- Katsina (Jibia) — NW -->
+          <circle cx="255" cy="148" r="11" fill="#E87722" stroke="#fff" stroke-width="2" opacity="0.75"/>
+          <text x="255" y="152" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">KAT</text>
+          <!-- Plateau (communal) — NC -->
+          <circle cx="370" cy="320" r="9" fill="#F59E0B" stroke="#fff" stroke-width="2" opacity="0.75"/>
+          <text x="370" y="324" text-anchor="middle" font-size="7" font-weight="700" fill="#fff">PLT</text>
+          <!-- Imo / Anambra — SE -->
+          <circle cx="430" cy="435" r="9" fill="#7C3AED" stroke="#fff" stroke-width="2" opacity="0.75"/>
+          <text x="430" y="439" text-anchor="middle" font-size="7" font-weight="700" fill="#fff">SE</text>
+          <!-- Rivers — SS -->
+          <circle cx="340" cy="510" r="8" fill="#3730A3" stroke="#fff" stroke-width="2" opacity="0.75"/>
+          <text x="340" y="514" text-anchor="middle" font-size="7" font-weight="700" fill="#fff">RIV</text>
+
+          <!-- WB Project Sites (representative locations) -->
+          <!-- NE: Borno/Adamawa -->
+          <g transform="translate(460,240)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0071BC" stroke="#fff" stroke-width="2" opacity="0.85"/>
+            <text x="0" y="3.5" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">W</text>
+          </g>
+          <g transform="translate(520,195)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0071BC" stroke="#fff" stroke-width="2" opacity="0.85"/>
+            <text x="0" y="3.5" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">W</text>
+          </g>
+          <!-- NW: Zamfara/Katsina -->
+          <g transform="translate(220,220)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0071BC" stroke="#fff" stroke-width="2" opacity="0.85"/>
+            <text x="0" y="3.5" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">W</text>
+          </g>
+          <!-- NC: Plateau/Benue -->
+          <g transform="translate(350,360)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0071BC" stroke="#fff" stroke-width="2" opacity="0.85"/>
+            <text x="0" y="3.5" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">W</text>
+          </g>
+          <g transform="translate(280,310)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0071BC" stroke="#fff" stroke-width="2" opacity="0.85"/>
+            <text x="0" y="3.5" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">W</text>
+          </g>
+          <!-- SW -->
+          <g transform="translate(180,490)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0071BC" stroke="#fff" stroke-width="2" opacity="0.85"/>
+            <text x="0" y="3.5" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">W</text>
+          </g>
+          <!-- SE -->
+          <g transform="translate(450,490)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0071BC" stroke="#fff" stroke-width="2" opacity="0.85"/>
+            <text x="0" y="3.5" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">W</text>
+          </g>
+          <!-- SS -->
+          <g transform="translate(320,570)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0071BC" stroke="#fff" stroke-width="2" opacity="0.85"/>
+            <text x="0" y="3.5" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">W</text>
+          </g>
+
+          <!-- Shade legend -->
+          <rect x="20" y="620" width="180" height="60" rx="6" fill="rgba(255,255,255,0.85)" stroke="#CED4DA" stroke-width="1"/>
+          <text x="30" y="637" font-size="9" font-weight="700" fill="#495057" text-transform="uppercase">Zone shading = Q1 2025 fatalities</text>
+          <rect x="30" y="645" width="12" height="8" rx="1" fill="#FECDD3"/>
+          <text x="48" y="653" font-size="9" fill="#495057">High (&gt;500)</text>
+          <rect x="90" y="645" width="12" height="8" rx="1" fill="#FED7AA"/>
+          <text x="108" y="653" font-size="9" fill="#495057">Medium (200–500)</text>
+          <rect x="30" y="659" width="12" height="8" rx="1" fill="#FEF3C7"/>
+          <text x="48" y="667" font-size="9" fill="#495057">Low (50–199)</text>
+          <rect x="90" y="659" width="12" height="8" rx="1" fill="#DCFCE7"/>
+          <text x="108" y="667" font-size="9" fill="#495057">Minimal (&lt;50)</text>
+
+          <ellipse cx="580" cy="100" rx="30" ry="20" fill="#A5D8FF" opacity="0.5"/>
+          <text x="580" y="80" text-anchor="middle" font-size="8" fill="#666" font-style="italic">Lake Chad</text>
+          <line x1="620" y1="640" x2="720" y2="640" stroke="#999" stroke-width="1.5"/>
+          <text x="670" y="658" text-anchor="middle" font-size="9" fill="#999">200 km</text>
+          <g transform="translate(700,100)">
+            <circle cx="0" cy="0" r="18" fill="#fff" stroke="#ccc" stroke-width="1"/>
+            <text x="0" y="-6" text-anchor="middle" font-size="10" font-weight="700" fill="#003366">N</text>
+            <polygon points="0,-14 -3,-8 3,-8" fill="#003366"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="map-legend">
+        <div class="legend-section-title">Conflict Hotspots (circle size ∝ fatalities)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#C4161C;"></div> Insurgency / Terrorism (NE — ISWAP, BH)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#E87722;"></div> Armed Banditry / Communal Militia (NW)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#F59E0B;"></div> Farmer-Herder / Communal Clashes (NC)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7C3AED;"></div> Separatist / Political Violence (SE)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3730A3;"></div> Cult / Criminal Violence (SS)</div>
+        <div class="legend-section-title" style="margin-top:4px;">World Bank Project Sites (representative)</div>
+        <div class="legend-item">
+          <div style="width:14px; height:14px; background:#0071BC; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><span style="color:#fff; font-size:7px; font-weight:700;">W</span></div>
+          Active WB Project Site
+        </div>
+      </div>
+      <div class="source-note">Source: ACLED conflict data (Q1 2025). Displacement figures: IOM DTM estimate. Boundaries approximate. BNO = Borno; ZAM = Zamfara; KAT = Katsina; PLT = Plateau; SE = South East; RIV = Rivers.</div>
+    </div>
+  </div>
+  <div class="page-footer"><span>OFFICIAL USE ONLY</span><span>Nigeria FCV Risk Monitor — Q1 2025</span></div>
+  <div class="page-number">2</div>
+</div>
+
+<!-- ===== PAGE 3: INCIDENT SUMMARY ===== -->
+<div class="page" style="min-height:1540px;">
+  <div class="page-header">
+    <div class="page-header-left">Nigeria FCV Risk Monitor · Q1 2025</div>
+    <div class="page-header-right">Section 2 — FCV Incident Summary</div>
+  </div>
+  <div class="page-content">
+    <div class="section-label">Section 2</div>
+    <div class="section-title">FCV Incident Summary</div>
+    <div class="section-subtitle">Ten highest-fatality conflict events in Q1 2025 with operational relevance to World Bank programming</div>
+
+    <div class="callout">
+      <div class="callout-title">⚠ Quarter Highlights</div>
+      <p>Q1 2025 recorded 1,137 conflict events and 2,760 fatalities across Nigeria — a sharp divergence from Q4 2024: event counts fell 18% but fatalities surged 18%, indicating a shift toward fewer, higher-lethality operations. North West states (Zamfara, Katsina) and Borno State in the North East together accounted for 76% of all fatalities. In Borno, a Nigerian Army operation in Bama LGA on 23 January killed 100 Boko Haram fighters and captured their commander — the single deadliest engagement of the quarter — while ISWAP attacks on civilian farming communities in Kukawa and Damboa killed over 180 people in mid-January. In Zamfara, three major Nigerian Air Force and ground operations between 10–17 March struck militia strongholds in Kaura Namoda LGA, yielding 122 fatalities. North Central bucked the national fatality trend, recording a 49% decline, likely reflecting a seasonal dry-season lull in farmer-herder clashes.</p>
+    </div>
+
+    <div style="margin-bottom:28px;">
+      <table class="incident-table">
+        <thead>
+          <tr>
+            <th style="width:70px;">Date</th>
+            <th style="width:130px;">Location</th>
+            <th style="width:110px;">Type</th>
+            <th>Description</th>
+            <th style="width:60px;">Deaths</th>
+            <th style="width:75px;">Severity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>23 Jan</td>
+            <td>Bama, Borno</td>
+            <td>Armed Clash</td>
+            <td>Nigerian Army and allied forces clashed with Boko Haram (JAS) in Bama LGA, killing 100 fighters and capturing the local commander. Significant security operation with implications for WB access corridors in southern Borno.</td>
+            <td style="text-align:center;font-weight:700;">100</td>
+            <td><span class="severity-badge severity-high">High</span></td>
+          </tr>
+          <tr>
+            <td>4 Jan</td>
+            <td>Jibia, Katsina</td>
+            <td>Armed Clash</td>
+            <td>Nigerian troops, Police, DSS and Jibia community militia jointly attacked Katsina communal militia, killing 80 in Kadoji and surrounding settlements. Signals continued active counter-banditry operations in Katsina border zone.</td>
+            <td style="text-align:center;font-weight:700;">80</td>
+            <td><span class="severity-badge severity-high">High</span></td>
+          </tr>
+          <tr>
+            <td>12 Jan</td>
+            <td>Kukawa, Borno</td>
+            <td>Attack on Civilians</td>
+            <td>ISWAP and BH (JAS) fighters attacked Daban Gajere farming settlement and surrounding villages in Kukawa LGA, killing 74 civilians including fishers and farmers. Directly threatens food security programming in Lake Chad Basin.</td>
+            <td style="text-align:center;font-weight:700;">74</td>
+            <td><span class="severity-badge severity-high">High</span></td>
+          </tr>
+          <tr>
+            <td>12 Jan</td>
+            <td>Kukawa, Borno</td>
+            <td>Armed Clash</td>
+            <td>Separate engagement: ISWAP/BH forces clashed with GSF personnel supported by CJTF in Kukawa LGA following the civilian attack, with 73 fatalities. Combined Kukawa events on 12 Jan total 147 deaths.</td>
+            <td style="text-align:center;font-weight:700;">73</td>
+            <td><span class="severity-badge severity-high">High</span></td>
+          </tr>
+          <tr>
+            <td>11 Jan</td>
+            <td>Shinkafi, Zamfara</td>
+            <td>Armed Clash</td>
+            <td>GSF personnel supported by Zamfara Community Protection Guard (CPG) clashed against a Zamfara militia in Shinkafi, killing 60. Part of sustained NW counter-banditry campaign that elevated fatalities despite fewer overall events.</td>
+            <td style="text-align:center;font-weight:700;">60</td>
+            <td><span class="severity-badge severity-high">High</span></td>
+          </tr>
+          <tr>
+            <td>17 Mar</td>
+            <td>Kaura Namoda, Zamfara</td>
+            <td>Air / Drone Strike</td>
+            <td>Nigerian Air Force airstrikes targeted Zamfara militia stronghold in Kaura Namoda LGA, killing 50 and injuring many others. Third major operation in this LGA in one week; heightened risk of civilian collateral harm in surrounding communities.</td>
+            <td style="text-align:center;font-weight:700;">50</td>
+            <td><span class="severity-badge severity-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td>4 Jan</td>
+            <td>Damboa, Borno</td>
+            <td>Armed Clash</td>
+            <td>ISWAP/BH launched coordinated attack on Nigerian troops at Sabon Gari Gana in Damboa LGA, killing 40. Damboa has been a persistent flashpoint; WB field presence in this LGA requires security risk assessment.</td>
+            <td style="text-align:center;font-weight:700;">40</td>
+            <td><span class="severity-badge severity-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td>12 Jan</td>
+            <td>Kukawa, Borno</td>
+            <td>Attack on Civilians</td>
+            <td>Suspected ISWAP fighters killed at least 40 fishers and farmers in Tudun Leda near Kwata Yobe and Tudun Kanta in Kukawa. Third Kukawa incident on the same date; cumulative displacement of lakeshore farming communities significantly disrupts NE agricultural recovery programs.</td>
+            <td style="text-align:center;font-weight:700;">40</td>
+            <td><span class="severity-badge severity-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td>10 Mar</td>
+            <td>Kaura Namoda, Zamfara</td>
+            <td>Armed Clash</td>
+            <td>Nigerian Army ground and aerial assault killed 37 Katsina/Zamfara militia fighters in Kaura Namoda LGA. Precedes the 17 March airstrike in the same LGA, indicating sustained military pressure in this corridor.</td>
+            <td style="text-align:center;font-weight:700;">37</td>
+            <td><span class="severity-badge severity-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td>15 Mar</td>
+            <td>Kaura Namoda, Zamfara</td>
+            <td>Attack on Civilians</td>
+            <td>Zamfara militia abducted 56 people from Banga village; 18 hostages released after payment of ransom, 35 killed. Kidnapping-for-ransom operations in NW continue to deter community participation in WB social development activities.</td>
+            <td style="text-align:center;font-weight:700;">35</td>
+            <td><span class="severity-badge severity-medium">Medium</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="source-note">Source: ACLED armed conflict database. Incidents selected by fatality count. All events January–March 2025. Actor names per ACLED coding: GSF = Government Security Forces; CJTF = Civilian Joint Task Force; JAS = Jamaatu Ahli is-Sunnah lid-Dawati wal-Jihad (Boko Haram faction); ISWAP = Islamic State West Africa Province.</div>
+    </div>
+  </div>
+  <div class="page-footer"><span>OFFICIAL USE ONLY</span><span>Nigeria FCV Risk Monitor — Q1 2025</span></div>
+  <div class="page-number">3</div>
+</div>
+
+<!-- ===== PAGE 4: TRENDS BY ZONE ===== -->
+<div class="page" style="min-height:1540px;">
+  <div class="page-header">
+    <div class="page-header-left">Nigeria FCV Risk Monitor · Q1 2025</div>
+    <div class="page-header-right">Section 3 — Conflict & Fatality Trends by Geopolitical Zone</div>
+  </div>
+  <div class="page-content">
+    <div class="section-label">Section 3</div>
+    <div class="section-title">Conflict & Fatality Trends by Geopolitical Zone</div>
+    <div class="section-subtitle">Quarterly breakdown and three-month fatality trend by geopolitical zone, Q1 2025 vs Q4 2024</div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-card-title">Conflict Events by Geopolitical Zone</div>
+        <div class="chart-card-subtitle">Q4 2024 (gray) vs Q1 2025 (colored) — scaled to actual counts</div>
+        <div class="chart-area">
+          <div class="bar-chart">
+            <!-- NE: Q4=210→61px gray, Q1=160→46px red -->
+            <div class="bar-group">
+              <div class="bar" style="height:61px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:46px; background:var(--wb-red); opacity:0.6; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">NE</div>
+            </div>
+            <!-- NW: Q4=448→130px gray, Q1=398→115px orange -->
+            <div class="bar-group">
+              <div class="bar" style="height:130px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:115px; background:var(--wb-orange); opacity:0.6; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">NW</div>
+            </div>
+            <!-- NC: Q4=252→73px gray, Q1=184→53px amber -->
+            <div class="bar-group">
+              <div class="bar" style="height:73px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:53px; background:#F59E0B; opacity:0.6; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">NC</div>
+            </div>
+            <!-- SE: Q4=156→45px gray, Q1=115→33px purple -->
+            <div class="bar-group">
+              <div class="bar" style="height:45px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:33px; background:#7C3AED; opacity:0.6; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">SE</div>
+            </div>
+            <!-- SS: Q4=189→55px gray, Q1=136→39px indigo -->
+            <div class="bar-group">
+              <div class="bar" style="height:55px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:39px; background:#3730A3; opacity:0.6; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">SS</div>
+            </div>
+            <!-- SW: Q4=127→37px gray, Q1=129→37px green -->
+            <div class="bar-group">
+              <div class="bar" style="height:37px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:37px; background:var(--wb-green); opacity:0.6; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">SW</div>
+            </div>
+          </div>
+          <div style="text-align:center; margin-top:-4px; font-size:10px; color:var(--wb-gray-500);">■ Gray = Q4 2024 &nbsp; ■ Color = Q1 2025</div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Fatalities by Geopolitical Zone</div>
+        <div class="chart-card-subtitle">Q4 2024 (gray) vs Q1 2025 (colored) — scaled to actual counts</div>
+        <div class="chart-area">
+          <div class="bar-chart">
+            <!-- NE: Q4=564→63px gray, Q1=894→99px red -->
+            <div class="bar-group">
+              <div class="bar" style="height:63px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:99px; background:var(--wb-red); opacity:0.75; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">NE</div>
+            </div>
+            <!-- NW: Q4=832→92px gray, Q1=1171→130px orange -->
+            <div class="bar-group">
+              <div class="bar" style="height:92px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:130px; background:var(--wb-orange); opacity:0.75; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">NW</div>
+            </div>
+            <!-- NC: Q4=555→62px gray, Q1=282→31px amber -->
+            <div class="bar-group">
+              <div class="bar" style="height:62px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:31px; background:#F59E0B; opacity:0.75; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">NC</div>
+            </div>
+            <!-- SE: Q4=193→21px gray, Q1=172→19px purple -->
+            <div class="bar-group">
+              <div class="bar" style="height:21px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:19px; background:#7C3AED; opacity:0.75; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">SE</div>
+            </div>
+            <!-- SS: Q4=127→14px gray, Q1=126→14px indigo -->
+            <div class="bar-group">
+              <div class="bar" style="height:14px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:14px; background:#3730A3; opacity:0.75; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">SS</div>
+            </div>
+            <!-- SW: Q4=53→6px gray, Q1=88→10px green -->
+            <div class="bar-group">
+              <div class="bar" style="height:6px; background:var(--wb-gray-300);"></div>
+              <div class="bar" style="height:10px; background:var(--wb-green); opacity:0.75; position:absolute; left:55%; width:40%; max-width:18px;"></div>
+              <div class="bar-label">SW</div>
+            </div>
+          </div>
+          <div style="text-align:center; margin-top:-4px; font-size:10px; color:var(--wb-gray-500);">■ Gray = Q4 2024 &nbsp; ■ Color = Q1 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:8px; font-size:14px; font-weight:700; color:var(--wb-blue);">Conflict & Fatality Detail by Geopolitical Zone — with January–March Fatality Trend</div>
+    <table class="zone-table">
+      <thead>
+        <tr>
+          <th style="width:140px;">Geopolitical Zone</th>
+          <th>Events<br>Q1 '25</th>
+          <th>Events<br>Q4 '24</th>
+          <th>Change</th>
+          <th>Jan→Mar Trend</th>
+          <th>Fatalities<br>Q1 '25</th>
+          <th>Fatalities<br>Q4 '24</th>
+          <th>Change</th>
+          <th>Jan→Mar Trend</th>
+          <th>Primary<br>Driver</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>North East</td>
+          <td>160</td><td style="color:var(--wb-gray-500);">210</td>
+          <td style="color:var(--wb-green); font-weight:600;">▼ 24%</td>
+          <td>
+            <!-- Events trend: NW proportions applied to NE totals; fatality-driven bars below -->
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:16px; background:var(--wb-red); opacity:0.6;"></div>
+              <div class="mini-bar" style="height:8px; background:var(--wb-red); opacity:0.6;"></div>
+              <div class="mini-bar" style="height:11px; background:var(--wb-red); opacity:0.6;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;">894</td><td style="color:var(--wb-gray-500);">564</td>
+          <td style="color:var(--wb-red); font-weight:600;">▲ 59%</td>
+          <td>
+            <!-- NE fatalities: Jan=587→20px, Feb=86→3px, Mar=221→8px -->
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:20px; background:var(--wb-red);"></div>
+              <div class="mini-bar" style="height:3px; background:var(--wb-red);"></div>
+              <div class="mini-bar" style="height:8px; background:var(--wb-red);"></div>
+            </div>
+          </td>
+          <td style="font-size:10px;">Insurgency (ISWAP/BH)</td>
+        </tr>
+        <tr>
+          <td>North West</td>
+          <td>398</td><td style="color:var(--wb-gray-500);">448</td>
+          <td style="color:var(--wb-green); font-weight:600;">▼ 11%</td>
+          <td>
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:20px; background:var(--wb-orange); opacity:0.7;"></div>
+              <div class="mini-bar" style="height:11px; background:var(--wb-orange); opacity:0.7;"></div>
+              <div class="mini-bar" style="height:14px; background:var(--wb-orange); opacity:0.7;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;">1,171</td><td style="color:var(--wb-gray-500);">832</td>
+          <td style="color:var(--wb-red); font-weight:600;">▲ 41%</td>
+          <td>
+            <!-- NW fatalities: Jan=512→20px, Feb=292→11px, Mar=367→14px -->
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:20px; background:var(--wb-orange);"></div>
+              <div class="mini-bar" style="height:11px; background:var(--wb-orange);"></div>
+              <div class="mini-bar" style="height:14px; background:var(--wb-orange);"></div>
+            </div>
+          </td>
+          <td style="font-size:10px;">Banditry / Militia</td>
+        </tr>
+        <tr>
+          <td>North Central</td>
+          <td>184</td><td style="color:var(--wb-gray-500);">252</td>
+          <td style="color:var(--wb-green); font-weight:600;">▼ 27%</td>
+          <td>
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:14px; background:#F59E0B; opacity:0.7;"></div>
+              <div class="mini-bar" style="height:12px; background:#F59E0B; opacity:0.7;"></div>
+              <div class="mini-bar" style="height:17px; background:#F59E0B; opacity:0.7;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;">282</td><td style="color:var(--wb-gray-500);">555</td>
+          <td style="color:var(--wb-green); font-weight:600;">▼ 49%</td>
+          <td>
+            <!-- NC fatalities: Jan=75→11px, Feb=72→11px, Mar=135→20px -->
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:11px; background:#F59E0B;"></div>
+              <div class="mini-bar" style="height:11px; background:#F59E0B;"></div>
+              <div class="mini-bar" style="height:20px; background:#F59E0B;"></div>
+            </div>
+          </td>
+          <td style="font-size:10px;">Communal / Herder</td>
+        </tr>
+        <tr>
+          <td>South East</td>
+          <td>115</td><td style="color:var(--wb-gray-500);">156</td>
+          <td style="color:var(--wb-green); font-weight:600;">▼ 26%</td>
+          <td>
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:20px; background:#7C3AED; opacity:0.7;"></div>
+              <div class="mini-bar" style="height:6px; background:#7C3AED; opacity:0.7;"></div>
+              <div class="mini-bar" style="height:8px; background:#7C3AED; opacity:0.7;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;">172</td><td style="color:var(--wb-gray-500);">193</td>
+          <td style="color:var(--wb-green); font-weight:600;">▼ 11%</td>
+          <td>
+            <!-- SE fatalities: Jan=118→20px, Feb=22→4px, Mar=32→5px -->
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:20px; background:#7C3AED;"></div>
+              <div class="mini-bar" style="height:4px; background:#7C3AED;"></div>
+              <div class="mini-bar" style="height:5px; background:#7C3AED;"></div>
+            </div>
+          </td>
+          <td style="font-size:10px;">Separatist (IPOB)</td>
+        </tr>
+        <tr>
+          <td>South South</td>
+          <td>136</td><td style="color:var(--wb-gray-500);">189</td>
+          <td style="color:var(--wb-green); font-weight:600;">▼ 28%</td>
+          <td>
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:8px; background:#3730A3; opacity:0.7;"></div>
+              <div class="mini-bar" style="height:20px; background:#3730A3; opacity:0.7;"></div>
+              <div class="mini-bar" style="height:15px; background:#3730A3; opacity:0.7;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;">126</td><td style="color:var(--wb-gray-500);">127</td>
+          <td style="color:var(--wb-gray-500); font-weight:600;">▼ 1%</td>
+          <td>
+            <!-- SS fatalities: Jan=23→8px, Feb=59→20px, Mar=44→15px -->
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:8px; background:#3730A3;"></div>
+              <div class="mini-bar" style="height:20px; background:#3730A3;"></div>
+              <div class="mini-bar" style="height:15px; background:#3730A3;"></div>
+            </div>
+          </td>
+          <td style="font-size:10px;">Cult / Political</td>
+        </tr>
+        <tr>
+          <td>South West</td>
+          <td>129</td><td style="color:var(--wb-gray-500);">127</td>
+          <td style="color:var(--wb-red); font-weight:600;">▲ 2%</td>
+          <td>
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:20px; background:var(--wb-green); opacity:0.7;"></div>
+              <div class="mini-bar" style="height:10px; background:var(--wb-green); opacity:0.7;"></div>
+              <div class="mini-bar" style="height:14px; background:var(--wb-green); opacity:0.7;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;">88</td><td style="color:var(--wb-gray-500);">53</td>
+          <td style="color:var(--wb-orange); font-weight:600;">▲ 66%</td>
+          <td>
+            <!-- SW fatalities: Jan=40→20px, Feb=20→10px, Mar=28→14px -->
+            <div class="mini-bar-container">
+              <div class="mini-bar" style="height:20px; background:var(--wb-green);"></div>
+              <div class="mini-bar" style="height:10px; background:var(--wb-green);"></div>
+              <div class="mini-bar" style="height:14px; background:var(--wb-green);"></div>
+            </div>
+          </td>
+          <td style="font-size:10px;">Criminal</td>
+        </tr>
+        <tr style="background:var(--wb-blue); color:#fff;">
+          <td style="font-weight:700; color:#fff;">TOTAL</td>
+          <td style="font-weight:700; color:#fff;">1,137</td>
+          <td style="color:rgba(255,255,255,0.7);">1,392</td>
+          <td><span style="color:#86EFAC; font-weight:700;">▼ 18%</span></td>
+          <td></td>
+          <td style="font-weight:700; color:#fff;">2,760</td>
+          <td style="color:rgba(255,255,255,0.7);">2,332</td>
+          <td><span style="color:#FCA5A5; font-weight:700;">▲ 18%</span></td>
+          <td></td><td></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="source-note">Source: ACLED. Trend bars show monthly fatality direction Jan → Feb → Mar 2025 (scaled within each zone to its own maximum). Events change = % difference Q1 2025 vs Q4 2024.</div>
+
+    <div class="callout" style="margin-top:24px;">
+      <div class="callout-title">Trend Note</div>
+      <p>The divergence between falling event counts (-18%) and rising fatalities (+18%) signals a qualitative shift in conflict dynamics: armed groups are conducting fewer but more lethal operations. This pattern is most pronounced in the North East (+59% fatalities despite -24% events) and North West (+41% fatalities, -11% events). The North Central zone is the sole bright spot, with fatalities down 49% — though the March uptick (135 fatalities in March vs 75 in January) suggests the dry-season lull is ending. The South West's 66% fatality increase, while small in absolute terms, warrants close monitoring through Q2.</p>
+    </div>
+  </div>
+  <div class="page-footer"><span>OFFICIAL USE ONLY</span><span>Nigeria FCV Risk Monitor — Q1 2025</span></div>
+  <div class="page-number">4</div>
+</div>
+
+<!-- ===== PAGE 5: ANALYSIS ===== -->
+<div class="page" style="min-height:1540px;">
+  <div class="page-header">
+    <div class="page-header-left">Nigeria FCV Risk Monitor · Q1 2025</div>
+    <div class="page-header-right">Section 4 — Analysis</div>
+  </div>
+  <div class="page-content">
+    <div class="section-label">Section 4</div>
+    <div class="section-title">Analysis of Key Trends & Emerging Risks</div>
+    <div class="divider"></div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card alert-card">
+        <div class="analysis-card-title"><span class="icon">1</span> North East: Shift to High-Lethality Insurgency</div>
+        <p>Despite a 24% drop in event count (210 to 160), the North East recorded its highest quarterly fatality total in recent periods: 894 deaths in Q1 2025, up 59% from 564 in Q4 2024. Borno State was the epicentre, accounting for the three largest incidents of the quarter. The pattern of January concentration (587 of 894 NE fatalities occurred in January alone) reflects a surge of coordinated ISWAP and Boko Haram (JAS) operations at the start of the dry season when mobility across Lake Chad marshlands improves.</p>
+        <p>The 12 January Kukawa cluster (187 fatalities across three simultaneous incidents — two attacks on civilians and one military engagement) represents the most complex multi-target operation recorded this quarter and indicates growing ISWAP operational capacity in the Lake Chad Basin. The 23 January Bama engagement (100 fatalities, BH commander captured) demonstrates continued Nigerian Army offensive capacity but underscores the persistent strength of JAS remnants in southern Borno.</p>
+        <p><strong>Outlook:</strong> Risk remains HIGH through Q2. Dry-season conditions that enabled January operations ease as rains arrive April–May, but displacement of farming communities from Kukawa threatens food security and IDP flows toward Maiduguri.</p>
+      </div>
+      <div class="analysis-card alert-card">
+        <div class="analysis-card-title"><span class="icon">2</span> North West: Military Offensives amid Persistent Banditry</div>
+        <p>The North West was the deadliest zone in Q1 2025, recording 398 events and 1,171 fatalities — 42% of the national total. Zamfara (Kaura Namoda, Shinkafi) and Katsina (Jibia) drove the bulk of violence. The Nigerian Armed Forces conducted multiple high-intensity counter-banditry operations: the 11 January Shinkafi clash (60 fatalities), the 4 January Jibia operation (80 fatalities), and a cluster of three major operations in Kaura Namoda LGA between 10–17 March (122 combined fatalities including an Air Force airstrike on 17 March).</p>
+        <p>Military operations account for the majority of NW fatalities (Nigerian Armed Forces was the top actor nationally with 1,245 fatalities attributed). While offensives have reduced militia activity in specific corridors, banditry-related kidnapping continues: the 15 March Banga village abduction (56 people, 35 killed) illustrates that civilian communities remain highly exposed despite military pressure.</p>
+        <p><strong>Outlook:</strong> Risk remains HIGH. Monthly fatalities stayed elevated throughout Q1 (Jan: 512, Feb: 292, Mar: 367), with no sign of sustained reduction. Zamfara and Katsina project sites require security corridor assessments before Q2 field missions.</p>
+      </div>
+      <div class="analysis-card warning-card">
+        <div class="analysis-card-title"><span class="icon">3</span> North Central: Seasonal Lull — But March Uptick Signals Risk</div>
+        <p>North Central recorded a 49% decline in fatalities (555 in Q4 2024 to 282 in Q1 2025), the most significant improvement of any zone. This likely reflects the dry-season reduction in farmer-herder competition over water sources and grazing land in Plateau, Benue, Nasarawa and Niger states. Events also fell 27% (252 to 184).</p>
+        <p>However, March fatalities (135) were nearly double those of January and February (75 and 72 respectively), indicating the lull is ending as agricultural seasons approach. Plateau State historically escalates in April–June as communities compete for farmland. Communal violence in Plateau (Jos, Barkin Ladi, Riyom, Bokkos) and Benue (Guma, Logo) remains the primary driver. Fulani Ethnic Militia was the third-highest fatality actor nationally with 166 deaths attributed in Q1.</p>
+        <p><strong>Outlook:</strong> Risk MEDIUM and rising. April–June represents peak risk window for communal escalation in NC. WB agricultural and livelihood projects in Plateau and Benue require Q2 contingency planning.</p>
+      </div>
+      <div class="analysis-card">
+        <div class="analysis-card-title"><span class="icon">4</span> South East & South South: Persistent Low-Level Violence</div>
+        <p>The South East (115 events, 172 fatalities) continued to experience IPOB-linked separatist violence, targeted killings of security personnel and government officials, and sit-at-home enforcement in Anambra, Imo, Enugu and Ebonyi. The January spike (118 of 172 SE fatalities) reflects heightened activity at the start of the year; February and March were notably calmer. Fatalities fell 11% quarter-on-quarter, suggesting a modest de-escalation but not a structural change.</p>
+        <p>The South South (136 events, 126 fatalities) recorded near-identical fatalities to Q4 2024 (-1%), with Rivers, Delta and Edo driving most incidents through cult rivalries, political violence, and sporadic pipeline attacks. A notable February uptick (59 fatalities in Feb vs 23 in Jan) coincided with post-election tensions in Rivers State. The South West saw a disproportionate 66% fatality increase (53 to 88) driven by criminal violence in Lagos and political confrontations in Ogun; event counts rose only 2%, confirming higher lethality per incident.</p>
+        <p><strong>Outlook:</strong> SE and SS risk remains MEDIUM — manageable but requiring vigilance. SW fatality trend warrants close monitoring through Q2.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="border-left-color:var(--wb-blue-light); background:#E8F4FD;">
+      <div class="callout-title">🔍 Emerging Risk for Q2 2025</div>
+      <p>Three converging risks are likely to intensify in Q2 (April–June 2025): (1) the approaching rainy season will increase farmer-herder competition in North Central, particularly in Plateau and Benue; (2) the South West's rising fatality trajectory may reflect spill-over of criminal networks from NW banditry into SW logistics corridors — a trend to track through Lagos and Ogun data; and (3) if the Nigerian Army's Kaura Namoda operations displace Zamfara militia networks southward into Kebbi or Niger states, WB projects in those states could face new exposure not seen in prior quarters.</p>
+    </div>
+    <div class="callout" style="border-left-color:var(--wb-green); background:#E8F8EF;">
+      <div class="callout-title">📊 Data Note</div>
+      <p>All conflict data sourced from ACLED (Armed Conflict Location & Event Data Project). Q1 2025 data is current as of the ACLED Nigeria dataset through February 2026. Ward-level geocoding (used for sub-LGA mapping) covers data through July 2025; events beyond this date are aggregated at LGA level from raw ACLED records. Displacement and IDP figures are not available in this system and are based on IOM DTM Q1 2025 estimates and UNHCR reporting. Fatalities attributed to the "Military Forces of Nigeria (2023-)" include operations against all adversary types; this actor code accounts for 1,245 of 2,760 Q1 2025 fatalities, reflecting the scale of counter-insurgency and counter-banditry operations.</p>
+    </div>
+  </div>
+  <div class="page-footer"><span>OFFICIAL USE ONLY</span><span>Nigeria FCV Risk Monitor — Q1 2025</span></div>
+  <div class="page-number">5</div>
+</div>
+
+<!-- ===== PAGE 6: IMPLICATIONS FOR WB PROGRAM ===== -->
+<div class="page" style="min-height:1540px;">
+  <div class="page-header">
+    <div class="page-header-left">Nigeria FCV Risk Monitor · Q1 2025</div>
+    <div class="page-header-right">Section 5 — Implications for World Bank Program</div>
+  </div>
+  <div class="page-content">
+    <div class="section-label">Section 5</div>
+    <div class="section-title">Implications for World Bank Programming</div>
+    <div class="section-subtitle">Identified risks to portfolio, potential mitigation measures, and recommendations for task teams</div>
+    <div class="divider"></div>
+
+    <div class="implications-grid">
+      <div class="implication-row">
+        <div class="implication-risk">
+          <div class="implication-risk-label">Portfolio Risk</div>
+          <div class="implication-risk-title">NE Insurgency: Access Disruption in Borno & Yobe</div>
+          <div class="risk-level risk-high"><div class="risk-dot"></div> HIGH RISK</div>
+        </div>
+        <div class="implication-content">
+          <h4>Impact</h4>
+          <p>The January Kukawa cluster (147+ fatalities in a single day) and continued ISWAP/BH operations along the Maiduguri–Baga and Maiduguri–Kukawa corridors directly impede field access for WB-funded projects in agricultural rehabilitation, education and health in Borno and Yobe. Farming communities displaced from Kukawa and Damboa are likely beneficiaries of Lake Chad Basin food security programs; their displacement reduces program reach and distorts targeting data.</p>
+          <h4>Recommended Measures</h4>
+          <p>Activate UNDSS-coordinated security surge protocol for NE field teams. Transition Kukawa and Damboa LGA activities to remote verification and digital payment where feasible. Conduct access corridor reassessment for Q2 supervision missions to Borno no later than April 15, 2025.</p>
+          <span class="measure-tag urgent">Urgent Action</span><span class="measure-tag">Field Security</span><span class="measure-tag">Remote Monitoring</span>
+        </div>
+      </div>
+
+      <div class="implication-row">
+        <div class="implication-risk">
+          <div class="implication-risk-label">Portfolio Risk</div>
+          <div class="implication-risk-title">NW Banditry: Rural Project Disruption in Zamfara & Katsina</div>
+          <div class="risk-level risk-high"><div class="risk-dot"></div> HIGH RISK</div>
+        </div>
+        <div class="implication-content">
+          <h4>Impact</h4>
+          <p>Three major military operations in Kaura Namoda LGA (10, 15, 17 March) and sustained banditry in Zamfara and Katsina create a high-risk environment for WB-funded rural road rehabilitation, irrigation, and agricultural extension activities. Kidnapping-for-ransom operations (e.g., 15 March Banga village: 56 abducted, 35 killed) pose direct threats to project staff and community mobilisers. The 4 January Jibia operation (80 fatalities) signals ongoing conflict in a key cross-border trade corridor.</p>
+          <h4>Recommended Measures</h4>
+          <p>Conduct Conflict Sensitivity Assessment for all NW agricultural and infrastructure projects before Q2 field missions. Establish no-go zone protocols for Kaura Namoda and Shinkafi LGAs pending security stabilisation. Strengthen community liaison protocols with state security agencies (Zamfara KSCWC, Katsina State Security).</p>
+          <span class="measure-tag urgent">Urgent Action</span><span class="measure-tag">Conflict Sensitivity</span><span class="measure-tag">Staff Safety</span>
+        </div>
+      </div>
+
+      <div class="implication-row">
+        <div class="implication-risk">
+          <div class="implication-risk-label">Portfolio Risk</div>
+          <div class="implication-risk-title">NC Seasonal Escalation: Communal Violence in Plateau & Benue</div>
+          <div class="risk-level risk-medium"><div class="risk-dot"></div> MEDIUM RISK</div>
+        </div>
+        <div class="implication-content">
+          <h4>Impact</h4>
+          <p>Q1 2025 NC fatalities fell 49% in a seasonal dry-season lull, but March's 135 fatalities (vs January's 75) signals the approach of peak communal violence season (April–June). WB rural development, social protection and health projects in Plateau, Benue and Nasarawa states risk disruption during community mobilisation and seasonal agricultural activities when farmer-herder tensions historically peak. The Fulani Ethnic Militia was the third-highest-lethality actor nationally in Q1 (166 fatalities).</p>
+          <h4>Recommended Measures</h4>
+          <p>Build Q2 contingency buffers into NC project implementation plans. Schedule community consultations and beneficiary verification before April rainy season onset. Engage Plateau State Peacebuilding Agency (KSEPA) and relevant LGA Conflict Management Committees for early warning coordination.</p>
+          <span class="measure-tag monitor">Monitor</span><span class="measure-tag">Seasonal Planning</span><span class="measure-tag">Peacebuilding</span>
+        </div>
+      </div>
+
+      <div class="implication-row">
+        <div class="implication-risk">
+          <div class="implication-risk-label">Portfolio Risk</div>
+          <div class="implication-risk-title">SE Sit-at-Home Compliance: Program Delivery Gaps in Anambra, Imo, Enugu</div>
+          <div class="risk-level risk-medium"><div class="risk-dot"></div> MEDIUM RISK</div>
+        </div>
+        <div class="implication-content">
+          <h4>Impact</h4>
+          <p>Weekly IPOB-enforced sit-at-home orders in Anambra, Imo, Enugu and Ebonyi continue to reduce community mobilisation windows for WB-supported health and education programs. Targeted killings of government officials and security personnel in Q1 (115 events, 172 fatalities) deter local counterpart engagement and reduce state government implementation capacity. January's spike (118 of 172 SE fatalities in January) correlates with heightened enforcement at the start of the year.</p>
+          <h4>Recommended Measures</h4>
+          <p>Reschedule critical program activities outside Monday sit-at-home enforcement windows. Consult with community leaders and local task team coordinators on safe mobilisation periods. Document lost person-days and attendance gaps as security-attributed costs in project reporting and ISR risk ratings.</p>
+          <span class="measure-tag monitor">Monitor</span><span class="measure-tag">Scheduling</span><span class="measure-tag">Community Engagement</span>
+        </div>
+      </div>
+
+      <div class="implication-row">
+        <div class="implication-risk">
+          <div class="implication-risk-label">Portfolio Risk</div>
+          <div class="implication-risk-title">NE Displacement: IDP Targeting & Service Demand Concentration</div>
+          <div class="risk-level risk-medium"><div class="risk-dot"></div> MEDIUM RISK</div>
+        </div>
+        <div class="implication-content">
+          <h4>Impact</h4>
+          <p>Continued insurgency-driven displacement in the North East — with an estimated 2.3M+ IDPs nationally concentrated in Borno, Adamawa and Yobe — creates service demand concentration in IDP host communities (particularly Maiduguri and Yola) that outpaces WB social protection, health and education program reach. Fresh displacement from Kukawa and Damboa following Q1 operations will likely not be reflected in current beneficiary targeting lists, leading to exclusion errors in NE project areas.</p>
+          <h4>Recommended Measures</h4>
+          <p>Update beneficiary targeting data to account for Q1 displacement flows from Kukawa and Damboa. Coordinate with IOM DTM and UNHCR on Q2 displacement mapping before next beneficiary registration round. Explore supplemental financing through IDA Crisis Response Window or Emergency Financing windows for IDP host community services.</p>
+          <span class="measure-tag monitor">Monitor</span><span class="measure-tag">Targeting Update</span><span class="measure-tag">IDP Response</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="border-left-color:var(--wb-blue); background:#E8F0FD;">
+      <div class="callout-title">Next Steps</div>
+      <p>Nigeria CMU to convene Q1 2025 portfolio security review no later than <strong>30 April 2025</strong>. Task teams with operations in Borno, Zamfara, Katsina, and Plateau to submit updated security risk annexes for Q2 supervision missions by <strong>15 May 2025</strong>. NW task teams to coordinate with UNDSS on corridor access assessments for Kaura Namoda and Shinkafi before any planned field missions. Next edition of the FCV Risk Monitor (Q2 2025, covering April–June) to be issued in <strong>July 2025</strong>. Data source: ACLED Nigeria dataset; for displacement figures, coordinate with IOM DTM Nigeria office.</p>
+    </div>
+  </div>
+  <div class="page-footer"><span>OFFICIAL USE ONLY</span><span>Nigeria FCV Risk Monitor — Q1 2025</span></div>
+  <div class="page-number">6</div>
+</div>
+
+</body>
+</html>

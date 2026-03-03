@@ -1,0 +1,46 @@
+services:
+  backend:
+    build: ./backend
+    container_name: ethiopia-backend
+    volumes:
+      - ./backend/data:/app/data:ro
+      - ./backend/acled_Nigeria.csv:/app/acled_Ethiopia.csv:ro
+      - backend-cache:/app/cache
+    environment:
+      - DATA_PATH=/app/data
+      - CACHE_DIR=/app/cache
+      - ACLED_DATA_PATH=/app/acled_Ethiopia.csv
+      - CORS_ORIGINS=http://localhost,http://localhost:3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost/api
+    container_name: ethiopia-frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost/api
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: ethiopia-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+
+volumes:
+  backend-cache:
