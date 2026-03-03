@@ -4,12 +4,11 @@ services:
     container_name: ethiopia-backend
     volumes:
       - ./backend/data:/app/data:ro
-      - ./backend/acled_Nigeria.csv:/app/acled_Ethiopia.csv:ro
       - backend-cache:/app/cache
     environment:
       - DATA_PATH=/app/data
       - CACHE_DIR=/app/cache
-      - ACLED_DATA_PATH=/app/acled_Ethiopia.csv
+      - ACLED_DATA_PATH=/app/data/acled_Ethiopia.csv
       - CORS_ORIGINS=http://localhost,http://localhost:3000
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]

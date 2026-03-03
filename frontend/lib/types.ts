@@ -85,6 +85,69 @@ export interface Actor {
   deaths: number;
 }
 
+export interface PeriodPreset {
+  id: string;
+  label: string;
+  start_year: number;
+  start_month: number;
+  end_year: number;
+  end_month: number;
+  type: 'calendar' | 'mid_year';
+  sort_index: number;
+}
+
+export interface LocationTrendPoint {
+  period_id: string;
+  period: string;
+  period_type: string;
+  start_year: number;
+  start_month: number;
+  deaths: number;
+  events: number;
+  death_rate: number;
+  classification: 0 | 1 | 2;
+  classification_label: string;
+}
+
+export interface LocationTrendResponse {
+  location: {
+    level: string;
+    pcode: string;
+    name: string;
+    adm1_pcode: string;
+    adm1_name: string;
+    adm2_pcode: string;
+    adm2_name: string;
+  };
+  trajectory: string;
+  lookback_periods: number;
+  latest: LocationTrendPoint | null;
+  series: LocationTrendPoint[];
+}
+
+export interface AbsoluteSeriesPoint {
+  period: string;
+  deaths: number;
+  events: number;
+}
+
+export interface AbsoluteLocationSeries {
+  pcode: string;
+  name: string;
+  total_deaths: number;
+  total_events: number;
+  series: AbsoluteSeriesPoint[];
+}
+
+export interface AbsoluteSeriesResponse {
+  level: 'ADM1' | 'ADM2' | 'ADM3';
+  granularity: 'monthly' | 'quarterly' | 'yearly';
+  period_start: string;
+  period_end: string;
+  periods: string[];
+  locations: AbsoluteLocationSeries[];
+}
+
 export type RagStatus = 'red' | 'amber' | 'green';
 
 export interface EarlyWarningFilters {

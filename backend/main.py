@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import conflicts, spatial, alerts, actors, exports, wb_projects
+from routers import conflicts, spatial, alerts, actors, exports, meta, trends, absolute
 
 
 @asynccontextmanager
@@ -23,8 +23,6 @@ async def lifespan(app: FastAPI):
         load_population_data()
         load_admin_boundaries()
         _load_acled_ward_join()
-        from services.wb_service import load_wb_projects
-        load_wb_projects()
         print("Cache warm-up complete.")
     except Exception as e:
         print(f"Cache warm-up warning: {e}")
@@ -52,7 +50,9 @@ app.include_router(spatial.router, prefix="/api")
 app.include_router(alerts.router, prefix="/api")
 app.include_router(actors.router, prefix="/api")
 app.include_router(exports.router, prefix="/api")
-app.include_router(wb_projects.router, prefix="/api")
+app.include_router(meta.router, prefix="/api")
+app.include_router(trends.router, prefix="/api")
+app.include_router(absolute.router, prefix="/api")
 
 
 @app.get("/api/health")

@@ -4,8 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Globe2 } from 'lucide-react';
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+import { apiUrl } from '@/lib/apiBase';
 
 export interface DrillEvent {
   level: 1 | 2;
@@ -35,6 +34,12 @@ function featureBbox(geometry: any): [[number, number], [number, number]] {
 interface ConflictMapProps {
   level: 1 | 2 | 3;
   variable: 'deaths' | 'ward_share' | 'rate' | 'events' | 'density';
+  periodId?: string;
+  mapView?: 'regions_zones' | 'woredas';
+  analysisType?: 'conflict_metrics' | 'trajectory';
+  conflictMetric?: 'conflict_affected' | 'highly_conflict_affected';
+  classificationMapVar?: 'share_woredas' | 'share_population';
+  trajectoryCategories?: string[];
   affectedOnly?: boolean;
   startYear: number;
   startMonth: number;
@@ -45,10 +50,8 @@ interface ConflictMapProps {
   aggThresh: number;
   parentPcode?: string;
   showEvents?: boolean;
-  showWbProjects?: boolean;
   showChoropleth?: boolean;
   showBoundaries?: boolean;
-  wbStatusFilter?: string[];
   activeEventTypes?: string[];
   flyToCoords?: { lng: number; lat: number } | null;
   onUnitClick?: (props: Record<string, any>) => void;
@@ -115,13 +118,74 @@ function getChoroplethColor(variable: string, level: number, maxDeaths: number, 
   ];
 }
 
+function getClassificationColor(
+  level: number,
+  analysisType: 'conflict_metrics' | 'trajectory',
+  conflictMetric: 'conflict_affected' | 'highly_conflict_affected',
+) {
+  if (analysisType === 'trajectory') {
+    const key = level === 3 ? 'trajectory' : 'predominant_trajectory';
+    return [
+      'match',
+      ['coalesce', ['get', key], 'Insufficient Data'],
+      'At-Risk', '#f97316',
+      'Onset', '#dc2626',
+      'Recovery', '#16a34a',
+      'Turnaround', '#0284c7',
+      'Stable', '#64748b',
+      'Fluctuating', '#7c3aed',
+      '#d1d5db',
+    ];
+  }
+
+  if (level === 3) {
+    const metricKey =
+      conflictMetric === 'highly_conflict_affected'
+        ? 'highly_conflict_affected'
+        : 'conflict_affected';
+    return [
+      'case',
+      ['==', ['get', metricKey], true], '#d73027',
+      ['>', ['coalesce', ['get', 'ACLED_BRD_total'], 0], 0], '#fd8d3c',
+      '#e8e8e8',
+    ];
+  }
+
+  return [
+    'interpolate',
+    ['linear'],
+    ['coalesce', ['get', 'metric_value'], 0],
+    0, '#f0f0f0',
+    0.1, '#c7e9b4',
+    0.3, '#41b6c4',
+    0.5, '#2c7fb8',
+    1.0, '#253494',
+  ];
+}
+
 function actionHint(level: number): string {
-  if (level === 1) return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">▾ Click to show LGAs</div>';
-  if (level === 2) return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">▾ Click to show wards</div>';
+  if (level === 1) return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">▾ Click to show Zones</div>';
+  if (level === 2) return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">▾ Click to show Woredas</div>';
   return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">Click for full history</div>';
 }
 
-function buildPopupHtml(props: Record<string, any>, level: number): string {
+function buildPopupHtml(
+  props: Record<string, any>,
+  level: number,
+  analysisType: 'conflict_metrics' | 'trajectory',
+  conflictMetric: 'conflict_affected' | 'highly_conflict_affected',
+): string {
+  if (analysisType === 'trajectory') {
+    const name = level === 1 ? (props.ADM1_EN ?? 'Unknown') : level === 2 ? (props.ADM2_EN ?? 'Unknown') : (props.ADM3_EN ?? 'Unknown');
+    const trajectory = props.trajectory ?? props.predominant_trajectory ?? 'Insufficient Data';
+    const selectedShare = props.selected_share != null ? `${(Number(props.selected_share) * 100).toFixed(1)}%` : 'N/A';
+    return `<div style="font-family:sans-serif;font-size:12px;min-width:180px;line-height:1.5">
+      <div style="font-weight:700;margin-bottom:2px">${name}</div>
+      Trajectory: <b>${trajectory}</b><br/>
+      Selected share: <b>${selectedShare}</b>
+    </div>`;
+  }
+
   if (level === 3) {
     const ward = props.ADM3_EN ?? 'Unknown Ward';
     const lga = props.ADM2_EN ?? '';
@@ -130,7 +194,11 @@ function buildPopupHtml(props: Record<string, any>, level: number): string {
     const deaths = Number(props.ACLED_BRD_total ?? 0).toLocaleString();
     const rate = Number(props.acled_total_death_rate ?? 0).toFixed(1);
     const pop = props.pop_count ? Number(props.pop_count).toLocaleString() : 'N/A';
-    const status = props.violence_affected === true
+    const key =
+      conflictMetric === 'highly_conflict_affected'
+        ? 'highly_conflict_affected'
+        : 'conflict_affected';
+    const status = props[key] === true
       ? '<span style="color:#d73027;font-weight:600">Affected</span>'
       : Number(props.ACLED_BRD_total ?? 0) > 0
       ? '<span style="color:#fd8d3c;font-weight:600">Below threshold</span>'
@@ -149,38 +217,13 @@ function buildPopupHtml(props: Record<string, any>, level: number): string {
     ? `<div style="color:#666;font-size:11px;margin-bottom:4px">${props.ADM1_EN}</div>`
     : '';
   const deaths = Number(props.ACLED_BRD_total ?? 0).toLocaleString();
-  const wardShare = ((props.share_wards_affected ?? 0) * 100).toFixed(1);
+  const wardShare = ((props.metric_value ?? props.share_wards_affected ?? 0) * 100).toFixed(1);
   const eventCount = props.event_count != null ? Number(props.event_count).toLocaleString() : null;
   return `<div style="font-family:sans-serif;font-size:12px;min-width:160px;line-height:1.5">
     <div style="font-weight:700;margin-bottom:2px">${name}</div>
     ${parent}
     Deaths: <b>${deaths}</b><br/>
     Wards affected: <b>${wardShare}%</b>${eventCount != null ? `<br/>Events: <b>${eventCount}</b>` : ''}
-  </div>`;
-}
-
-function buildWbPopupHtml(props: Record<string, any>): string {
-  const name = props.name || props.proj_id || 'WB Project';
-  const status = props.status || '';
-  const practice = props.practice || '';
-  const location = props.location_name || props.admin1 || '';
-  const approvalFy = props.approval_fy ? `FY${props.approval_fy}` : '';
-  const commitment = props.commitment_amt != null
-    ? props.commitment_amt >= 1_000_000_000
-      ? `$${(props.commitment_amt / 1_000_000_000).toFixed(1)}B`
-      : `$${Math.round(props.commitment_amt / 1_000_000)}M`
-    : '';
-  const statusColor = status === 'Active' ? '#27ae60' : status === 'Closed' ? '#888' : '#d35400';
-  return `<div style="font-family:sans-serif;font-size:12px;min-width:220px;line-height:1.6">
-    <div style="font-weight:700;margin-bottom:3px">${name}</div>
-    <div style="margin-bottom:4px">
-      <span style="color:${statusColor};font-weight:600;font-size:11px">${status}</span>
-      ${approvalFy ? `<span style="color:#888;font-size:11px;margin-left:6px">${approvalFy}</span>` : ''}
-    </div>
-    ${practice ? `<div style="color:#555;font-size:11px;margin-bottom:3px">${practice}</div>` : ''}
-    ${location ? `<div style="color:#666;font-size:11px;margin-bottom:2px">📍 ${location}</div>` : ''}
-    ${commitment ? `Commitment: <b>${commitment}</b><br/>` : ''}
-    <div style="color:#888;font-size:10px;margin-top:3px">${props.proj_id}</div>
   </div>`;
 }
 
@@ -206,8 +249,6 @@ const FILL_ID = 'choropleth-fill';
 const OUTLINE_ID = 'choropleth-outline';
 const EVENTS_SOURCE_ID = 'acled-events';
 const EVENTS_LAYER_ID = 'acled-events-circles';
-const WB_SOURCE_ID = 'wb-projects';
-const WB_LAYER_ID = 'wb-projects-circles';
 const DENSITY_SOURCE_ID = 'density-heatmap';
 const DENSITY_LAYER_ID = 'density-heatmap-layer';
 
@@ -228,6 +269,12 @@ const STREET_TILES = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 export default function ConflictMap({
   level,
   variable,
+  periodId,
+  mapView = 'regions_zones',
+  analysisType = 'conflict_metrics',
+  conflictMetric = 'conflict_affected',
+  classificationMapVar = 'share_woredas',
+  trajectoryCategories,
   affectedOnly = false,
   startYear,
   startMonth,
@@ -238,10 +285,8 @@ export default function ConflictMap({
   aggThresh,
   parentPcode = '',
   showEvents = false,
-  showWbProjects = false,
   showChoropleth = true,
   showBoundaries = true,
-  wbStatusFilter = ['Active'],
   activeEventTypes,
   flyToCoords,
   onUnitClick,
@@ -260,12 +305,6 @@ export default function ConflictMap({
   const eventsEnterHandlerRef = useRef<((e: any) => void) | null>(null);
   const eventsLeaveHandlerRef = useRef<(() => void) | null>(null);
   const eventsPopupRef = useRef<maplibregl.Popup | null>(null);
-  // WB projects overlay refs
-  const wbStatusFilterRef = useRef(wbStatusFilter);
-  useEffect(() => { wbStatusFilterRef.current = wbStatusFilter; }, [wbStatusFilter]);
-  const wbEnterHandlerRef = useRef<((e: any) => void) | null>(null);
-  const wbLeaveHandlerRef = useRef<(() => void) | null>(null);
-  const wbPopupRef = useRef<maplibregl.Popup | null>(null);
 
   const onUnitClickRef = useRef(onUnitClick);
   const onDrillDownRef = useRef(onDrillDown);
@@ -277,8 +316,11 @@ export default function ConflictMap({
   const [maxRate, setMaxRate] = useState(100);
   const [maxEvents, setMaxEvents] = useState(100);
 
+  const effectiveMapView = level === 3 ? 'woredas' : mapView;
+  const aggLevel = level === 1 ? 'ADM1' : level === 2 ? 'ADM2' : 'ADM3';
+
   const choroplethUrl = [
-    `${BASE_URL}/api/spatial/choropleth`,
+    '/api/spatial/choropleth',
     `?level=${level}`,
     `&variable=${variable}`,
     `&start_year=${startYear}&start_month=${startMonth}`,
@@ -288,11 +330,34 @@ export default function ConflictMap({
     parentPcode ? `&parent_pcode=${encodeURIComponent(parentPcode)}` : '',
   ].join('');
 
-  const eventsUrl = [
-    `${BASE_URL}/api/spatial/events`,
-    `?start_year=${startYear}&start_month=${startMonth}`,
-    `&end_year=${endYear}&end_month=${endMonth}`,
+  const classificationUrl = [
+    '/api/spatial/classification',
+    `?period_id=${encodeURIComponent(periodId ?? '')}`,
+    `&map_view=${effectiveMapView}`,
+    `&agg_level=${aggLevel}`,
+    `&analysis_type=${analysisType}`,
+    `&map_var=${classificationMapVar}`,
+    `&conflict_metric=${conflictMetric}`,
+    `&agg_thresh=${aggThresh}`,
+    trajectoryCategories && trajectoryCategories.length > 0
+      ? `&trajectory_categories=${encodeURIComponent(trajectoryCategories.join(','))}`
+      : '',
   ].join('');
+
+  const parentEventFilter =
+    level === 2 && parentPcode
+      ? `&level=1&pcode=${encodeURIComponent(parentPcode)}`
+      : level === 3 && parentPcode
+      ? `&level=2&pcode=${encodeURIComponent(parentPcode)}`
+      : '';
+  const eventsUrl = periodId
+    ? `/api/spatial/events?period_id=${encodeURIComponent(periodId)}${parentEventFilter}`
+    : [
+        '/api/spatial/events',
+        `?start_year=${startYear}&start_month=${startMonth}`,
+        `&end_year=${endYear}&end_month=${endMonth}`,
+        parentEventFilter,
+      ].join('');
 
   /** Remove events layer + source from the map (idempotent). */
   const removeEventsLayer = useCallback(() => {
@@ -310,129 +375,6 @@ export default function ConflictMap({
     eventsPopupRef.current?.remove();
   }, []);
 
-  const removeWbLayer = useCallback(() => {
-    if (!map.current) return;
-    if (wbEnterHandlerRef.current) {
-      map.current.off('mouseenter', WB_LAYER_ID, wbEnterHandlerRef.current);
-      wbEnterHandlerRef.current = null;
-    }
-    if (wbLeaveHandlerRef.current) {
-      map.current.off('mouseleave', WB_LAYER_ID, wbLeaveHandlerRef.current);
-      wbLeaveHandlerRef.current = null;
-    }
-    if (map.current.getLayer(WB_LAYER_ID)) map.current.removeLayer(WB_LAYER_ID);
-    if (map.current.getSource(WB_SOURCE_ID)) map.current.removeSource(WB_SOURCE_ID);
-    wbPopupRef.current?.remove();
-  }, []);
-
-  const loadWbProjects = useCallback(async () => {
-    if (!map.current) return;
-    if (!showWbProjects) {
-      removeWbLayer();
-      return;
-    }
-    try {
-      // Build a location-pin icon (teardrop) via canvas and register it in the map sprite
-      function makePin(fill: string): ImageData {
-        const w = 16, h = 20;
-        const canvas = document.createElement('canvas');
-        canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext('2d')!;
-        const cx = w / 2;
-        const r = w / 2 - 1.5; // head radius
-
-        // Drop shadow
-        ctx.shadowColor = 'rgba(0,0,0,0.35)';
-        ctx.shadowBlur = 3;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 2;
-
-        // Pin body: head circle + tail
-        ctx.beginPath();
-        ctx.arc(cx, r + 1.5, r, Math.PI, 0); // top semicircle
-        ctx.bezierCurveTo(cx + r, r + 1.5 + r * 0.6, cx + 3, h - 3, cx, h - 1); // right side down
-        ctx.bezierCurveTo(cx - 3, h - 3, cx - r, r + 1.5 + r * 0.6, cx - r, r + 1.5); // left side up
-        ctx.closePath();
-        ctx.fillStyle = fill;
-        ctx.fill();
-
-        ctx.shadowColor = 'transparent';
-
-        // White outline stroke
-        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // White circle hole in head
-        ctx.beginPath();
-        ctx.arc(cx, r + 1.5, r * 0.38, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,0.92)';
-        ctx.fill();
-
-        return ctx.getImageData(0, 0, w, h);
-      }
-
-      if (!map.current.hasImage('wb-active')) map.current.addImage('wb-active', makePin('#009fda') as any);
-      if (!map.current.hasImage('wb-closed')) map.current.addImage('wb-closed', makePin('#888888') as any);
-      if (!map.current.hasImage('wb-other'))  map.current.addImage('wb-other',  makePin('#f59e0b') as any);
-
-      const res = await fetch(`${BASE_URL}/api/wb-projects`);
-      if (!res.ok) throw new Error(`API error ${res.status}`);
-      const geojson = await res.json();
-
-      removeWbLayer();
-
-      map.current.addSource(WB_SOURCE_ID, { type: 'geojson', data: geojson });
-      map.current.addLayer({
-        id: WB_LAYER_ID,
-        type: 'symbol',
-        source: WB_SOURCE_ID,
-        layout: {
-          'icon-image': [
-            'match', ['get', 'status'],
-            'Active', 'wb-active',
-            'Closed', 'wb-closed',
-            'wb-other',
-          ],
-          'icon-size': 0.9,
-          'icon-allow-overlap': true,
-          'icon-ignore-placement': true,
-        },
-      });
-
-      // Apply the current status filter immediately after the layer is created
-      const initialFilter = wbStatusFilterRef.current;
-      const expanded = initialFilter.flatMap((s) => (s === 'Other' ? [s, ''] : [s]));
-      if (expanded.length > 0) {
-        map.current.setFilter(WB_LAYER_ID, ['in', ['get', 'status'], ['literal', expanded]] as any);
-      }
-
-      if (!wbPopupRef.current) {
-        wbPopupRef.current = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
-      }
-      const popup = wbPopupRef.current;
-
-      const enterHandler = (e: any) => {
-        if (!map.current) return;
-        map.current.getCanvas().style.cursor = 'pointer';
-        const props = (e.features?.[0]?.properties ?? {}) as Record<string, any>;
-        popup.setLngLat(e.lngLat).setHTML(buildWbPopupHtml(props)).addTo(map.current);
-      };
-      const leaveHandler = () => {
-        if (!map.current) return;
-        map.current.getCanvas().style.cursor = '';
-        popup.remove();
-      };
-
-      wbEnterHandlerRef.current = enterHandler;
-      wbLeaveHandlerRef.current = leaveHandler;
-      map.current.on('mouseenter', WB_LAYER_ID, enterHandler);
-      map.current.on('mouseleave', WB_LAYER_ID, leaveHandler);
-    } catch {
-      // Non-fatal
-    }
-  }, [showWbProjects, removeWbLayer]);
-
   const loadEvents = useCallback(async () => {
     if (!map.current) return;
     if (!showEvents) {
@@ -440,7 +382,7 @@ export default function ConflictMap({
       return;
     }
     try {
-      const res = await fetch(eventsUrl);
+      const res = await fetch(apiUrl(eventsUrl));
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const geojson = await res.json();
 
@@ -523,7 +465,7 @@ export default function ConflictMap({
         if (map.current.getLayer(DENSITY_LAYER_ID)) map.current.removeLayer(DENSITY_LAYER_ID);
         if (map.current.getSource(DENSITY_SOURCE_ID)) map.current.removeSource(DENSITY_SOURCE_ID);
 
-        const evRes = await fetch(eventsUrl);
+        const evRes = await fetch(apiUrl(eventsUrl));
         if (!evRes.ok) throw new Error(`API error ${evRes.status}`);
         const eventsGeoJson = await evRes.json();
 
@@ -556,7 +498,9 @@ export default function ConflictMap({
       if (map.current.getLayer(DENSITY_LAYER_ID)) map.current.removeLayer(DENSITY_LAYER_ID);
       if (map.current.getSource(DENSITY_SOURCE_ID)) map.current.removeSource(DENSITY_SOURCE_ID);
 
-      const res = await fetch(choroplethUrl);
+      const useClassification = Boolean(periodId);
+      const targetUrl = useClassification ? classificationUrl : choroplethUrl;
+      const res = await fetch(apiUrl(targetUrl));
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const geojson = await res.json();
 
@@ -623,15 +567,18 @@ export default function ConflictMap({
 
       // Insert choropleth layers below any point overlay layers
       const eventsExists = !!map.current.getLayer(EVENTS_LAYER_ID);
-      const wbExists = !!map.current.getLayer(WB_LAYER_ID);
-      const beforeLayer = eventsExists ? EVENTS_LAYER_ID : wbExists ? WB_LAYER_ID : undefined;
+      const beforeLayer = eventsExists ? EVENTS_LAYER_ID : undefined;
 
       map.current.addLayer({
         id: FILL_ID,
         type: 'fill',
         source: SOURCE_ID,
         paint: {
-          'fill-color': getChoroplethColor(variable, level, localMax, localMaxRate, localMaxEvents) as any,
+          'fill-color': (
+            periodId
+              ? getClassificationColor(level, analysisType, conflictMetric)
+              : getChoroplethColor(variable, level, localMax, localMaxRate, localMaxEvents)
+          ) as any,
           'fill-opacity': fillOpacity,
         },
       }, beforeLayer);
@@ -656,7 +603,10 @@ export default function ConflictMap({
         if (!map.current) return;
         map.current.getCanvas().style.cursor = 'pointer';
         const props = (e.features?.[0]?.properties ?? {}) as Record<string, any>;
-        popup.setLngLat(e.lngLat).setHTML(buildPopupHtml(props, level) + actionHint(level)).addTo(map.current);
+        popup
+          .setLngLat(e.lngLat)
+          .setHTML(buildPopupHtml(props, level, analysisType, conflictMetric) + actionHint(level))
+          .addTo(map.current);
       };
       const leaveHandler = () => {
         if (!map.current) return;
@@ -683,7 +633,7 @@ export default function ConflictMap({
           const pcode = level === 1 ? (props.ADM1_PCODE ?? '') : (props.ADM2_PCODE ?? '');
           const name  = level === 1 ? (props.ADM1_EN  ?? '') : (props.ADM2_EN  ?? '');
           onDrillDownRef.current?.({ level: level as 1 | 2, pcode, name });
-          // Also fire unit-click so the history panel opens for state/LGA
+          // Also fire unit-click so the history panel opens for region/zone.
           onUnitClickRef.current?.({ ...props, _clickedLevel: level });
         } else {
           onUnitClickRef.current?.(props);
@@ -692,11 +642,25 @@ export default function ConflictMap({
       clickHandlerRef.current = clickHandler;
       map.current.on('click', FILL_ID, clickHandler);
     } catch (e: any) {
-      setError(e.message ?? 'Failed to load map data');
+      const msg = e?.message ?? 'Failed to load map data';
+      if (typeof msg === 'string' && msg.toLowerCase().includes('failed to fetch')) {
+        setError('Failed to fetch map data. Verify backend is running and API URL/proxy is configured.');
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }
-  }, [choroplethUrl, eventsUrl, variable, level]);
+  }, [
+    choroplethUrl,
+    classificationUrl,
+    eventsUrl,
+    variable,
+    level,
+    periodId,
+    analysisType,
+    conflictMetric,
+  ]);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -714,24 +678,21 @@ export default function ConflictMap({
         },
         layers: [{ id: 'osm', type: 'raster', source: 'osm' }],
       },
-      center: [8.6753, 9.082],
+      center: [40.4897, 9.145],
       zoom: 5.2,
     });
 
     map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
     map.current.on('load', () => {
       loadChoropleth();
-      loadWbProjects();
       loadEvents();
       onMapReady?.(map.current!);
     });
 
     return () => {
       removeEventsLayer();
-      removeWbLayer();
       popupRef.current = null;
       eventsPopupRef.current = null;
-      wbPopupRef.current = null;
       map.current?.remove();
     };
   }, []);
@@ -749,13 +710,6 @@ export default function ConflictMap({
     }
   }, [loadEvents]);
 
-  // Load / remove WB projects overlay whenever showWbProjects changes
-  useEffect(() => {
-    if (map.current?.isStyleLoaded()) {
-      loadWbProjects();
-    }
-  }, [loadWbProjects]);
-
   // Toggle choropleth fill visibility
   useEffect(() => {
     if (!map.current?.getLayer(FILL_ID)) return;
@@ -767,17 +721,6 @@ export default function ConflictMap({
     if (!map.current?.getLayer(OUTLINE_ID)) return;
     map.current.setLayoutProperty(OUTLINE_ID, 'visibility', showBoundaries ? 'visible' : 'none');
   }, [showBoundaries]);
-
-  // Apply status filter on the WB layer without reloading data
-  useEffect(() => {
-    if (!map.current?.getLayer(WB_LAYER_ID)) return;
-    // 'Other' maps to '' (empty string from unmatched master rows)
-    const expanded = wbStatusFilter.flatMap((s) => (s === 'Other' ? [s, ''] : [s]));
-    const filter = expanded.length > 0
-      ? ['in', ['get', 'status'], ['literal', expanded]]
-      : ['==', ['literal', false], ['literal', true]]; // show nothing
-    map.current.setFilter(WB_LAYER_ID, filter as any);
-  }, [wbStatusFilter]);
 
   // Apply event type filter on the events layer without reloading data
   useEffect(() => {
@@ -818,6 +761,67 @@ export default function ConflictMap({
   }, [basemap]);
 
   const renderLegend = () => {
+    if (periodId && analysisType === 'trajectory') {
+      return (
+        <>
+          <p className="font-semibold text-gray-700 mb-1.5">Trajectory</p>
+          {[
+            { color: '#dc2626', label: 'Onset' },
+            { color: '#f97316', label: 'At-Risk' },
+            { color: '#16a34a', label: 'Recovery' },
+            { color: '#0284c7', label: 'Turnaround' },
+            { color: '#64748b', label: 'Stable' },
+            { color: '#7c3aed', label: 'Fluctuating' },
+            { color: '#d1d5db', label: 'Insufficient Data' },
+          ].map(({ color, label }) => (
+            <div key={label} className="flex items-center gap-1.5 mb-0.5">
+              <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
+              <span className="text-gray-600">{label}</span>
+            </div>
+          ))}
+        </>
+      );
+    }
+
+    if (periodId && analysisType === 'conflict_metrics') {
+      if (level === 3) {
+        return (
+          <>
+            <p className="font-semibold text-gray-700 mb-1.5">
+              {conflictMetric === 'highly_conflict_affected' ? 'Highly Conflict-Affected' : 'Conflict-Affected'}
+            </p>
+            {[
+              { color: '#d73027', label: 'Affected' },
+              { color: '#fd8d3c', label: 'Below threshold' },
+              { color: '#e8e8e8', label: 'No violence' },
+            ].map(({ color, label }) => (
+              <div key={label} className="flex items-center gap-1.5 mb-0.5">
+                <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
+                <span className="text-gray-600">{label}</span>
+              </div>
+            ))}
+          </>
+        );
+      }
+      return (
+        <>
+          <p className="font-semibold text-gray-700 mb-1.5">Share Affected</p>
+          {[
+            { color: '#253494', label: '> 50%' },
+            { color: '#2c7fb8', label: '30-50%' },
+            { color: '#41b6c4', label: '10-30%' },
+            { color: '#c7e9b4', label: '< 10%' },
+            { color: '#f0f0f0', label: 'None' },
+          ].map(({ color, label }) => (
+            <div key={label} className="flex items-center gap-1.5 mb-0.5">
+              <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
+              <span className="text-gray-600">{label}</span>
+            </div>
+          ))}
+        </>
+      );
+    }
+
     if (level === 3) {
       if (variable === 'rate') {
         return (
@@ -945,9 +949,9 @@ export default function ConflictMap({
         </div>
       )}
       <button
-        onClick={() => map.current?.flyTo({ center: [8.6753, 9.082], zoom: 5.2, duration: 700 })}
+        onClick={() => map.current?.flyTo({ center: [40.4897, 9.145], zoom: 5.2, duration: 700 })}
         className="absolute top-[100px] right-[10px] bg-white rounded shadow p-1.5 hover:bg-gray-50 transition-colors z-10"
-        title="Reset to full Nigeria view"
+        title="Reset to full Ethiopia view"
         style={{ boxShadow: '0 0 0 2px rgba(0,0,0,.1)' }}
       >
         <Globe2 className="h-4 w-4 text-gray-500" />
@@ -962,27 +966,6 @@ export default function ConflictMap({
       </button>
       <div className="absolute bottom-8 right-3 bg-white/95 rounded shadow p-3 text-xs min-w-[150px] max-h-[300px] overflow-y-auto">
         {renderLegend()}
-        {showWbProjects && (
-          <div className="border-t border-gray-200 mt-2 pt-2">
-            <p className="font-semibold text-gray-700 mb-1.5">WB Projects</p>
-            {[
-              { color: '#009fda', label: 'Active' },
-              { color: '#888888', label: 'Closed' },
-              { color: '#f59e0b', label: 'Other' },
-            ].map(({ color, label }) => (
-              <div key={label} className="flex items-center gap-1.5 mb-0.5">
-                <svg width="8" height="10" viewBox="0 0 22 28" className="shrink-0">
-                  <path
-                    d="M11 1.5 C6.3 1.5 2.5 5.3 2.5 10 C2.5 14 11 26.5 11 26.5 C11 26.5 19.5 14 19.5 10 C19.5 5.3 15.7 1.5 11 1.5 Z"
-                    fill={color} stroke="white" strokeWidth="1.5"
-                  />
-                  <circle cx="11" cy="10" r="3.5" fill="rgba(255,255,255,0.9)" />
-                </svg>
-                <span className="text-gray-600">{label}</span>
-              </div>
-            ))}
-          </div>
-        )}
         {showEvents && (
           <>
             <div className="border-t border-gray-200 mt-2 pt-2">

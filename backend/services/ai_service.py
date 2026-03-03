@@ -125,8 +125,8 @@ def get_unit_summary(
     )
 
     level_label = "state" if level == 1 else "LGA"
-    prompt = f"""You are an FCV (Fragility, Conflict, and Violence) specialist on the World Bank Nigeria country team preparing an intelligence brief for internal operational use.
-Analyze the following ACLED conflict data for {name} ({level_label}), Nigeria.
+    prompt = f"""You are an FCV (Fragility, Conflict, and Violence) specialist on the Ethiopia country team preparing an intelligence brief for internal operational use.
+Analyze the following ACLED conflict data for {name} ({level_label}), Ethiopia.
 
 PERIOD: {date_range}
 TOTAL DEATHS: {total_deaths}
@@ -275,7 +275,7 @@ def get_actor_profile(actor_name: str) -> dict:
         )
     events_block = "\n\n".join(event_lines) if event_lines else "No detailed event notes available."
 
-    prompt = f"""You are an FCV (Fragility, Conflict, and Violence) specialist on the World Bank Nigeria country team. Write a structured intelligence profile for the following armed actor in Nigeria based on ACLED data, for internal operational use.
+    prompt = f"""You are an FCV (Fragility, Conflict, and Violence) specialist on the Ethiopia country team. Write a structured intelligence profile for the following armed actor in Ethiopia based on ACLED data, for internal operational use.
 
 ACTOR: {actor_name}
 RECORD PERIOD: {min_date} to {max_date}
@@ -294,7 +294,7 @@ NOTABLE INCIDENTS (most lethal, with field notes):
 {events_block}
 
 Write a concise actor profile (5–8 sentences) covering:
-1. Who this actor is and their role in Nigeria's conflict landscape
+1. Who this actor is and their role in Ethiopia's conflict landscape
 2. Their main operational territories and geographic footprint
 3. Dominant tactics and event types (battles, ambushes, civilian targeting, etc.)
 4. Key adversaries and alliances visible in the data

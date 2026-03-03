@@ -8,12 +8,23 @@ import type {
   AdminConflict,
   ConflictEvent,
   Actor,
+  AbsoluteSeriesResponse,
+  LocationTrendResponse,
+  PeriodPreset,
 } from './types';
+import { apiUrl } from './apiBase';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+function toUrlObject(path: string): URL {
+  const resolved = apiUrl(path);
+  if (resolved.startsWith('http://') || resolved.startsWith('https://')) {
+    return new URL(resolved);
+  }
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+  return new URL(resolved, origin);
+}
 
 async function apiFetch<T>(path: string, params?: Record<string, string | number | undefined>): Promise<T> {
-  const url = new URL(`${BASE_URL}${path}`);
+  const url = toUrlObject(path);
   if (params) {
     Object.entries(params).forEach(([k, v]) => {
       if (v !== undefined && v !== null) url.searchParams.set(k, String(v));
@@ -98,6 +109,36 @@ export const api = {
   boundaries: (level: number) =>
     apiFetch<object>(`/api/spatial/boundaries/${level}`),
 
+  periods: () =>
+    apiFetch<{ periods: PeriodPreset[] }>('/api/meta/periods'),
+
+  spatialClassification: (params: {
+    period_id: string;
+    map_view?: 'regions_zones' | 'woredas';
+    agg_level?: 'ADM1' | 'ADM2' | 'ADM3';
+    analysis_type?: 'conflict_metrics' | 'trajectory';
+    map_var?: 'share_woredas' | 'share_population';
+    conflict_metric?: 'conflict_affected' | 'highly_conflict_affected';
+    agg_thresh?: number;
+    trajectory_categories?: string;
+  }) => apiFetch<object>('/api/spatial/classification', params),
+
+  trendsLocation: (params: {
+    pcode: string;
+    level?: 'ADM1' | 'ADM2' | 'ADM3' | 'region' | 'zone' | 'woreda';
+    lookback_periods?: number;
+  }) => apiFetch<LocationTrendResponse>('/api/trends/location', params),
+
+  absoluteSeries: (params: {
+    pcodes: string;
+    level?: 'ADM1' | 'ADM2' | 'ADM3' | 'region' | 'zone' | 'woreda';
+    granularity?: 'monthly' | 'quarterly' | 'yearly';
+    start_year?: number;
+    start_month?: number;
+    end_year?: number;
+    end_month?: number;
+  }) => apiFetch<AbsoluteSeriesResponse>('/api/absolute/series', params),
+
   unitSummary: (params: {
     level: number;
     name: string;
@@ -111,27 +152,8 @@ export const api = {
       params,
     ),
 
-  wbProjects: (status?: string) =>
-    apiFetch<object>('/api/wb-projects', status ? { status } : undefined),
-
-  wbStateSummary: () =>
-    apiFetch<Record<string, { active_count: number; total_commitment: number }>>('/api/wb-projects/state-summary'),
-
-  wbProjectsByUnit: (level: number, name: string, status?: string) =>
-    apiFetch<{
-      proj_id: string;
-      name: string;
-      status: string;
-      practice: string;
-      approval_fy: number | null;
-      commitment_amt: number | null;
-      location_count: number;
-      locations: string[];
-      objective: string;
-    }[]>('/api/wb-projects/by-unit', { level, name, status }),
-
   exportCsvUrl: (params: Record<string, string | undefined>) => {
-    const url = new URL(`${BASE_URL}/api/export/csv`);
+    const url = toUrlObject('/api/export/csv');
     Object.entries(params).forEach(([k, v]) => {
       if (v) url.searchParams.set(k, v);
     });
@@ -139,7 +161,7 @@ export const api = {
   },
 
   exportExcelUrl: (params: Record<string, string | undefined>) => {
-    const url = new URL(`${BASE_URL}/api/export/excel`);
+    const url = toUrlObject('/api/export/excel');
     Object.entries(params).forEach(([k, v]) => {
       if (v) url.searchParams.set(k, v);
     });

@@ -12,7 +12,6 @@ from services.conflict_service import (
     get_filtered_events,
     load_raw_acled,
 )
-from services.spatial_service import get_by_ward
 
 router = APIRouter(tags=["conflicts"])
 
@@ -85,8 +84,6 @@ def by_admin(
     parent: Optional[str] = Query(None, description="Parent unit name to filter by (LGA name for level 3)"),
 ):
     try:
-        if level == 3:
-            return get_by_ward(start_date=start, end_date=end, parent_lga=parent)
-        return get_by_admin(level, start, end)
+        return get_by_admin(level, start, end, parent=parent)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

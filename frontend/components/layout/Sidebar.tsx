@@ -8,18 +8,14 @@ import {
   BarChart2,
   Map,
   Search,
-  Users,
-  FileText,
-  Activity,
+  Database,
 } from 'lucide-react';
 
 const navItems = [
-  { href: '/', label: 'Alert Dashboard', icon: AlertTriangle },
-  // { href: '/early-warning', label: 'Early Warning', icon: Activity },   // temporarily disabled
-  // { href: '/spatial', label: 'Spatial Analysis', icon: Map },            // temporarily disabled
-  { href: '/explorer', label: 'Data Explorer', icon: Search },
-  { href: '/actors', label: 'Actor Profiles', icon: Users },
-  { href: '/reports', label: 'Reports & Export', icon: FileText },
+  { href: '/', label: 'Home', icon: AlertTriangle },
+  { href: '/spatial', label: 'Interactive Maps', icon: Map },
+  { href: '/explorer', label: 'Trend Analysis', icon: Search },
+  { href: '/absolute-data', label: 'Absolute Data', icon: Database },
 ];
 
 export function Sidebar() {
@@ -63,8 +59,8 @@ export function Sidebar() {
       </nav>
 
       <div className="px-4 py-3 border-t border-gray-700">
-        <p className="text-xs text-gray-500">ACLED · World Bank</p>
-        <p className="text-xs text-gray-600">1997 – 2025</p>
+        <p className="text-xs text-gray-500">ACLED Ethiopia</p>
+        <p className="text-xs text-gray-600">2009 - Present</p>
       </div>
     </aside>
   );

@@ -1,4 +1,4 @@
-"""Pydantic response models for the Nigeria Conflict API."""
+"""Pydantic response models for the Ethiopia Conflict API."""
 
 from __future__ import annotations
 from typing import Any, Optional

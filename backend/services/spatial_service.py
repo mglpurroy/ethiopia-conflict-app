@@ -1,30 +1,51 @@
-"""Spatial data service — ported from mapping_functions.py (Streamlit/Folium removed)"""
+"""Spatial and GeoJSON services for the Ethiopia dashboard."""
 
+from __future__ import annotations
+
+import calendar
+import datetime as dt
 import json
-import time
-import geopandas as gpd
-import pandas as pd
-import numpy as np
-from pathlib import Path
 from typing import Optional
+
+import geopandas as gpd
+import numpy as np
+import pandas as pd
 
 from services.conflict_service import (
     DATA_DIR,
-    _get_cached,
-    _set_cached,
     _cache_key,
+    _get_cached,
     _load_pickle,
     _save_pickle,
-    load_population_data,
-    load_conflict_data,
-    load_raw_acled,
+    _set_cached,
     classify_and_aggregate,
+    classify_trajectory_data,
+    generate_12_month_periods,
+    get_period_by_id,
+    load_conflict_data,
+    load_population_data,
+    load_raw_acled,
 )
 
+BOUNDARY_DIR = DATA_DIR / "eth_adm_csa_bofedb_2021_shp"
 
-def load_admin_boundaries() -> dict:
-    """Load ward/LGA/state boundaries and return as GeoDataFrames."""
-    key = _cache_key("boundaries", "v4")
+
+def _empty_fc() -> dict:
+    return {"type": "FeatureCollection", "features": []}
+
+
+def _simplify(gdf: gpd.GeoDataFrame, level: int) -> gpd.GeoDataFrame:
+    if gdf.empty:
+        return gdf
+    tol = {1: 0.01, 2: 0.005, 3: 0.002}.get(level, 0.005)
+    out = gdf.copy()
+    out["geometry"] = out["geometry"].simplify(tolerance=tol, preserve_topology=True)
+    return out
+
+
+def load_admin_boundaries() -> dict[int, gpd.GeoDataFrame]:
+    """Load ADM1/ADM2/ADM3 boundaries from Ethiopia shapefiles."""
+    key = _cache_key("eth_boundaries", "v1")
     cached = _get_cached(key)
     if cached is not None:
         return cached
@@ -34,239 +55,122 @@ def load_admin_boundaries() -> dict:
         _set_cached(key, pkl)
         return pkl
 
-    ward_file = DATA_DIR / "wards" / "wards.shp"
-    if not ward_file.exists():
-        empty = gpd.GeoDataFrame()
+    adm1_path = BOUNDARY_DIR / "eth_admbnda_adm1_csa_bofedb_2021.shp"
+    adm2_path = BOUNDARY_DIR / "eth_admbnda_adm2_csa_bofedb_2021.shp"
+    adm3_path = BOUNDARY_DIR / "eth_admbnda_adm3_csa_bofedb_2021.shp"
+
+    empty = gpd.GeoDataFrame()
+    if not adm3_path.exists():
         result = {1: empty, 2: empty, 3: empty}
         return result
 
-    ward_gdf = gpd.read_file(ward_file).to_crs("EPSG:4326")
-    ward_gdf = ward_gdf.rename(columns={
-        'ward_cd': 'ADM3_PCODE',
-        'stat_cd': 'ADM1_PCODE',
-        'lga_cod': 'ADM2_PCODE',
-        'wrd_nm_x': 'ADM3_EN',
-    })
-
-    lga_file = DATA_DIR / "nga_lga_boundaries.geojson"
-    if lga_file.exists():
-        lga_gdf = gpd.read_file(lga_file)
-        state_map = dict(zip(lga_gdf['statecode'], lga_gdf['statename']))
-        lga_map = dict(zip(lga_gdf['lgacode'], lga_gdf['lganame']))
-        ward_gdf['ADM1_EN'] = ward_gdf['ADM1_PCODE'].map(state_map).fillna(ward_gdf['ADM1_PCODE'])
-        ward_gdf['ADM2_EN'] = ward_gdf['ADM2_PCODE'].map(lga_map).fillna(ward_gdf['ADM2_PCODE'])
+    adm3 = gpd.read_file(adm3_path).to_crs("EPSG:4326")
+    if adm2_path.exists():
+        adm2 = gpd.read_file(adm2_path).to_crs("EPSG:4326")
     else:
-        ward_gdf['ADM1_EN'] = ward_gdf['ADM1_PCODE']
-        ward_gdf['ADM2_EN'] = ward_gdf['ADM2_PCODE']
+        adm2 = adm3.dissolve(by=["ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN"], as_index=False)
+    if adm1_path.exists():
+        adm1 = gpd.read_file(adm1_path).to_crs("EPSG:4326")
+    else:
+        adm1 = adm2.dissolve(by=["ADM1_PCODE", "ADM1_EN"], as_index=False)
 
-    lga_dissolved = ward_gdf.dissolve(
-        by=['ADM1_PCODE', 'ADM2_PCODE', 'ADM1_EN', 'ADM2_EN'], aggfunc='first'
-    ).reset_index()
-    state_dissolved = lga_dissolved.dissolve(
-        by=['ADM1_PCODE', 'ADM1_EN'], aggfunc='first'
-    ).reset_index()
+    keep1 = [c for c in ["ADM1_PCODE", "ADM1_EN", "geometry"] if c in adm1.columns]
+    keep2 = [c for c in ["ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN", "geometry"] if c in adm2.columns]
+    keep3 = [
+        c
+        for c in ["ADM3_PCODE", "ADM3_EN", "ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN", "geometry"]
+        if c in adm3.columns
+    ]
 
-    result = {1: state_dissolved, 2: lga_dissolved, 3: ward_gdf}
+    result = {1: adm1[keep1], 2: adm2[keep2], 3: adm3[keep3]}
     _set_cached(key, result)
     _save_pickle(key, result)
     return result
 
 
-def _load_acled_ward_join() -> "gpd.GeoDataFrame":
-    """
-    Spatially join ACLED events (lat/lon points) with ward polygons.
-    Result is cached to pickle — ~0.05 s for 46 K events × 9 K wards.
-    Cached columns: event_id_cnty, event_date, fatalities, admin1, admin2, ward_name (ADM3_EN)
-    """
-    key = _cache_key("acled_ward_join", "v1")
+def _load_acled_ward_join() -> pd.DataFrame:
+    """Compatibility helper used during startup warmup."""
+    key = _cache_key("acled_adm3_events", "v1")
     cached = _get_cached(key)
     if cached is not None:
         return cached
-    pkl = _load_pickle(key)
-    if pkl is not None:
-        _set_cached(key, pkl)
-        return pkl
-
-    acled = load_raw_acled()
-    ward_file = DATA_DIR / "wards" / "wards.shp"
-    if not ward_file.exists():
-        return gpd.GeoDataFrame()
-
-    ward_gdf = gpd.read_file(ward_file).to_crs("EPSG:4326")
-
-    acled_gdf = gpd.GeoDataFrame(
-        acled[["event_id_cnty", "event_date", "fatalities", "admin1", "admin2"]].copy(),
-        geometry=gpd.points_from_xy(acled["longitude"], acled["latitude"]),
-        crs="EPSG:4326",
-    )
-
-    ward_slim = ward_gdf[["wrd_nm_x", "geometry"]].copy()
-    joined = gpd.sjoin(acled_gdf, ward_slim, how="left", predicate="within")
-    # Drop unmatched events and geometry columns
-    joined = joined[joined["wrd_nm_x"].notna()].copy()
-    joined = joined[["event_id_cnty", "event_date", "fatalities", "admin1", "admin2", "wrd_nm_x"]]
-    joined = joined.rename(columns={"wrd_nm_x": "ward_name"})
-    joined = joined.reset_index(drop=True)
-
-    _set_cached(key, joined)
-    _save_pickle(key, joined)
-    return joined
+    raw = load_raw_acled()
+    df = raw[["event_id_cnty", "event_date", "fatalities", "admin1", "admin2", "admin3"]].copy()
+    df = df[df["admin3"].notna() & (df["admin3"] != "")]
+    df = df.rename(columns={"admin3": "ward_name"})
+    _set_cached(key, df)
+    return df
 
 
 def get_by_ward(
-    start_date: str | None = None,
-    end_date: str | None = None,
-    parent_lga: str | None = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    parent_lga: Optional[str] = None,
 ) -> list[dict]:
-    """
-    Aggregate conflict deaths/events by ward using spatial join.
-    parent_lga: filter to wards belonging to this ACLED admin2 name.
-    """
-    df = _load_acled_ward_join()
-    if df.empty:
-        return []
-
+    """Compatibility helper for level-3 admin summaries from raw events."""
+    df = load_raw_acled().copy()
     if start_date:
         df = df[df["event_date"] >= pd.to_datetime(start_date)]
     if end_date:
         df = df[df["event_date"] <= pd.to_datetime(end_date)]
     if parent_lga:
         df = df[df["admin2"] == parent_lga]
-
+    df = df[df["admin3"].notna() & (df["admin3"] != "")]
     agg = (
-        df.groupby(["admin1", "admin2", "ward_name"])
+        df.groupby(["admin1", "admin2", "admin3"], as_index=False)
         .agg(events=("event_id_cnty", "count"), deaths=("fatalities", "sum"))
-        .reset_index()
-        .rename(columns={"ward_name": "admin3"})
+        .sort_values("deaths", ascending=False)
     )
-    return agg.sort_values("deaths", ascending=False).to_dict(orient="records")
+    return agg.to_dict(orient="records")
 
 
 def get_boundaries_geojson(level: int) -> dict:
-    """Return GeoJSON for a given admin level (1=state, 2=LGA, 3=ward)."""
     boundaries = load_admin_boundaries()
     gdf = boundaries.get(level, gpd.GeoDataFrame())
     if gdf.empty:
-        return {"type": "FeatureCollection", "features": []}
-
-    # Simplify for performance (ward level especially)
-    if level == 3:
-        gdf = gdf.copy()
-        gdf['geometry'] = gdf['geometry'].simplify(tolerance=0.005, preserve_topology=True)
-
-    # Drop non-serialisable columns
-    keep_cols = ['geometry']
-    for col in ['ADM1_PCODE', 'ADM1_EN', 'ADM2_PCODE', 'ADM2_EN', 'ADM3_PCODE', 'ADM3_EN']:
-        if col in gdf.columns:
-            keep_cols.append(col)
-
-    return json.loads(gdf[keep_cols].to_json())
+        return _empty_fc()
+    gdf = _simplify(gdf, level)
+    return json.loads(gdf.to_json())
 
 
-def get_unit_history(level: int, pcode: str = '', name: str = '') -> dict:
-    """Return monthly time-series + event-type breakdown for a single admin unit."""
-    if level == 3:
-        conflict = load_conflict_data()
-        if pcode and 'ADM3_PCODE' in conflict.columns:
-            df = conflict[conflict['ADM3_PCODE'] == pcode].copy()
-        elif name and 'ADM3_EN' in conflict.columns:
-            df = conflict[conflict['ADM3_EN'] == name].copy()
-        else:
-            df = pd.DataFrame()
+def _date_range_from_year_month(
+    start_year: Optional[int],
+    start_month: Optional[int],
+    end_year: Optional[int],
+    end_month: Optional[int],
+) -> tuple[int, int, int, int]:
+    now = dt.datetime.now()
+    sy = start_year if start_year is not None else now.year - 1
+    sm = start_month if start_month is not None else 1
+    ey = end_year if end_year is not None else now.year
+    em = end_month if end_month is not None else now.month
+    return sy, sm, ey, em
 
-        if not df.empty and 'year' in df.columns and 'month' in df.columns:
-            monthly = df.groupby(['year', 'month'], as_index=False).agg(
-                deaths=('ACLED_BRD_total', 'sum')
-            )
-            monthly['events'] = 0
-            monthly['period'] = (
-                monthly['year'].astype(str) + '-'
-                + monthly['month'].astype(str).str.zfill(2)
-            )
-            monthly = monthly.sort_values(['year', 'month'])
-            records = monthly[['year', 'month', 'period', 'deaths', 'events']].to_dict(orient='records')
-            total_deaths = int(monthly['deaths'].sum())
-        else:
-            records, total_deaths = [], 0
 
-        return {
-            'unit': name or pcode,
-            'pcode': pcode,
-            'level': level,
-            'monthly': records,
-            'by_type': [],
-            'top_actors': [],
-            'actor_timelines': {},
-            'total_deaths': total_deaths,
-            'total_events': 0,
-        }
+def _filter_raw_by_ym(
+    df: pd.DataFrame, start_year: int, start_month: int, end_year: int, end_month: int
+) -> pd.DataFrame:
+    start_date = dt.date(start_year, start_month, 1)
+    end_day = calendar.monthrange(end_year, end_month)[1]
+    end_date = dt.date(end_year, end_month, end_day)
+    return df[(df["event_date"].dt.date >= start_date) & (df["event_date"].dt.date <= end_date)]
 
-    # State / LGA — use raw ACLED (has event_type, full fatalities)
-    raw = load_raw_acled()
+
+def _name_from_pcode(level: int, pcode: str) -> Optional[str]:
+    if not pcode:
+        return None
+    pop = load_population_data()
+    if pop.empty:
+        return None
     if level == 1:
-        filtered = raw[raw['admin1'] == name].copy()
+        m = pop.loc[pop["ADM1_PCODE"] == pcode, "ADM1_EN"]
+    elif level == 2:
+        m = pop.loc[pop["ADM2_PCODE"] == pcode, "ADM2_EN"]
     else:
-        filtered = raw[raw['admin2'] == name].copy()
-
-    if filtered.empty:
-        return {
-            'unit': name, 'pcode': pcode, 'level': level,
-            'monthly': [], 'by_type': [],
-            'total_deaths': 0, 'total_events': 0,
-        }
-
-    monthly = filtered.groupby(['year', 'month'], as_index=False).agg(
-        deaths=('fatalities', 'sum'),
-        events=('event_id_cnty', 'count'),
-    )
-    monthly['period'] = (
-        monthly['year'].astype(str) + '-'
-        + monthly['month'].astype(str).str.zfill(2)
-    )
-    monthly = monthly.sort_values(['year', 'month'])
-
-    by_type = (
-        filtered.groupby('event_type', as_index=False)
-        .agg(deaths=('fatalities', 'sum'), events=('event_id_cnty', 'count'))
-        .sort_values('deaths', ascending=False)
-    )
-
-    # Top actors — combine actor1 and actor2 appearances in this unit
-    a1 = filtered.groupby('actor1').agg(
-        events=('event_id_cnty', 'count'), deaths=('fatalities', 'sum')
-    ).reset_index().rename(columns={'actor1': 'actor'})
-    a2 = filtered.groupby('actor2').agg(
-        events=('event_id_cnty', 'count'), deaths=('fatalities', 'sum')
-    ).reset_index().rename(columns={'actor2': 'actor'})
-    top_actors = (
-        pd.concat([a1, a2])
-        .groupby('actor', as_index=False)
-        .agg(events=('events', 'sum'), deaths=('deaths', 'sum'))
-    )
-    top_actors = top_actors[top_actors['actor'].notna() & (top_actors['actor'] != '') & (top_actors['actor'] != 'NA')]
-    top_actors = top_actors.sort_values('deaths', ascending=False).head(10)
-
-    # Per-actor monthly timeline for top 5 (used for sparklines)
-    top5 = top_actors['actor'].head(5).tolist()
-    actor_timelines: dict = {}
-    for actor in top5:
-        af = filtered[(filtered['actor1'] == actor) | (filtered['actor2'] == actor)]
-        at = af.groupby(['year', 'month'], as_index=False).agg(deaths=('fatalities', 'sum'))
-        at['period'] = at['year'].astype(str) + '-' + at['month'].astype(str).str.zfill(2)
-        at = at.sort_values(['year', 'month'])
-        actor_timelines[actor] = at[['period', 'deaths']].to_dict(orient='records')
-
-    return {
-        'unit': name,
-        'pcode': pcode,
-        'level': level,
-        'monthly': monthly[['year', 'month', 'period', 'deaths', 'events']].to_dict(orient='records'),
-        'by_type': by_type.to_dict(orient='records'),
-        'top_actors': top_actors.to_dict(orient='records'),
-        'actor_timelines': actor_timelines,
-        'total_deaths': int(filtered['fatalities'].sum()),
-        'total_events': int(len(filtered)),
-    }
+        m = pop.loc[pop["ADM3_PCODE"] == pcode, "ADM3_EN"]
+    if m.empty:
+        return None
+    return str(m.iloc[0])
 
 
 def get_events_geojson(
@@ -275,226 +179,345 @@ def get_events_geojson(
     end_year: Optional[int] = None,
     end_month: Optional[int] = None,
     limit: int = 5000,
+    period_id: Optional[str] = None,
+    level: Optional[int] = None,
+    pcode: str = "",
+    name: str = "",
 ) -> dict:
-    """Return a GeoJSON FeatureCollection of raw ACLED events (Point features)."""
-    import datetime
-    now = datetime.datetime.now()
-    if end_year is None:
-        end_year = now.year
-    if end_month is None:
-        end_month = now.month
-    if start_year is None:
-        start_year = end_year - 1
-    if start_month is None:
-        start_month = 1
+    """Return raw ACLED events as GeoJSON with optional period/location filters."""
+    if period_id:
+        period = get_period_by_id(period_id)
+        if period:
+            start_year = period["start_year"]
+            start_month = period["start_month"]
+            end_year = period["end_year"]
+            end_month = period["end_month"]
 
-    df = load_raw_acled().copy()
+    sy, sm, ey, em = _date_range_from_year_month(start_year, start_month, end_year, end_month)
+    df = _filter_raw_by_ym(load_raw_acled(), sy, sm, ey, em)
+    df = df[df["longitude"].notna() & df["latitude"].notna()].copy()
 
-    start_date = datetime.date(start_year, start_month, 1)
-    import calendar
-    last_day = calendar.monthrange(end_year, end_month)[1]
-    end_date = datetime.date(end_year, end_month, last_day)
-
-    df = df[df['event_date'].dt.date >= start_date]
-    df = df[df['event_date'].dt.date <= end_date]
-
-    # Drop rows without coordinates
-    for col in ('longitude', 'latitude'):
-        if col in df.columns:
-            df = df[df[col].notna()]
+    if level in (1, 2, 3):
+        if not name and pcode:
+            name = _name_from_pcode(level, pcode) or ""
+        if name:
+            if level == 1:
+                df = df[df["admin1"] == name]
+            elif level == 2:
+                df = df[df["admin2"] == name]
+            else:
+                df = df[df["admin3"] == name]
 
     if len(df) > limit:
-        df = df.nlargest(limit, 'fatalities')
+        df = df.nlargest(limit, "fatalities")
 
     features = []
     for _, row in df.iterrows():
-        lon = float(row.get('longitude', 0))
-        lat = float(row.get('latitude', 0))
-        notes_raw = str(row.get('notes', '')) if pd.notna(row.get('notes', '')) else ''
-        notes = notes_raw[:200] + ('…' if len(notes_raw) > 200 else '')
-        event_date = row['event_date'].strftime('%Y-%m-%d') if pd.notna(row.get('event_date')) else ''
-        props = {
-            'event_type':    str(row.get('event_type', '')),
-            'sub_event_type': str(row.get('sub_event_type', '')),
-            'actor1':        str(row.get('actor1', '')),
-            'fatalities':    int(row.get('fatalities', 0) or 0),
-            'event_date':    event_date,
-            'location':      str(row.get('location', '')),
-            'admin1':        str(row.get('admin1', '')),
-            'admin2':        str(row.get('admin2', '')),
-            'notes':         notes,
-        }
-        features.append({
-            'type': 'Feature',
-            'geometry': {'type': 'Point', 'coordinates': [lon, lat]},
-            'properties': props,
-        })
+        notes = str(row.get("notes", "") or "")
+        if len(notes) > 350:
+            notes = notes[:350] + "…"
+        features.append(
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [float(row["longitude"]), float(row["latitude"])],
+                },
+                "properties": {
+                    "event_id_cnty": str(row.get("event_id_cnty", "")),
+                    "event_type": str(row.get("event_type", "")),
+                    "sub_event_type": str(row.get("sub_event_type", "")),
+                    "actor1": str(row.get("actor1", "")),
+                    "actor2": str(row.get("actor2", "")),
+                    "fatalities": float(row.get("fatalities", 0) or 0),
+                    "event_date": row["event_date"].strftime("%Y-%m-%d"),
+                    "location": str(row.get("location", "")),
+                    "admin1": str(row.get("admin1", "")),
+                    "admin2": str(row.get("admin2", "")),
+                    "admin3": str(row.get("admin3", "")),
+                    "notes": notes,
+                },
+            }
+        )
+    return {"type": "FeatureCollection", "features": features}
 
-    return {'type': 'FeatureCollection', 'features': features}
+
+def get_unit_history(level: int, pcode: str = "", name: str = "") -> dict:
+    """Return monthly timeline, event-type breakdown, and actor summaries."""
+    raw = load_raw_acled().copy()
+    if not name and pcode:
+        name = _name_from_pcode(level, pcode) or ""
+
+    if level == 1:
+        unit_df = raw[raw["admin1"] == name]
+    elif level == 2:
+        unit_df = raw[raw["admin2"] == name]
+    else:
+        unit_df = raw[raw["admin3"] == name]
+
+    if unit_df.empty:
+        return {
+            "unit": name or pcode,
+            "pcode": pcode,
+            "level": level,
+            "monthly": [],
+            "by_type": [],
+            "top_actors": [],
+            "actor_timelines": {},
+            "total_deaths": 0,
+            "total_events": 0,
+        }
+
+    monthly = (
+        unit_df.groupby(["year", "month"], as_index=False)
+        .agg(deaths=("fatalities", "sum"), events=("event_id_cnty", "count"))
+        .sort_values(["year", "month"])
+    )
+    monthly["period"] = monthly["year"].astype(str) + "-" + monthly["month"].astype(str).str.zfill(2)
+
+    by_type = (
+        unit_df.groupby("event_type", as_index=False)
+        .agg(deaths=("fatalities", "sum"), events=("event_id_cnty", "count"))
+        .sort_values("deaths", ascending=False)
+    )
+
+    a1 = unit_df.groupby("actor1", as_index=False).agg(events=("event_id_cnty", "count"), deaths=("fatalities", "sum"))
+    a1 = a1.rename(columns={"actor1": "actor"})
+    a2 = unit_df.groupby("actor2", as_index=False).agg(events=("event_id_cnty", "count"), deaths=("fatalities", "sum"))
+    a2 = a2.rename(columns={"actor2": "actor"})
+    top_actors = (
+        pd.concat([a1, a2], ignore_index=True)
+        .groupby("actor", as_index=False)
+        .agg(events=("events", "sum"), deaths=("deaths", "sum"))
+    )
+    top_actors = top_actors[top_actors["actor"].notna() & (top_actors["actor"] != "") & (top_actors["actor"] != "NA")]
+    top_actors = top_actors.sort_values("deaths", ascending=False).head(10)
+
+    actor_timelines: dict[str, list[dict]] = {}
+    for actor in top_actors["actor"].head(5):
+        af = unit_df[(unit_df["actor1"] == actor) | (unit_df["actor2"] == actor)]
+        at = af.groupby(["year", "month"], as_index=False).agg(deaths=("fatalities", "sum"))
+        at = at.sort_values(["year", "month"])
+        at["period"] = at["year"].astype(str) + "-" + at["month"].astype(str).str.zfill(2)
+        actor_timelines[str(actor)] = at[["period", "deaths"]].to_dict(orient="records")
+
+    return {
+        "unit": name or pcode,
+        "pcode": pcode,
+        "level": level,
+        "monthly": monthly[["year", "month", "period", "deaths", "events"]].to_dict(orient="records"),
+        "by_type": by_type.to_dict(orient="records"),
+        "top_actors": top_actors.to_dict(orient="records"),
+        "actor_timelines": actor_timelines,
+        "total_deaths": int(unit_df["fatalities"].sum()),
+        "total_events": int(len(unit_df)),
+    }
 
 
 def get_choropleth_data(
     level: int = 1,
-    variable: str = 'deaths',
-    start_year: int | None = None,
-    start_month: int | None = None,
-    end_year: int | None = None,
-    end_month: int | None = None,
-    rate_thresh: float = 10.0,
-    abs_thresh: int = 5,
-    agg_thresh: float = 0.1,
+    variable: str = "deaths",
+    start_year: Optional[int] = None,
+    start_month: Optional[int] = None,
+    end_year: Optional[int] = None,
+    end_month: Optional[int] = None,
+    rate_thresh: float = 2.0,
+    abs_thresh: int = 10,
+    agg_thresh: float = 0.2,
     affected_only: bool = False,
-    parent_pcode: str = '',
+    parent_pcode: str = "",
 ) -> dict:
-    """
-    Return GeoJSON with conflict attributes merged for choropleth rendering.
-    level:       1=state, 2=LGA, 3=ward
-    variable:    'deaths' | 'rate' | 'ward_share'
-    parent_pcode: filter level-2 to one state, or level-3 to one LGA
-    affected_only: (level 3 only) filter to wards with any conflict events
-    """
-    import datetime
-    now = datetime.datetime.now()
-
-    if end_year is None:
-        end_year = now.year
-    if end_month is None:
-        end_month = now.month
-    if start_year is None:
-        start_year = end_year - 1
-    if start_month is None:
-        start_month = end_month
-
+    """Compatibility choropleth endpoint used by existing map component."""
+    sy, sm, ey, em = _date_range_from_year_month(start_year, start_month, end_year, end_month)
     pop = load_population_data()
     conflict = load_conflict_data()
     boundaries = load_admin_boundaries()
 
-    # Ward level uses ward_data directly from classify_and_aggregate
     if level == 3:
         _, ward_data = classify_and_aggregate(
-            pop, conflict,
-            start_year, start_month, end_year, end_month,
-            rate_thresh, abs_thresh, agg_thresh, 'ADM1',
+            pop, conflict, sy, sm, ey, em, rate_thresh=rate_thresh, abs_thresh=abs_thresh, agg_thresh=agg_thresh, agg_level="ADM2"
         )
-
         gdf = boundaries.get(3, gpd.GeoDataFrame())
         if gdf.empty:
-            return {"type": "FeatureCollection", "features": []}
+            return _empty_fc()
+        merge_cols = [
+            "ADM3_PCODE",
+            "ADM3_EN",
+            "ADM2_PCODE",
+            "ADM2_EN",
+            "ADM1_PCODE",
+            "ADM1_EN",
+            "pop_count",
+            "ACLED_BRD_total",
+            "event_count",
+            "acled_total_death_rate",
+            "violence_affected",
+            "conflict_affected",
+            "highly_conflict_affected",
+        ]
+        merge_cols = [c for c in merge_cols if c in ward_data.columns]
+        merged = gdf.merge(ward_data[merge_cols], on="ADM3_PCODE", how="left")
+        for col in ["ACLED_BRD_total", "event_count", "acled_total_death_rate", "pop_count"]:
+            if col in merged.columns:
+                merged[col] = merged[col].fillna(0)
+        for col in ["violence_affected", "conflict_affected", "highly_conflict_affected"]:
+            if col in merged.columns:
+                merged[col] = merged[col].fillna(False)
+        if parent_pcode and "ADM2_PCODE" in merged.columns:
+            merged = merged[merged["ADM2_PCODE"] == parent_pcode]
+        if affected_only and "ACLED_BRD_total" in merged.columns:
+            merged = merged[merged["ACLED_BRD_total"] > 0]
+        merged = _simplify(merged, 3)
+        return json.loads(merged.to_json())
 
-        # Merge ward conflict data onto boundaries
-        ward_cols = ['ADM3_PCODE']
-        for col in ['ADM3_EN', 'ADM2_EN', 'ADM1_EN', 'pop_count',
-                    'violence_affected', 'ACLED_BRD_total', 'acled_total_death_rate']:
-            if col in ward_data.columns:
-                ward_cols.append(col)
-
-        # Include ADM2_PCODE from boundaries so we can filter by LGA
-        gdf_cols = ['ADM3_PCODE', 'geometry']
-        if 'ADM2_PCODE' in gdf.columns:
-            gdf_cols = ['ADM3_PCODE', 'ADM2_PCODE', 'geometry']
-        merged_gdf = gdf[gdf_cols].merge(
-            ward_data[ward_cols], on='ADM3_PCODE', how='left'
-        )
-
-        # Fill missing values
-        for col in ['ACLED_BRD_total', 'acled_total_death_rate', 'pop_count']:
-            if col in merged_gdf.columns:
-                merged_gdf[col] = merged_gdf[col].fillna(0)
-        if 'violence_affected' in merged_gdf.columns:
-            merged_gdf['violence_affected'] = (
-                merged_gdf['violence_affected'].fillna(False).astype(bool)
-            )
-        for col in ['ADM3_EN', 'ADM2_EN', 'ADM1_EN']:
-            if col in merged_gdf.columns:
-                merged_gdf[col] = merged_gdf[col].fillna('Unknown')
-
-        # Aggressive simplification — 9k+ polygons
-        merged_gdf = merged_gdf.copy()
-        merged_gdf['geometry'] = merged_gdf['geometry'].simplify(
-            tolerance=0.01, preserve_topology=True
-        )
-
-        # Filter to wards with events when requested (default off — show full map)
-        if affected_only:
-            merged_gdf = merged_gdf[merged_gdf['ACLED_BRD_total'] > 0].copy()
-
-        # Drill-down: restrict to wards in one LGA
-        if parent_pcode and 'ADM2_PCODE' in merged_gdf.columns:
-            merged_gdf = merged_gdf[merged_gdf['ADM2_PCODE'] == parent_pcode].copy()
-
-        return json.loads(merged_gdf.to_json())
-
-    # ── State / LGA level ────────────────────────────────────────────────────
-    agg_level = 'ADM1' if level == 1 else 'ADM2'
+    agg_level = "ADM1" if level == 1 else "ADM2"
     aggregated, _ = classify_and_aggregate(
-        pop, conflict,
-        start_year, start_month, end_year, end_month,
-        rate_thresh, abs_thresh, agg_thresh, agg_level,
+        pop, conflict, sy, sm, ey, em, rate_thresh=rate_thresh, abs_thresh=abs_thresh, agg_thresh=agg_thresh, agg_level=agg_level
     )
-
-    # Event count per admin unit (all ACLED event types, not just lethal BRD)
-    raw = load_raw_acled()
-    if start_year == end_year:
-        raw_period = raw[
-            (raw['year'] == start_year) &
-            (raw['month'] >= start_month) &
-            (raw['month'] <= end_month)
-        ]
-    else:
-        raw_period = raw[
-            ((raw['year'] == start_year) & (raw['month'] >= start_month)) |
-            ((raw['year'] > start_year) & (raw['year'] < end_year)) |
-            ((raw['year'] == end_year) & (raw['month'] <= end_month))
-        ]
-    name_col = 'admin1' if agg_level == 'ADM1' else 'admin2'
-    en_col   = 'ADM1_EN' if agg_level == 'ADM1' else 'ADM2_EN'
-    event_counts = (
-        raw_period.groupby(name_col).size()
-        .reset_index(name='event_count')
-        .rename(columns={name_col: en_col})
-    )
-    if en_col in aggregated.columns:
-        aggregated = aggregated.merge(event_counts, on=en_col, how='left')
-        aggregated['event_count'] = aggregated['event_count'].fillna(0).astype(int)
-    else:
-        aggregated['event_count'] = 0
-
     gdf = boundaries.get(level, gpd.GeoDataFrame())
     if gdf.empty:
-        return {"type": "FeatureCollection", "features": []}
+        return _empty_fc()
 
-    pcode_col = 'ADM1_PCODE' if level == 1 else 'ADM2_PCODE'
-    merge_cols = [pcode_col, 'ACLED_BRD_total', 'share_wards_affected',
-                  'share_population_affected', 'above_threshold', 'violence_affected',
-                  'total_wards', 'pop_count', 'event_count']
-    merge_cols = [c for c in merge_cols if c in aggregated.columns]
-    merged_gdf = gdf.merge(aggregated[merge_cols], on=pcode_col, how='left')
+    pcode_col = "ADM1_PCODE" if level == 1 else "ADM2_PCODE"
+    merged = gdf.merge(aggregated, on=pcode_col, how="left")
+    if level == 2 and parent_pcode:
+        merged = merged[merged["ADM1_PCODE"] == parent_pcode]
 
-    # Drill-down: restrict to LGAs in one state
-    if parent_pcode and level == 2 and 'ADM1_PCODE' in merged_gdf.columns:
-        merged_gdf = merged_gdf[merged_gdf['ADM1_PCODE'] == parent_pcode].copy()
+    for col in [
+        "ACLED_BRD_total",
+        "share_wards_affected",
+        "share_population_affected",
+        "above_threshold",
+        "violence_affected",
+        "total_woredas",
+        "pop_count",
+        "event_count",
+    ]:
+        if col in merged.columns:
+            merged[col] = merged[col].fillna(0 if col != "above_threshold" else False)
+    merged = _simplify(merged, level)
+    return json.loads(merged.to_json())
 
-    for col in ['ACLED_BRD_total', 'share_wards_affected', 'share_population_affected',
-                'violence_affected', 'total_wards', 'pop_count', 'event_count']:
-        if col in merged_gdf.columns:
-            merged_gdf[col] = merged_gdf[col].fillna(0)
-    if 'above_threshold' in merged_gdf.columns:
-        merged_gdf['above_threshold'] = merged_gdf['above_threshold'].fillna(False)
 
-    merged_gdf = merged_gdf.copy()
-    merged_gdf['geometry'] = merged_gdf['geometry'].simplify(
-        tolerance=0.01 if level == 1 else 0.005, preserve_topology=True
+def get_classification_geojson(
+    period_id: str,
+    map_view: str = "regions_zones",
+    agg_level: str = "ADM2",
+    analysis_type: str = "conflict_metrics",
+    map_var: str = "share_woredas",
+    conflict_metric: str = "conflict_affected",
+    agg_thresh: float = 0.2,
+    trajectory_categories: Optional[list[str]] = None,
+) -> dict:
+    """Return map-ready GeoJSON for conflict metrics or trajectory mode."""
+    period = get_period_by_id(period_id)
+    if not period:
+        raise ValueError(f"Unknown period_id: {period_id}")
+
+    pop = load_population_data()
+    conflict = load_conflict_data()
+    boundaries = load_admin_boundaries()
+    categories = trajectory_categories or [
+        "At-Risk",
+        "Onset",
+        "Recovery",
+        "Turnaround",
+        "Stable",
+        "Fluctuating",
+        "Insufficient Data",
+    ]
+
+    if conflict_metric == "highly_conflict_affected":
+        rate_thresh, abs_thresh = 10.0, 40
+    else:
+        rate_thresh, abs_thresh = 2.0, 10
+
+    aggregated, ward_data = classify_and_aggregate(
+        pop,
+        conflict,
+        period["start_year"],
+        period["start_month"],
+        period["end_year"],
+        period["end_month"],
+        rate_thresh=rate_thresh,
+        abs_thresh=abs_thresh,
+        agg_thresh=agg_thresh,
+        agg_level=agg_level,
     )
 
-    keep = ['geometry', pcode_col, 'ACLED_BRD_total', 'share_wards_affected',
-            'share_population_affected', 'above_threshold', 'violence_affected',
-            'total_wards', 'pop_count', 'event_count']
-    if level == 1 and 'ADM1_EN' in merged_gdf.columns:
-        keep.append('ADM1_EN')
-    if level == 2:
-        for c in ['ADM2_EN', 'ADM1_EN', 'ADM1_PCODE']:
-            if c in merged_gdf.columns:
-                keep.append(c)
+    if analysis_type == "conflict_metrics":
+        if map_view == "woredas":
+            gdf = boundaries.get(3, gpd.GeoDataFrame())
+            if gdf.empty:
+                return _empty_fc()
+            cols = [
+                "ADM3_PCODE",
+                "ACLED_BRD_total",
+                "event_count",
+                "acled_total_death_rate",
+                "conflict_affected",
+                "highly_conflict_affected",
+                "violence_affected",
+                "pop_count",
+            ]
+            cols = [c for c in cols if c in ward_data.columns]
+            merged = gdf.merge(ward_data[cols], on="ADM3_PCODE", how="left")
+            for c in cols:
+                if c != "ADM3_PCODE":
+                    merged[c] = merged[c].fillna(0 if c not in ["conflict_affected", "highly_conflict_affected", "violence_affected"] else False)
+            return json.loads(_simplify(merged, 3).to_json())
 
-    keep = [c for c in keep if c in merged_gdf.columns]
-    return json.loads(merged_gdf[keep].to_json())
+        level = 1 if agg_level == "ADM1" else 2
+        gdf = boundaries.get(level, gpd.GeoDataFrame())
+        if gdf.empty:
+            return _empty_fc()
+        pcode_col = "ADM1_PCODE" if level == 1 else "ADM2_PCODE"
+        merged = gdf.merge(aggregated, on=pcode_col, how="left")
+        if map_var == "share_population":
+            merged["metric_value"] = merged["share_population_affected"].fillna(0)
+        else:
+            merged["metric_value"] = merged["share_wards_affected"].fillna(0)
+        return json.loads(_simplify(merged, level).to_json())
+
+    # Trajectory mode
+    periods = generate_12_month_periods()
+    traj = classify_trajectory_data(pop, conflict, periods)
+    traj["trajectory_selected"] = traj["trajectory"].isin(categories)
+
+    if map_view == "woredas":
+        gdf = boundaries.get(3, gpd.GeoDataFrame())
+        if gdf.empty:
+            return _empty_fc()
+        cols = ["ADM3_PCODE", "trajectory", "trajectory_selected", "current_classification", "current_deaths", "current_death_rate"]
+        merged = gdf.merge(traj[cols], on="ADM3_PCODE", how="left")
+        merged["trajectory"] = merged["trajectory"].fillna("Insufficient Data")
+        merged["trajectory_selected"] = merged["trajectory_selected"].fillna(False)
+        return json.loads(_simplify(merged, 3).to_json())
+
+    level = 1 if agg_level == "ADM1" else 2
+    pcode_col = "ADM1_PCODE" if level == 1 else "ADM2_PCODE"
+    gdf = boundaries.get(level, gpd.GeoDataFrame())
+    if gdf.empty:
+        return _empty_fc()
+
+    def _summarize(group: pd.DataFrame) -> pd.Series:
+        total = len(group)
+        counts = group["trajectory"].value_counts()
+        predominant = counts.index[0] if not counts.empty else "Insufficient Data"
+        selected_count = int(group["trajectory_selected"].sum())
+        selected_share = selected_count / total if total else 0
+        return pd.Series(
+            {
+                "total_units": total,
+                "predominant_trajectory": predominant,
+                "selected_count": selected_count,
+                "selected_share": selected_share,
+            }
+        )
+
+    summary = traj.groupby(pcode_col).apply(_summarize).reset_index()
+    merged = gdf.merge(summary, on=pcode_col, how="left")
+    merged["selected_share"] = merged["selected_share"].fillna(0)
+    merged["selected_count"] = merged["selected_count"].fillna(0)
+    merged["predominant_trajectory"] = merged["predominant_trajectory"].fillna("Insufficient Data")
+    return json.loads(_simplify(merged, level).to_json())
