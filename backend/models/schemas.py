@@ -8,8 +8,8 @@ from pydantic import BaseModel
 class SummaryResponse(BaseModel):
     total_events: int
     total_deaths: int
-    wards_affected: int
-    total_wards: int
+    woredas_affected: int
+    total_woredas: int
     last_update: Optional[str]
     data_start: Optional[str]
 

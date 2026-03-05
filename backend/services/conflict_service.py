@@ -91,7 +91,7 @@ ACLED_DATA = _find_acled()
 # ---------------------------------------------------------------------------
 
 def generate_12_month_periods(start_year: int = START_YEAR) -> list[dict]:
-    """Generate Jan-Dec and Jul-Jun periods (latest first)."""
+    """Generate rolling latest-12, Jan-Dec, and Jul-Jun periods (latest first)."""
     key = _cache_key("periods", start_year)
     cached = _get_cached(key)
     if cached is not None:
@@ -108,35 +108,63 @@ def generate_12_month_periods(start_year: int = START_YEAR) -> list[dict]:
         pass
 
     periods: list[dict] = []
+    seen_ids: set[str] = set()
+
+    # Always include an explicit rolling latest 12-month window as the first option.
+    latest_total = (max_year * 12 + (max_month - 1))
+    start_total = latest_total - 11
+    latest_start_year = start_total // 12
+    latest_start_month = (start_total % 12) + 1
+    rolling_id = f"{latest_start_year:04d}{latest_start_month:02d}_{max_year:04d}{max_month:02d}"
+    periods.append(
+        {
+            "id": rolling_id,
+            "label": f"{dt.date(latest_start_year, latest_start_month, 1):%b %Y} - {dt.date(max_year, max_month, 1):%b %Y} (Latest 12 Months)",
+            "start_year": latest_start_year,
+            "start_month": latest_start_month,
+            "end_year": max_year,
+            "end_month": max_month,
+            "type": "rolling_latest",
+            "sort_index": max_year * 1000 + max_month * 10 + 9,
+        }
+    )
+    seen_ids.add(rolling_id)
+
     for year in range(start_year, max_year + 1):
         # Include current-year Jan-Dec even if incomplete (latest operational window).
         if year < max_year or max_month >= 1:
-            periods.append(
-                {
-                    "id": f"{year:04d}01_{year:04d}12",
-                    "label": f"Jan {year} - Dec {year}",
-                    "start_year": year,
-                    "start_month": 1,
-                    "end_year": year,
-                    "end_month": 12,
-                    "type": "calendar",
-                    "sort_index": year * 100 + 1,
-                }
-            )
+            pid = f"{year:04d}01_{year:04d}12"
+            if pid not in seen_ids:
+                periods.append(
+                    {
+                        "id": pid,
+                        "label": f"Jan {year} - Dec {year}",
+                        "start_year": year,
+                        "start_month": 1,
+                        "end_year": year,
+                        "end_month": 12,
+                        "type": "calendar",
+                        "sort_index": year * 1000 + 10,
+                    }
+                )
+                seen_ids.add(pid)
         # Include Jul-Jun only when the end year is available.
         if year < max_year:
-            periods.append(
-                {
-                    "id": f"{year:04d}07_{year + 1:04d}06",
-                    "label": f"Jul {year} - Jun {year + 1}",
-                    "start_year": year,
-                    "start_month": 7,
-                    "end_year": year + 1,
-                    "end_month": 6,
-                    "type": "mid_year",
-                    "sort_index": year * 100 + 7,
-                }
-            )
+            pid = f"{year:04d}07_{year + 1:04d}06"
+            if pid not in seen_ids:
+                periods.append(
+                    {
+                        "id": pid,
+                        "label": f"Jul {year} - Jun {year + 1}",
+                        "start_year": year,
+                        "start_month": 7,
+                        "end_year": year + 1,
+                        "end_month": 6,
+                        "type": "mid_year",
+                        "sort_index": year * 1000 + 70,
+                    }
+                )
+                seen_ids.add(pid)
 
     periods.sort(key=lambda p: p["sort_index"], reverse=True)
     _set_cached(key, periods)
@@ -153,6 +181,71 @@ def get_period_by_id(period_id: str) -> Optional[dict]:
 # ---------------------------------------------------------------------------
 # Data loaders
 # ---------------------------------------------------------------------------
+
+
+def _normalize_text_series(series: pd.Series) -> pd.Series:
+    return series.fillna("").astype(str).str.strip().str.lower()
+
+
+def _derive_event_counts_from_raw(raw: pd.DataFrame, pop: pd.DataFrame) -> pd.DataFrame:
+    """
+    Derive monthly ACLED event counts by ADM3_PCODE from raw events.
+    Uses strict admin1+admin2+admin3 name matching first, then a safe fallback
+    on unique admin3 names only.
+    """
+    if raw.empty or pop.empty:
+        return pd.DataFrame(columns=["ADM3_PCODE", "year", "month", "event_count"])
+
+    required_raw = {"year", "month", "event_id_cnty", "admin1", "admin2", "admin3"}
+    if not required_raw.issubset(set(raw.columns)):
+        return pd.DataFrame(columns=["ADM3_PCODE", "year", "month", "event_count"])
+
+    raw_keyed = raw[["year", "month", "event_id_cnty", "admin1", "admin2", "admin3"]].copy()
+    raw_keyed["admin1_key"] = _normalize_text_series(raw_keyed["admin1"])
+    raw_keyed["admin2_key"] = _normalize_text_series(raw_keyed["admin2"])
+    raw_keyed["admin3_key"] = _normalize_text_series(raw_keyed["admin3"])
+
+    pop_keyed = pop[["ADM3_PCODE", "ADM1_EN", "ADM2_EN", "ADM3_EN"]].drop_duplicates().copy()
+    pop_keyed["ADM1_EN_key"] = _normalize_text_series(pop_keyed["ADM1_EN"])
+    pop_keyed["ADM2_EN_key"] = _normalize_text_series(pop_keyed["ADM2_EN"])
+    pop_keyed["ADM3_EN_key"] = _normalize_text_series(pop_keyed["ADM3_EN"])
+
+    strict = raw_keyed.merge(
+        pop_keyed[["ADM3_PCODE", "ADM1_EN_key", "ADM2_EN_key", "ADM3_EN_key"]],
+        left_on=["admin1_key", "admin2_key", "admin3_key"],
+        right_on=["ADM1_EN_key", "ADM2_EN_key", "ADM3_EN_key"],
+        how="left",
+    )
+    strict_match = strict[strict["ADM3_PCODE"].notna()][["ADM3_PCODE", "year", "month", "event_id_cnty"]].copy()
+
+    # Fallback: only use admin3-name matching where the name maps uniquely to one ADM3_PCODE.
+    unmatched = strict[strict["ADM3_PCODE"].isna()][["year", "month", "event_id_cnty", "admin3_key"]].copy()
+    name_lookup = pop_keyed[["ADM3_PCODE", "ADM3_EN_key"]].drop_duplicates()
+    unique_names = (
+        name_lookup.groupby("ADM3_EN_key")["ADM3_PCODE"].nunique().reset_index(name="n")
+    )
+    unique_name_keys = set(unique_names[unique_names["n"] == 1]["ADM3_EN_key"].tolist())
+    name_lookup = name_lookup[name_lookup["ADM3_EN_key"].isin(unique_name_keys)]
+    fallback = unmatched.merge(
+        name_lookup,
+        left_on="admin3_key",
+        right_on="ADM3_EN_key",
+        how="left",
+    )
+    fallback_match = fallback[fallback["ADM3_PCODE"].notna()][["ADM3_PCODE", "year", "month", "event_id_cnty"]].copy()
+
+    combined = pd.concat([strict_match, fallback_match], ignore_index=True)
+    if combined.empty:
+        return pd.DataFrame(columns=["ADM3_PCODE", "year", "month", "event_count"])
+
+    out = (
+        combined.groupby(["ADM3_PCODE", "year", "month"], as_index=False)
+        .agg(event_count=("event_id_cnty", "count"))
+    )
+    out["year"] = pd.to_numeric(out["year"], errors="coerce").fillna(0).astype(int)
+    out["month"] = pd.to_numeric(out["month"], errors="coerce").fillna(0).astype(int)
+    out["event_count"] = pd.to_numeric(out["event_count"], errors="coerce").fillna(0).astype(int)
+    return out
 
 def load_raw_acled() -> pd.DataFrame:
     """Load raw Ethiopia ACLED events."""
@@ -259,7 +352,7 @@ def load_population_data() -> pd.DataFrame:
 
 def load_conflict_data() -> pd.DataFrame:
     """Load processed intersection data with fallback aggregation from raw ACLED."""
-    key = _cache_key("conflict_data", "ethiopia_v1")
+    key = _cache_key("conflict_data", "ethiopia_v2_events")
     cached = _get_cached(key)
     if cached is not None:
         return cached
@@ -315,8 +408,44 @@ def load_conflict_data() -> pd.DataFrame:
         conflict["ACLED_BRD_nonstate"] = conflict["ACLED_BRD_total"] * 0.5
 
     if "event_count" not in conflict.columns:
-        conflict["event_count"] = 0
-    conflict["event_count"] = pd.to_numeric(conflict["event_count"], errors="coerce").fillna(0).astype(int)
+        conflict["event_count"] = np.nan
+    conflict["event_count"] = pd.to_numeric(conflict["event_count"], errors="coerce")
+
+    # Some source intersection files do not include event_count.
+    # Reconstruct monthly event counts from raw ACLED where needed.
+    current_event_sum = float(conflict["event_count"].fillna(0).sum())
+    if current_event_sum <= 0:
+        try:
+            raw = load_raw_acled()
+            pop = load_population_data()
+            derived_events = _derive_event_counts_from_raw(raw, pop)
+            if not derived_events.empty:
+                conflict = conflict.merge(
+                    derived_events.rename(columns={"event_count": "derived_event_count"}),
+                    on=["ADM3_PCODE", "year", "month"],
+                    how="left",
+                )
+                conflict["derived_event_count"] = pd.to_numeric(
+                    conflict["derived_event_count"], errors="coerce"
+                ).fillna(0)
+                conflict["event_count"] = conflict["event_count"].fillna(0)
+                conflict["event_count"] = np.where(
+                    conflict["event_count"] > 0,
+                    conflict["event_count"],
+                    conflict["derived_event_count"],
+                )
+                conflict = conflict.drop(columns=["derived_event_count"], errors="ignore")
+        except Exception:
+            pass
+
+    conflict["event_count"] = pd.to_numeric(conflict["event_count"], errors="coerce").fillna(0)
+    # Ensure rows with reported fatalities are not left with zero events.
+    conflict["event_count"] = np.where(
+        (conflict["event_count"] <= 0) & (conflict["ACLED_BRD_total"] > 0),
+        1,
+        conflict["event_count"],
+    )
+    conflict["event_count"] = conflict["event_count"].astype(int)
 
     _set_cached(key, conflict)
     _save_pickle(key, conflict)
@@ -373,8 +502,9 @@ def classify_and_aggregate(
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Classify ADM3 units and aggregate to ADM1 or ADM2.
-    - conflict_affected: death_rate >= 2 and deaths >= 10
-    - highly_conflict_affected: death_rate >= 10 and deaths >= 40
+    Woreda rules:
+    - conflict_affected: death_rate >= 2, deaths >= 5, events >= 2
+    - highly_conflict_affected: death_rate >= 10, deaths >= 20, events >= 3
     """
     period_conflict = filter_data_by_period(conflict_data, start_year, start_month, end_year, end_month)
     if period_conflict.empty:
@@ -400,12 +530,36 @@ def classify_and_aggregate(
     merged["acled_total_death_rate"] = np.where(
         merged["pop_count"] > 0, (merged["ACLED_BRD_total"] / merged["pop_count"]) * 1e5, 0
     )
-    merged["conflict_affected"] = (merged["acled_total_death_rate"] >= 2.0) & (merged["ACLED_BRD_total"] >= 10)
+    merged["conflict_affected"] = (
+        (merged["acled_total_death_rate"] >= 2.0)
+        & (merged["ACLED_BRD_total"] >= 5)
+        & (merged["event_count"] >= 2)
+    )
     merged["highly_conflict_affected"] = (merged["acled_total_death_rate"] >= 10.0) & (
-        merged["ACLED_BRD_total"] >= 40
+        merged["ACLED_BRD_total"] >= 20
+    ) & (
+        merged["event_count"] >= 3
     )
     merged["violence_affected"] = (merged["acled_total_death_rate"] >= rate_thresh) & (
         merged["ACLED_BRD_total"] >= abs_thresh
+    )
+    merged["has_reported_violence"] = (merged["event_count"] > 0) | (merged["ACLED_BRD_total"] > 0)
+    merged["status_code"] = np.select(
+        [
+            ~merged["has_reported_violence"],
+            merged["highly_conflict_affected"],
+            merged["conflict_affected"],
+        ],
+        [0, 3, 2],
+        default=1,
+    )
+    merged["status_label"] = merged["status_code"].map(
+        {
+            0: "No reported violence",
+            1: "Below threshold",
+            2: "Conflict-Affected",
+            3: "Highly Conflict-Affected",
+        }
     )
 
     if agg_level == "ADM1":
@@ -423,7 +577,7 @@ def classify_and_aggregate(
         event_count=("event_count", "sum"),
     )
 
-    aggregated["share_wards_affected"] = np.where(
+    aggregated["share_woredas_affected"] = np.where(
         aggregated["total_woredas"] > 0, aggregated["violence_affected"] / aggregated["total_woredas"], 0
     )
     aggregated["share_woredas_conflict_affected"] = np.where(
@@ -462,7 +616,7 @@ def classify_and_aggregate(
     aggregated["share_population_affected"] = np.where(
         aggregated["pop_count"] > 0, aggregated["affected_population"] / aggregated["pop_count"], 0
     )
-    aggregated["above_threshold"] = aggregated["share_wards_affected"] > agg_thresh
+    aggregated["above_threshold"] = aggregated["share_woredas_affected"] > agg_thresh
 
     return aggregated, merged
 
@@ -480,12 +634,12 @@ def get_summary_kpis(start_date: Optional[str] = None, end_date: Optional[str] =
 
     pop = load_population_data()
     conflict = load_conflict_data()
-    wards_with_events = conflict[conflict["ACLED_BRD_total"] > 0]["ADM3_PCODE"].nunique()
+    woredas_with_events = conflict[conflict["ACLED_BRD_total"] > 0]["ADM3_PCODE"].nunique()
     return {
         "total_events": int(len(raw)),
         "total_deaths": int(raw["fatalities"].sum()),
-        "wards_affected": int(wards_with_events),
-        "total_wards": int(len(pop)),
+        "woredas_affected": int(woredas_with_events),
+        "total_woredas": int(len(pop)),
         "last_update": raw["event_date"].max().isoformat() if not raw.empty else None,
         "data_start": raw["event_date"].min().isoformat() if not raw.empty else None,
     }
@@ -642,15 +796,15 @@ def get_location_trend_data(
         pop_count = float(pop_unit["pop_count"].sum()) if not pop_unit.empty else 0.0
         death_rate = (deaths / pop_count) * 1e5 if pop_count > 0 else 0.0
 
-        if death_rate >= 10.0 and deaths >= 40:
+        if death_rate >= 10.0 and deaths >= 20 and events >= 3:
             classification = 2
             classification_label = "Highly Conflict-Affected"
-        elif death_rate >= 2.0 and deaths >= 10:
+        elif death_rate >= 2.0 and deaths >= 5 and events >= 2:
             classification = 1
             classification_label = "Conflict-Affected"
         else:
             classification = 0
-            classification_label = "Below Threshold"
+            classification_label = "No reported violence" if (events <= 0 and deaths <= 0) else "Below threshold"
 
         rows.append(
             {

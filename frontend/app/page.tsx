@@ -72,7 +72,7 @@ export default function HomePage() {
         />
         <KpiCard
           title="Affected Woredas"
-          value={loading ? '...' : `${summary?.wards_affected.toLocaleString() ?? '0'} / ${summary?.total_wards.toLocaleString() ?? '0'}`}
+          value={loading ? '...' : `${summary?.woredas_affected.toLocaleString() ?? '0'} / ${summary?.total_woredas.toLocaleString() ?? '0'}`}
           icon={<Map className="h-4 w-4" />}
         />
         <KpiCard title="Last Update" value={updated} icon={<AlertTriangle className="h-4 w-4" />} />

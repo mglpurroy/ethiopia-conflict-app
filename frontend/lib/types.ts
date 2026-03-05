@@ -1,8 +1,8 @@
 export interface SummaryKPIs {
   total_events: number;
   total_deaths: number;
-  wards_affected: number;
-  total_wards: number;
+  woredas_affected: number;
+  total_woredas: number;
   last_update: string | null;
   data_start: string | null;
 }
@@ -92,7 +92,7 @@ export interface PeriodPreset {
   start_month: number;
   end_year: number;
   end_month: number;
-  type: 'calendar' | 'mid_year';
+  type: 'calendar' | 'mid_year' | 'rolling_latest';
   sort_index: number;
 }
 

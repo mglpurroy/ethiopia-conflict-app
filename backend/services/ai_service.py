@@ -22,9 +22,9 @@ def get_unit_summary(
     end_month: Optional[int] = None,
 ) -> dict:
     """
-    Generate an AI narrative summary for a state or LGA.
+    Generate an AI narrative summary for a region or zone.
     Returns {"summary": str, "generated_at": str, "event_count": int}.
-    Only works for level 1 (state) or level 2 (LGA).
+    Only works for level 1 (region) or level 2 (zone).
     """
     now = datetime.datetime.now()
     if end_year is None:    end_year = now.year
@@ -51,7 +51,7 @@ def get_unit_summary(
         df = df[df['admin2'] == name]
     else:
         return {
-            "summary": "AI summaries are available for state and LGA levels only.",
+            "summary": "AI summaries are available for region and zone levels only.",
             "generated_at": now.isoformat(),
             "event_count": 0,
         }
@@ -124,7 +124,7 @@ def get_unit_summary(
         "\n\n".join(event_lines) if event_lines else "No detailed event notes available."
     )
 
-    level_label = "state" if level == 1 else "LGA"
+    level_label = "region" if level == 1 else "zone"
     prompt = f"""You are an FCV (Fragility, Conflict, and Violence) specialist on the Ethiopia country team preparing an intelligence brief for internal operational use.
 Analyze the following ACLED conflict data for {name} ({level_label}), Ethiopia.
 

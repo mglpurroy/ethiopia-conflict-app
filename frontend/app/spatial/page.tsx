@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Layers, Map as MapIcon, Search, TrendingUp } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from 'recharts';
 
 import { api } from '@/lib/api';
 import { apiUrl } from '@/lib/apiBase';
@@ -20,10 +20,7 @@ const ConflictMap = dynamic(() => import('@/components/map/ConflictMap'), {
 });
 
 type AdminLevel = 1 | 2 | 3;
-type MapView = 'regions_zones' | 'woredas';
 type AnalysisType = 'conflict_metrics' | 'trajectory';
-type ConflictMetric = 'conflict_affected' | 'highly_conflict_affected';
-type MapVar = 'share_woredas' | 'share_population';
 
 const TRAJECTORY_OPTIONS = [
   'At-Risk',
@@ -36,6 +33,8 @@ const TRAJECTORY_OPTIONS = [
 ];
 
 interface MonthlyPoint {
+  year: number;
+  month: number;
   period: string;
   deaths: number;
   events: number;
@@ -48,6 +47,37 @@ interface UnitHistory {
   total_deaths: number;
   total_events: number;
   monthly: MonthlyPoint[];
+}
+
+type ClassificationCode = 0 | 1 | 2 | 3;
+
+interface MonthlyChartPoint {
+  period: string;
+  deaths: number;
+  events: number;
+}
+
+const STATUS_LABEL_BY_CODE: Record<ClassificationCode, string> = {
+  0: 'No reported violence',
+  1: 'Below threshold',
+  2: 'Conflict-Affected',
+  3: 'Highly Conflict-Affected',
+};
+
+const STATUS_COLOR_BY_CODE: Record<ClassificationCode, string> = {
+  0: '#bfdbfe',
+  1: '#f59e0b',
+  2: '#ef4444',
+  3: '#b91c1c',
+};
+
+function classifyFromCounts(deaths: number, events: number, population: number): ClassificationCode {
+  const deathRate = population > 0 ? (deaths / population) * 1e5 : 0;
+
+  if (events <= 0 && deaths <= 0) return 0;
+  if (deathRate >= 10 && deaths >= 20 && events >= 3) return 3;
+  if (deathRate >= 2 && deaths >= 5 && events >= 2) return 2;
+  return 1;
 }
 
 function getUnitName(props: Record<string, any>, level: AdminLevel): string {
@@ -89,17 +119,13 @@ export default function SpatialPage() {
   const [selectedPeriodId, setSelectedPeriodId] = useState('');
   const [periodError, setPeriodError] = useState<string | null>(null);
 
-  const [mapView, setMapView] = useState<MapView>('regions_zones');
   const [adminLevel, setAdminLevel] = useState<AdminLevel>(1);
   const [analysisType, setAnalysisType] = useState<AnalysisType>('conflict_metrics');
-  const [conflictMetric, setConflictMetric] = useState<ConflictMetric>('conflict_affected');
-  const [mapVar, setMapVar] = useState<MapVar>('share_woredas');
-  const [aggThresh, setAggThresh] = useState(0.2);
   const [showEvents, setShowEvents] = useState(false);
   const [trajectoryCategories, setTrajectoryCategories] = useState<string[]>(TRAJECTORY_OPTIONS);
 
   const [drillState, setDrillState] = useState<{ pcode: string; name: string } | null>(null);
-  const [drillLGA, setDrillLGA] = useState<{ pcode: string; name: string } | null>(null);
+  const [drillZone, setDrillZone] = useState<{ pcode: string; name: string } | null>(null);
 
   const [selectedProps, setSelectedProps] = useState<Record<string, any> | null>(null);
   const [unitHistory, setUnitHistory] = useState<UnitHistory | null>(null);
@@ -137,31 +163,27 @@ export default function SpatialPage() {
   const endYear = selectedPeriod?.end_year ?? 2025;
   const endMonth = selectedPeriod?.end_month ?? 12;
 
-  useEffect(() => {
-    if (mapView === 'woredas' && adminLevel !== 3) {
-      setAdminLevel(3);
-      setDrillState(null);
-      setDrillLGA(null);
-    }
-    if (mapView === 'regions_zones' && adminLevel === 3) {
-      setAdminLevel(1);
-      setDrillState(null);
-      setDrillLGA(null);
-    }
-  }, [mapView, adminLevel]);
-
   const parentPcode =
-    adminLevel === 3 && drillLGA
-      ? drillLGA.pcode
+    adminLevel === 3
+      ? drillZone?.pcode ?? drillState?.pcode ?? ''
       : adminLevel === 2 && drillState
       ? drillState.pcode
       : '';
+  const parentLevel =
+    adminLevel === 3
+      ? drillZone
+        ? 2
+        : drillState
+        ? 1
+        : undefined
+      : adminLevel === 2 && drillState
+      ? 1
+      : undefined;
 
   const handleLevelChange = (level: AdminLevel) => {
-    if (mapView === 'woredas') return;
     setAdminLevel(level);
     setDrillState(null);
-    setDrillLGA(null);
+    setDrillZone(null);
     setSelectedProps(null);
   };
 
@@ -169,13 +191,18 @@ export default function SpatialPage() {
     ({ level, pcode, name }: DrillEvent) => {
       if (level === 1) {
         setDrillState({ pcode, name });
-        setDrillLGA(null);
+        setDrillZone(null);
         setAdminLevel(2);
         return;
       }
-      setDrillLGA({ pcode, name });
-      setMapView('woredas');
-      setAdminLevel(3);
+      if (level === 2) {
+        setDrillZone({ pcode, name });
+        setAdminLevel(3);
+        setShowEvents(true);
+        return;
+      }
+      // Level 3 double-click: keep level, just ensure detailed incidents are visible.
+      setShowEvents(true);
     },
     [],
   );
@@ -239,9 +266,86 @@ export default function SpatialPage() {
   };
 
   const historySeries = useMemo(
-    () => (unitHistory?.monthly ?? []).map((m) => ({ period: m.period, deaths: m.deaths, events: m.events })),
+    () => unitHistory?.monthly ?? [],
     [unitHistory],
   );
+
+  const monthlyFromSelectedPeriod = useMemo(() => {
+    if (!selectedPeriod) return [];
+    const startValue = selectedPeriod.start_year * 100 + selectedPeriod.start_month;
+    const now = new Date();
+    const endYear = now.getFullYear();
+    const endMonth = now.getMonth() + 1;
+    const byPeriod = new Map<string, { deaths: number; events: number }>();
+
+    historySeries.forEach((m) => {
+      const periodKey = `${Number(m.year)}-${String(Number(m.month)).padStart(2, '0')}`;
+      byPeriod.set(periodKey, {
+        deaths: Number(m.deaths ?? 0),
+        events: Number(m.events ?? 0),
+      });
+    });
+
+    const filled: MonthlyChartPoint[] = [];
+    let y = selectedPeriod.start_year;
+    let m = selectedPeriod.start_month;
+
+    while (y < endYear || (y === endYear && m <= endMonth)) {
+      const ym = y * 100 + m;
+      if (ym >= startValue) {
+        const key = `${y}-${String(m).padStart(2, '0')}`;
+        const existing = byPeriod.get(key);
+        filled.push({
+          period: key,
+          deaths: existing?.deaths ?? 0,
+          events: existing?.events ?? 0,
+        });
+      }
+
+      m += 1;
+      if (m > 12) {
+        m = 1;
+        y += 1;
+      }
+    }
+
+    return filled;
+  }, [historySeries, selectedPeriod]);
+
+  const yearlyForLastTen = useMemo(() => {
+    if (historySeries.length === 0) return [];
+    const byYear = new Map<number, { year: number; deaths: number; events: number }>();
+    historySeries.forEach((m) => {
+      const year = Number(m.year);
+      const existing = byYear.get(year) ?? { year, deaths: 0, events: 0 };
+      existing.deaths += Number(m.deaths ?? 0);
+      existing.events += Number(m.events ?? 0);
+      byYear.set(year, existing);
+    });
+    const years = Array.from(byYear.keys()).sort((a, b) => a - b);
+    if (years.length === 0) return [];
+    const maxYear = years[years.length - 1];
+    const minYear = maxYear - 9;
+    const out: { year: number; deaths: number; events: number }[] = [];
+    for (let y = minYear; y <= maxYear; y += 1) {
+      out.push(byYear.get(y) ?? { year: y, deaths: 0, events: 0 });
+    }
+    return out;
+  }, [historySeries]);
+
+  const yearlyClassificationForLastTen = useMemo(() => {
+    if (yearlyForLastTen.length === 0) return [];
+    const population = Number(selectedProps?.pop_count ?? 0);
+    return yearlyForLastTen.map((point) => {
+      const yearlyClass = classifyFromCounts(Number(point.deaths ?? 0), Number(point.events ?? 0), population);
+      return {
+        year: point.year,
+        classification: yearlyClass,
+        label: STATUS_LABEL_BY_CODE[yearlyClass],
+        color: STATUS_COLOR_BY_CODE[yearlyClass],
+      };
+    });
+  }, [yearlyForLastTen, selectedProps]);
 
   return (
     <div className="space-y-4">
@@ -280,54 +384,37 @@ export default function SpatialPage() {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-gray-600 block mb-1">Map View</label>
-            <div className="grid grid-cols-2 gap-1">
+            <label className="text-xs font-medium text-gray-600 block mb-1">Admin Level</label>
+            <div className="grid grid-cols-1 gap-1">
               <button
                 type="button"
-                onClick={() => setMapView('regions_zones')}
-                className={`text-xs rounded border px-2 py-1.5 ${
-                  mapView === 'regions_zones' ? 'bg-[#667eea] text-white border-[#667eea]' : 'border-gray-200 text-gray-700'
+                onClick={() => handleLevelChange(1)}
+                className={`text-xs rounded border px-2 py-1.5 text-left ${
+                  adminLevel === 1 ? 'bg-[#667eea] text-white border-[#667eea]' : 'border-gray-200 text-gray-700'
                 }`}
               >
-                Regions/Zones
+                Regions
               </button>
               <button
                 type="button"
-                onClick={() => setMapView('woredas')}
-                className={`text-xs rounded border px-2 py-1.5 ${
-                  mapView === 'woredas' ? 'bg-[#667eea] text-white border-[#667eea]' : 'border-gray-200 text-gray-700'
+                onClick={() => handleLevelChange(2)}
+                className={`text-xs rounded border px-2 py-1.5 text-left ${
+                  adminLevel === 2 ? 'bg-[#667eea] text-white border-[#667eea]' : 'border-gray-200 text-gray-700'
+                }`}
+              >
+                Zones
+              </button>
+              <button
+                type="button"
+                onClick={() => handleLevelChange(3)}
+                className={`text-xs rounded border px-2 py-1.5 text-left ${
+                  adminLevel === 3 ? 'bg-[#667eea] text-white border-[#667eea]' : 'border-gray-200 text-gray-700'
                 }`}
               >
                 Woredas
               </button>
             </div>
           </div>
-
-          {mapView === 'regions_zones' && (
-            <div>
-              <label className="text-xs font-medium text-gray-600 block mb-1">Admin Level</label>
-              <div className="grid grid-cols-2 gap-1">
-                <button
-                  type="button"
-                  onClick={() => handleLevelChange(1)}
-                  className={`text-xs rounded border px-2 py-1.5 ${
-                    adminLevel === 1 ? 'bg-[#667eea] text-white border-[#667eea]' : 'border-gray-200 text-gray-700'
-                  }`}
-                >
-                  Regions
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleLevelChange(2)}
-                  className={`text-xs rounded border px-2 py-1.5 ${
-                    adminLevel === 2 ? 'bg-[#667eea] text-white border-[#667eea]' : 'border-gray-200 text-gray-700'
-                  }`}
-                >
-                  Zones
-                </button>
-              </div>
-            </div>
-          )}
 
           <div>
             <label className="text-xs font-medium text-gray-600 block mb-1">Analysis Type</label>
@@ -354,49 +441,6 @@ export default function SpatialPage() {
               </button>
             </div>
           </div>
-
-          {analysisType === 'conflict_metrics' && (
-            <>
-              <div>
-                <label className="text-xs font-medium text-gray-600 block mb-1">Conflict Metric</label>
-                <select
-                  value={conflictMetric}
-                  onChange={(e) => setConflictMetric(e.target.value as ConflictMetric)}
-                  className="w-full rounded-md border border-gray-300 px-2.5 py-2 text-sm"
-                >
-                  <option value="conflict_affected">Conflict-Affected</option>
-                  <option value="highly_conflict_affected">Highly Conflict-Affected</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-xs font-medium text-gray-600 block mb-1">Map Variable</label>
-                <select
-                  value={mapVar}
-                  onChange={(e) => setMapVar(e.target.value as MapVar)}
-                  className="w-full rounded-md border border-gray-300 px-2.5 py-2 text-sm"
-                >
-                  <option value="share_woredas">Share of Woredas Affected</option>
-                  <option value="share_population">Share of Population Affected</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-xs font-medium text-gray-600 block mb-1">
-                  Aggregation Threshold: {(aggThresh * 100).toFixed(0)}%
-                </label>
-                <input
-                  type="range"
-                  min="0.02"
-                  max="0.8"
-                  step="0.01"
-                  value={aggThresh}
-                  onChange={(e) => setAggThresh(Number(e.target.value))}
-                  className="w-full accent-[#667eea]"
-                />
-              </div>
-            </>
-          )}
 
           {analysisType === 'trajectory' && (
             <div>
@@ -459,10 +503,7 @@ export default function SpatialPage() {
             level={adminLevel}
             variable="ward_share"
             periodId={selectedPeriodId || undefined}
-            mapView={mapView}
             analysisType={analysisType}
-            conflictMetric={conflictMetric}
-            classificationMapVar={mapVar}
             trajectoryCategories={trajectoryCategories}
             startYear={startYear}
             startMonth={startMonth}
@@ -470,8 +511,9 @@ export default function SpatialPage() {
             endMonth={endMonth}
             rateThresh={2}
             absThresh={10}
-            aggThresh={aggThresh}
             parentPcode={parentPcode}
+            parentLevel={parentLevel}
+            regionPcode={drillState?.pcode || undefined}
             showEvents={showEvents}
             onDrillDown={handleDrillDown}
             onUnitClick={(props) => setSelectedProps(props)}
@@ -504,21 +546,108 @@ export default function SpatialPage() {
                 </div>
                 <div className="rounded border border-gray-200 p-3">
                   <p className="text-xs text-gray-500">Timeline Points</p>
-                  <p className="text-lg font-semibold text-gray-900">{historySeries.length.toLocaleString()}</p>
+                  <p className="text-lg font-semibold text-gray-900">{monthlyFromSelectedPeriod.length.toLocaleString()}</p>
                 </div>
               </div>
 
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={historySeries}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#ececec" />
-                    <XAxis dataKey="period" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
-                    <YAxis tick={{ fontSize: 10 }} />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="deaths" stroke="#dc2626" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="events" stroke="#2563eb" strokeWidth={2} dot={false} />
-                  </LineChart>
-                </ResponsiveContainer>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={monthlyFromSelectedPeriod} margin={{ top: 18, right: 10, bottom: 8, left: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ececec" />
+                      <XAxis dataKey="period" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
+                      <YAxis
+                        tick={{ fontSize: 10 }}
+                        label={{ value: 'Fatalities', angle: -90, position: 'insideLeft', style: { fontSize: 11, fill: '#6b7280' } }}
+                      />
+                      <Tooltip />
+                      <Bar dataKey="deaths" fill="#dc2626" radius={[3, 3, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={monthlyFromSelectedPeriod} margin={{ top: 18, right: 10, bottom: 8, left: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ececec" />
+                      <XAxis dataKey="period" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
+                      <YAxis
+                        tick={{ fontSize: 10 }}
+                        label={{ value: 'Events', angle: -90, position: 'insideLeft', style: { fontSize: 11, fill: '#6b7280' } }}
+                      />
+                      <Tooltip />
+                      <Bar dataKey="events" fill="#2563eb" radius={[3, 3, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <div className="h-72">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={yearlyForLastTen} margin={{ top: 18, right: 16, bottom: 8, left: 6 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ececec" />
+                      <XAxis dataKey="year" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
+                      <YAxis
+                        yAxisId="left"
+                        tick={{ fontSize: 10 }}
+                        label={{ value: 'Fatalities', angle: -90, position: 'insideLeft', style: { fontSize: 11, fill: '#6b7280' } }}
+                      />
+                      <YAxis
+                        yAxisId="right"
+                        orientation="right"
+                        tick={{ fontSize: 10 }}
+                        label={{ value: 'Events', angle: 90, position: 'insideRight', style: { fontSize: 11, fill: '#6b7280' } }}
+                      />
+                      <Tooltip />
+                      <Line yAxisId="left" type="monotone" dataKey="deaths" stroke="#dc2626" strokeWidth={2} dot />
+                      <Line yAxisId="right" type="monotone" dataKey="events" stroke="#2563eb" strokeWidth={2} dot />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="h-72">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={yearlyClassificationForLastTen} margin={{ top: 18, right: 16, bottom: 8, left: 6 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ececec" />
+                      <XAxis dataKey="year" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
+                      <YAxis
+                        tick={{ fontSize: 10 }}
+                        domain={[0, 3]}
+                        ticks={[0, 1, 2, 3]}
+                        tickFormatter={(value) => STATUS_LABEL_BY_CODE[value as ClassificationCode] ?? ''}
+                        width={145}
+                      />
+                      <Tooltip
+                        formatter={(value: number) => {
+                          const code = Number(value) as ClassificationCode;
+                          return [STATUS_LABEL_BY_CODE[code] ?? 'Unknown', 'Classification'];
+                        }}
+                        labelFormatter={(value) => `Year: ${value}`}
+                      />
+                      <Line
+                        type="linear"
+                        dataKey="classification"
+                        stroke="#334155"
+                        strokeWidth={2}
+                        dot={(props) => {
+                          const payload = props.payload as { color: string };
+                          return (
+                            <circle
+                              cx={props.cx}
+                              cy={props.cy}
+                              r={4}
+                              fill={payload?.color ?? '#64748b'}
+                              stroke="#ffffff"
+                              strokeWidth={1}
+                            />
+                          );
+                        }}
+                        activeDot={{ r: 5 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
           )}

@@ -1,6 +1,6 @@
 # Ethiopia Conflict App (v1 Migration Baseline)
 
-This repository now runs an Ethiopia-first dashboard with the Nigeria-style app structure, focused on 4 active routes:
+This repository runs an Ethiopia-first dashboard with the established app structure, focused on 4 active routes:
 
 - `/` Home
 - `/spatial` Interactive Maps

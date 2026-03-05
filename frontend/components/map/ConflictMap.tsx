@@ -7,7 +7,7 @@ import { Globe2 } from 'lucide-react';
 import { apiUrl } from '@/lib/apiBase';
 
 export interface DrillEvent {
-  level: 1 | 2;
+  level: 1 | 2 | 3;
   pcode: string;
   name: string;
 }
@@ -37,8 +37,6 @@ interface ConflictMapProps {
   periodId?: string;
   mapView?: 'regions_zones' | 'woredas';
   analysisType?: 'conflict_metrics' | 'trajectory';
-  conflictMetric?: 'conflict_affected' | 'highly_conflict_affected';
-  classificationMapVar?: 'share_woredas' | 'share_population';
   trajectoryCategories?: string[];
   affectedOnly?: boolean;
   startYear: number;
@@ -47,8 +45,9 @@ interface ConflictMapProps {
   endMonth: number;
   rateThresh: number;
   absThresh: number;
-  aggThresh: number;
   parentPcode?: string;
+  parentLevel?: 1 | 2;
+  regionPcode?: string;
   showEvents?: boolean;
   showChoropleth?: boolean;
   showBoundaries?: boolean;
@@ -74,12 +73,12 @@ function getChoroplethColor(variable: string, level: number, maxDeaths: number, 
         maxRate, '#67000d',
       ];
     }
-    // Ward deaths — ternary status: Affected / Below threshold / None
+    // Woreda deaths — ternary status: Affected / Below threshold / None
     return [
       'case',
       ['==', ['get', 'violence_affected'], true], '#d73027',
       ['>', ['get', 'ACLED_BRD_total'], 0], '#fd8d3c',
-      '#e8e8e8',
+      '#bfdbfe',
     ];
   }
   if (variable === 'deaths') {
@@ -109,7 +108,7 @@ function getChoroplethColor(variable: string, level: number, maxDeaths: number, 
   return [
     'interpolate',
     ['linear'],
-    ['get', 'share_wards_affected'],
+    ['get', 'share_woredas_affected'],
     0, '#f0f0f0',
     0.1, '#c7e9b4',
     0.3, '#41b6c4',
@@ -119,15 +118,12 @@ function getChoroplethColor(variable: string, level: number, maxDeaths: number, 
 }
 
 function getClassificationColor(
-  level: number,
   analysisType: 'conflict_metrics' | 'trajectory',
-  conflictMetric: 'conflict_affected' | 'highly_conflict_affected',
 ) {
   if (analysisType === 'trajectory') {
-    const key = level === 3 ? 'trajectory' : 'predominant_trajectory';
     return [
       'match',
-      ['coalesce', ['get', key], 'Insufficient Data'],
+      ['coalesce', ['get', 'trajectory'], ['get', 'predominant_trajectory'], 'Insufficient Data'],
       'At-Risk', '#f97316',
       'Onset', '#dc2626',
       'Recovery', '#16a34a',
@@ -138,48 +134,32 @@ function getClassificationColor(
     ];
   }
 
-  if (level === 3) {
-    const metricKey =
-      conflictMetric === 'highly_conflict_affected'
-        ? 'highly_conflict_affected'
-        : 'conflict_affected';
-    return [
-      'case',
-      ['==', ['get', metricKey], true], '#d73027',
-      ['>', ['coalesce', ['get', 'ACLED_BRD_total'], 0], 0], '#fd8d3c',
-      '#e8e8e8',
-    ];
-  }
-
   return [
-    'interpolate',
-    ['linear'],
-    ['coalesce', ['get', 'metric_value'], 0],
-    0, '#f0f0f0',
-    0.1, '#c7e9b4',
-    0.3, '#41b6c4',
-    0.5, '#2c7fb8',
-    1.0, '#253494',
+    'match',
+    ['coalesce', ['get', 'status_label'], 'No reported violence'],
+    'Highly Conflict-Affected', '#b91c1c',
+    'Conflict-Affected', '#ef4444',
+    'Below threshold', '#f59e0b',
+    '#bfdbfe',
   ];
 }
 
 function actionHint(level: number): string {
-  if (level === 1) return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">▾ Click to show Zones</div>';
-  if (level === 2) return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">▾ Click to show Woredas</div>';
-  return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">Click for full history</div>';
+  if (level === 1) return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">Double-click to open Zones in this Region</div>';
+  if (level === 2) return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">Double-click to open Woredas in this Zone</div>';
+  return '<div style="color:#667eea;font-size:10px;margin-top:5px;padding-top:4px;border-top:1px solid #eee">Double-click to zoom to this Woreda</div>';
 }
 
 function buildPopupHtml(
   props: Record<string, any>,
   level: number,
   analysisType: 'conflict_metrics' | 'trajectory',
-  conflictMetric: 'conflict_affected' | 'highly_conflict_affected',
 ): string {
   if (analysisType === 'trajectory') {
     const name = level === 1 ? (props.ADM1_EN ?? 'Unknown') : level === 2 ? (props.ADM2_EN ?? 'Unknown') : (props.ADM3_EN ?? 'Unknown');
     const trajectory = props.trajectory ?? props.predominant_trajectory ?? 'Insufficient Data';
     const selectedShare = props.selected_share != null ? `${(Number(props.selected_share) * 100).toFixed(1)}%` : 'N/A';
-    return `<div style="font-family:sans-serif;font-size:12px;min-width:180px;line-height:1.5">
+    return `<div style="font-family:sans-serif;font-size:12px;min-width:280px;line-height:1.5">
       <div style="font-weight:700;margin-bottom:2px">${name}</div>
       Trajectory: <b>${trajectory}</b><br/>
       Selected share: <b>${selectedShare}</b>
@@ -187,43 +167,44 @@ function buildPopupHtml(
   }
 
   if (level === 3) {
-    const ward = props.ADM3_EN ?? 'Unknown Ward';
-    const lga = props.ADM2_EN ?? '';
-    const state = props.ADM1_EN ?? '';
-    const subtitle = [lga, state].filter(Boolean).join(', ');
+    const woreda = props.ADM3_EN ?? 'Unknown Woreda';
+    const zone = props.ADM2_EN ?? '';
+    const region = props.ADM1_EN ?? '';
+    const status = String(props.status_label ?? 'No reported violence');
     const deaths = Number(props.ACLED_BRD_total ?? 0).toLocaleString();
-    const rate = Number(props.acled_total_death_rate ?? 0).toFixed(1);
+    const rate = Number(props.acled_total_death_rate ?? 0).toFixed(2);
     const pop = props.pop_count ? Number(props.pop_count).toLocaleString() : 'N/A';
-    const key =
-      conflictMetric === 'highly_conflict_affected'
-        ? 'highly_conflict_affected'
-        : 'conflict_affected';
-    const status = props[key] === true
-      ? '<span style="color:#d73027;font-weight:600">Affected</span>'
-      : Number(props.ACLED_BRD_total ?? 0) > 0
-      ? '<span style="color:#fd8d3c;font-weight:600">Below threshold</span>'
-      : '<span style="color:#888">No violence</span>';
-    return `<div style="font-family:sans-serif;font-size:12px;min-width:180px;line-height:1.5">
-      <div style="font-weight:700;margin-bottom:2px">${ward}</div>
-      ${subtitle ? `<div style="color:#666;font-size:11px;margin-bottom:6px">${subtitle}</div>` : ''}
-      Deaths: <b>${deaths}</b><br/>
-      Death rate: <b>${rate}/100k</b><br/>
+    const eventCount = Number(props.event_count ?? 0).toLocaleString();
+    return `<div style="font-family:sans-serif;font-size:12px;min-width:280px;line-height:1.5">
+      <div style="font-weight:700;margin-bottom:2px">${woreda}</div>
+      Status: <b>${status}</b><br/>
+      Region: <b>${region || 'N/A'}</b><br/>
+      Zone: <b>${zone || 'N/A'}</b><br/>
       Population: <b>${pop}</b><br/>
-      Status: ${status}
+      Conflict Events: <b>${eventCount}</b><br/>
+      Fatalities (ACLED): <b>${deaths}</b><br/>
+      Death rate: <b>${rate}</b> / 100K
     </div>`;
   }
   const name = level === 2 ? (props.ADM2_EN ?? 'Unknown') : (props.ADM1_EN ?? 'Unknown');
-  const parent = level === 2 && props.ADM1_EN
-    ? `<div style="color:#666;font-size:11px;margin-bottom:4px">${props.ADM1_EN}</div>`
-    : '';
+  const status = String(props.status_label ?? 'No reported violence');
+  const parent = level === 2 && props.ADM1_EN ? `Region: <b>${props.ADM1_EN}</b><br/>` : '';
+  const pop = props.pop_count ? Number(props.pop_count).toLocaleString() : 'N/A';
   const deaths = Number(props.ACLED_BRD_total ?? 0).toLocaleString();
-  const wardShare = ((props.metric_value ?? props.share_wards_affected ?? 0) * 100).toFixed(1);
-  const eventCount = props.event_count != null ? Number(props.event_count).toLocaleString() : null;
-  return `<div style="font-family:sans-serif;font-size:12px;min-width:160px;line-height:1.5">
+  const affected = `${Number(props.affected_woredas ?? 0).toLocaleString()}/${Number(props.total_woredas ?? 0).toLocaleString()}`;
+  const eventCount = Number(props.event_count ?? 0).toLocaleString();
+  const sharePopulation = Number(props.share_population_conflict_affected ?? 0);
+  const shareWoredas = Number(props.share_woredas_conflict_affected ?? 0);
+  return `<div style="font-family:sans-serif;font-size:12px;min-width:280px;line-height:1.5">
     <div style="font-weight:700;margin-bottom:2px">${name}</div>
+    Status: <b>${status}</b><br/>
     ${parent}
-    Deaths: <b>${deaths}</b><br/>
-    Wards affected: <b>${wardShare}%</b>${eventCount != null ? `<br/>Events: <b>${eventCount}</b>` : ''}
+    Population: <b>${pop}</b><br/>
+    Population in Conflict-Affected Woredas: <b>${(sharePopulation * 100).toFixed(2)}%</b><br/>
+    Conflict-Affected Woredas: <b>${(shareWoredas * 100).toFixed(2)}%</b><br/>
+    Affected Woredas: <b>${affected}</b><br/>
+    Conflict Events: <b>${eventCount}</b><br/>
+    Fatalities (ACLED): <b>${deaths}</b>
   </div>`;
 }
 
@@ -253,13 +234,13 @@ const DENSITY_SOURCE_ID = 'density-heatmap';
 const DENSITY_LAYER_ID = 'density-heatmap-layer';
 
 const EVENT_TYPE_COLORS: Record<string, string> = {
-  'Battles': '#e31a1c',
-  'Violence against civilians': '#ff7f00',
-  'Explosions/Remote violence': '#6a3d9a',
-  'Riots': '#1f78b4',
-  'Protests': '#33a02c',
+  'Battles': '#0072B2',
+  'Violence against civilians': '#CC79A7',
+  'Explosions/Remote violence': '#009E73',
+  'Riots': '#5D3A9B',
+  'Protests': '#8C564B',
 };
-const EVENT_TYPE_DEFAULT_COLOR = '#b15928';
+const EVENT_TYPE_DEFAULT_COLOR = '#4D4D4D';
 
 const EVENT_TYPE_LABELS = Object.keys(EVENT_TYPE_COLORS);
 
@@ -272,8 +253,6 @@ export default function ConflictMap({
   periodId,
   mapView = 'regions_zones',
   analysisType = 'conflict_metrics',
-  conflictMetric = 'conflict_affected',
-  classificationMapVar = 'share_woredas',
   trajectoryCategories,
   affectedOnly = false,
   startYear,
@@ -282,8 +261,9 @@ export default function ConflictMap({
   endMonth,
   rateThresh,
   absThresh,
-  aggThresh,
   parentPcode = '',
+  parentLevel,
+  regionPcode,
   showEvents = false,
   showChoropleth = true,
   showBoundaries = true,
@@ -296,15 +276,18 @@ export default function ConflictMap({
 }: ConflictMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
+  const loadedGeojsonRef = useRef<any>(null);
   const [basemap, setBasemap] = useState<'satellite' | 'street'>('street');
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const enterHandlerRef = useRef<((e: any) => void) | null>(null);
   const leaveHandlerRef = useRef<(() => void) | null>(null);
   const clickHandlerRef = useRef<((e: any) => void) | null>(null);
+  const lastClickRef = useRef<{ ts: number; pcode: string; level: 1 | 2 | 3 } | null>(null);
   // Events overlay refs
   const eventsEnterHandlerRef = useRef<((e: any) => void) | null>(null);
   const eventsLeaveHandlerRef = useRef<(() => void) | null>(null);
   const eventsPopupRef = useRef<maplibregl.Popup | null>(null);
+  const eventsRequestRef = useRef(0);
 
   const onUnitClickRef = useRef(onUnitClick);
   const onDrillDownRef = useRef(onDrillDown);
@@ -325,7 +308,7 @@ export default function ConflictMap({
     `&variable=${variable}`,
     `&start_year=${startYear}&start_month=${startMonth}`,
     `&end_year=${endYear}&end_month=${endMonth}`,
-    `&rate_thresh=${rateThresh}&abs_thresh=${absThresh}&agg_thresh=${aggThresh}`,
+    `&rate_thresh=${rateThresh}&abs_thresh=${absThresh}`,
     level === 3 ? `&affected_only=${affectedOnly}` : '',
     parentPcode ? `&parent_pcode=${encodeURIComponent(parentPcode)}` : '',
   ].join('');
@@ -336,9 +319,8 @@ export default function ConflictMap({
     `&map_view=${effectiveMapView}`,
     `&agg_level=${aggLevel}`,
     `&analysis_type=${analysisType}`,
-    `&map_var=${classificationMapVar}`,
-    `&conflict_metric=${conflictMetric}`,
-    `&agg_thresh=${aggThresh}`,
+    parentPcode ? `&parent_pcode=${encodeURIComponent(parentPcode)}` : '',
+    parentPcode && parentLevel ? `&parent_level=${parentLevel}` : '',
     trajectoryCategories && trajectoryCategories.length > 0
       ? `&trajectory_categories=${encodeURIComponent(trajectoryCategories.join(','))}`
       : '',
@@ -347,8 +329,8 @@ export default function ConflictMap({
   const parentEventFilter =
     level === 2 && parentPcode
       ? `&level=1&pcode=${encodeURIComponent(parentPcode)}`
-      : level === 3 && parentPcode
-      ? `&level=2&pcode=${encodeURIComponent(parentPcode)}`
+      : level === 3 && parentPcode && parentLevel
+      ? `&level=${parentLevel}&pcode=${encodeURIComponent(parentPcode)}`
       : '';
   const eventsUrl = periodId
     ? `/api/spatial/events?period_id=${encodeURIComponent(periodId)}${parentEventFilter}`
@@ -381,13 +363,42 @@ export default function ConflictMap({
       removeEventsLayer();
       return;
     }
+    const requestId = ++eventsRequestRef.current;
     try {
       const res = await fetch(apiUrl(eventsUrl));
       if (!res.ok) throw new Error(`API error ${res.status}`);
-      const geojson = await res.json();
+      let geojson = await res.json();
+
+      // Fallback for zone->woreda drill: if zone-scoped incidents are empty, retry at region scope.
+      if (
+        level === 3
+        && parentLevel === 2
+        && parentPcode
+        && regionPcode
+        && (geojson?.features?.length ?? 0) === 0
+      ) {
+        const fallbackUrl = periodId
+          ? `/api/spatial/events?period_id=${encodeURIComponent(periodId)}&level=1&pcode=${encodeURIComponent(regionPcode)}`
+          : [
+              '/api/spatial/events',
+              `?start_year=${startYear}&start_month=${startMonth}`,
+              `&end_year=${endYear}&end_month=${endMonth}`,
+              `&level=1&pcode=${encodeURIComponent(regionPcode)}`,
+            ].join('');
+        const fallbackRes = await fetch(apiUrl(fallbackUrl));
+        if (fallbackRes.ok) {
+          const fallbackGeojson = await fallbackRes.json();
+          if ((fallbackGeojson?.features?.length ?? 0) > 0) {
+            geojson = fallbackGeojson;
+          }
+        }
+      }
+      // Ignore stale responses if a newer events request has started.
+      if (requestId !== eventsRequestRef.current || !map.current) return;
 
       // Remove old events layer/source before re-adding
       removeEventsLayer();
+      if (requestId !== eventsRequestRef.current || !map.current) return;
 
       map.current.addSource(EVENTS_SOURCE_ID, { type: 'geojson', data: geojson });
       map.current.addLayer({
@@ -398,11 +409,11 @@ export default function ConflictMap({
           'circle-color': [
             'match',
             ['get', 'event_type'],
-            'Battles', '#e31a1c',
-            'Violence against civilians', '#ff7f00',
-            'Explosions/Remote violence', '#6a3d9a',
-            'Riots', '#1f78b4',
-            'Protests', '#33a02c',
+            'Battles', EVENT_TYPE_COLORS['Battles'],
+            'Violence against civilians', EVENT_TYPE_COLORS['Violence against civilians'],
+            'Explosions/Remote violence', EVENT_TYPE_COLORS['Explosions/Remote violence'],
+            'Riots', EVENT_TYPE_COLORS['Riots'],
+            'Protests', EVENT_TYPE_COLORS['Protests'],
             EVENT_TYPE_DEFAULT_COLOR,
           ],
           'circle-radius': [
@@ -422,7 +433,13 @@ export default function ConflictMap({
       });
 
       if (!eventsPopupRef.current) {
-        eventsPopupRef.current = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+        eventsPopupRef.current = new maplibregl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+          anchor: 'top',
+          offset: 16,
+          maxWidth: '320px',
+        });
       }
       const popup = eventsPopupRef.current;
 
@@ -442,10 +459,27 @@ export default function ConflictMap({
       eventsLeaveHandlerRef.current = leaveHandler;
       map.current.on('mouseenter', EVENTS_LAYER_ID, enterHandler);
       map.current.on('mouseleave', EVENTS_LAYER_ID, leaveHandler);
-    } catch {
+    } catch (err) {
       // Non-fatal: events overlay failure shouldn't break the map
+      // but keep a visible hint for easier troubleshooting.
+      if (requestId === eventsRequestRef.current) {
+        setError(`Failed to load incidents overlay: ${err instanceof Error ? err.message : 'unknown error'}`);
+      }
     }
-  }, [showEvents, eventsUrl, removeEventsLayer]);
+  }, [
+    showEvents,
+    eventsUrl,
+    removeEventsLayer,
+    level,
+    parentLevel,
+    parentPcode,
+    regionPcode,
+    periodId,
+    startYear,
+    startMonth,
+    endYear,
+    endMonth,
+  ]);
 
   const loadChoropleth = useCallback(async () => {
     if (!map.current) return;
@@ -455,7 +489,7 @@ export default function ConflictMap({
       // ── DENSITY HEATMAP BRANCH ─────────────────────────────────────────────
       if (variable === 'density') {
         // Remove choropleth layers
-        if (enterHandlerRef.current) { map.current.off('mouseenter', FILL_ID, enterHandlerRef.current); enterHandlerRef.current = null; }
+        if (enterHandlerRef.current) { map.current.off('mousemove', FILL_ID, enterHandlerRef.current); enterHandlerRef.current = null; }
         if (leaveHandlerRef.current) { map.current.off('mouseleave', FILL_ID, leaveHandlerRef.current); leaveHandlerRef.current = null; }
         if (clickHandlerRef.current) { map.current.off('click', FILL_ID, clickHandlerRef.current); clickHandlerRef.current = null; }
         if (map.current.getLayer(OUTLINE_ID)) map.current.removeLayer(OUTLINE_ID);
@@ -503,6 +537,7 @@ export default function ConflictMap({
       const res = await fetch(apiUrl(targetUrl));
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const geojson = await res.json();
+      loadedGeojsonRef.current = geojson;
 
       // Provide state name→pcode mapping to the parent (level-1 only, used for table-click drill-down)
       if (level === 1 && onPcodeMap) {
@@ -542,7 +577,7 @@ export default function ConflictMap({
 
       // Clean up old event handlers before removing layers
       if (enterHandlerRef.current) {
-        map.current.off('mouseenter', FILL_ID, enterHandlerRef.current);
+        map.current.off('mousemove', FILL_ID, enterHandlerRef.current);
         enterHandlerRef.current = null;
       }
       if (leaveHandlerRef.current) {
@@ -576,7 +611,7 @@ export default function ConflictMap({
         paint: {
           'fill-color': (
             periodId
-              ? getClassificationColor(level, analysisType, conflictMetric)
+              ? getClassificationColor(analysisType)
               : getChoroplethColor(variable, level, localMax, localMaxRate, localMaxEvents)
           ) as any,
           'fill-opacity': fillOpacity,
@@ -595,7 +630,13 @@ export default function ConflictMap({
 
       // Create shared popup
       if (!popupRef.current) {
-        popupRef.current = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+        popupRef.current = new maplibregl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+          anchor: 'bottom',
+          offset: 18,
+          maxWidth: '360px',
+        });
       }
       const popup = popupRef.current;
 
@@ -605,7 +646,7 @@ export default function ConflictMap({
         const props = (e.features?.[0]?.properties ?? {}) as Record<string, any>;
         popup
           .setLngLat(e.lngLat)
-          .setHTML(buildPopupHtml(props, level, analysisType, conflictMetric) + actionHint(level))
+          .setHTML(buildPopupHtml(props, level, analysisType) + actionHint(level))
           .addTo(map.current);
       };
       const leaveHandler = () => {
@@ -616,27 +657,54 @@ export default function ConflictMap({
 
       enterHandlerRef.current = enterHandler;
       leaveHandlerRef.current = leaveHandler;
-      map.current.on('mouseenter', FILL_ID, enterHandler);
+      map.current.on('mousemove', FILL_ID, enterHandler);
       map.current.on('mouseleave', FILL_ID, leaveHandler);
 
       const clickHandler = (e: any) => {
         const feature = e.features?.[0];
         if (!feature) return;
         const props = (feature.properties ?? {}) as Record<string, any>;
+        const pcodeKey = level === 1 ? "ADM1_PCODE" : level === 2 ? "ADM2_PCODE" : "ADM3_PCODE";
+        const pcode = String(props?.[pcodeKey] ?? "");
+        onUnitClickRef.current?.({ ...props, _clickedLevel: level });
+
+        const now = Date.now();
+        const prev = lastClickRef.current;
+        const isDoubleOnSameUnit =
+          !!prev && prev.level === level && prev.pcode === pcode && now - prev.ts <= 350;
+        lastClickRef.current = { ts: now, pcode, level };
+
+        if (!isDoubleOnSameUnit || !map.current) return;
+
+        const sourceFeature = (loadedGeojsonRef.current?.features ?? []).find(
+          (f: any) => String(f?.properties?.[pcodeKey] ?? "") === pcode,
+        );
+        const targetGeometry = sourceFeature?.geometry ?? feature?.geometry;
+        if (targetGeometry) {
+          const bbox = featureBbox(targetGeometry);
+          if (level === 3) {
+            map.current.fitBounds(bbox, {
+              padding: 95,
+              duration: 700,
+              maxZoom: 11.3,
+            });
+          } else {
+            map.current.fitBounds(bbox, {
+              padding: 60,
+              duration: 700,
+              maxZoom: 10,
+            });
+          }
+        }
 
         if (level < 3) {
-          // Zoom to the clicked polygon's bounding box
-          if (feature.geometry) {
-            const bbox = featureBbox(feature.geometry);
-            map.current!.fitBounds(bbox, { padding: 60, duration: 700, maxZoom: 10 });
-          }
-          const pcode = level === 1 ? (props.ADM1_PCODE ?? '') : (props.ADM2_PCODE ?? '');
-          const name  = level === 1 ? (props.ADM1_EN  ?? '') : (props.ADM2_EN  ?? '');
-          onDrillDownRef.current?.({ level: level as 1 | 2, pcode, name });
-          // Also fire unit-click so the history panel opens for region/zone.
-          onUnitClickRef.current?.({ ...props, _clickedLevel: level });
+          const parentPcode = level === 1 ? (props.ADM1_PCODE ?? '') : (props.ADM2_PCODE ?? '');
+          const name = level === 1 ? (props.ADM1_EN ?? '') : (props.ADM2_EN ?? '');
+          onDrillDownRef.current?.({ level: level as 1 | 2, pcode: parentPcode, name });
         } else {
-          onUnitClickRef.current?.(props);
+          const woredaPcode = props.ADM3_PCODE ?? '';
+          const woredaName = props.ADM3_EN ?? '';
+          onDrillDownRef.current?.({ level: 3, pcode: woredaPcode, name: woredaName });
         }
       };
       clickHandlerRef.current = clickHandler;
@@ -659,7 +727,6 @@ export default function ConflictMap({
     level,
     periodId,
     analysisType,
-    conflictMetric,
   ]);
 
   useEffect(() => {
@@ -683,6 +750,7 @@ export default function ConflictMap({
     });
 
     map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
+    map.current.doubleClickZoom.disable();
     map.current.on('load', () => {
       loadChoropleth();
       loadEvents();
@@ -784,34 +852,14 @@ export default function ConflictMap({
     }
 
     if (periodId && analysisType === 'conflict_metrics') {
-      if (level === 3) {
-        return (
-          <>
-            <p className="font-semibold text-gray-700 mb-1.5">
-              {conflictMetric === 'highly_conflict_affected' ? 'Highly Conflict-Affected' : 'Conflict-Affected'}
-            </p>
-            {[
-              { color: '#d73027', label: 'Affected' },
-              { color: '#fd8d3c', label: 'Below threshold' },
-              { color: '#e8e8e8', label: 'No violence' },
-            ].map(({ color, label }) => (
-              <div key={label} className="flex items-center gap-1.5 mb-0.5">
-                <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
-                <span className="text-gray-600">{label}</span>
-              </div>
-            ))}
-          </>
-        );
-      }
       return (
         <>
-          <p className="font-semibold text-gray-700 mb-1.5">Share Affected</p>
+          <p className="font-semibold text-gray-700 mb-1.5">Conflict Classification</p>
           {[
-            { color: '#253494', label: '> 50%' },
-            { color: '#2c7fb8', label: '30-50%' },
-            { color: '#41b6c4', label: '10-30%' },
-            { color: '#c7e9b4', label: '< 10%' },
-            { color: '#f0f0f0', label: 'None' },
+            { color: '#b91c1c', label: 'Highly Conflict-Affected' },
+            { color: '#ef4444', label: 'Conflict-Affected' },
+            { color: '#f59e0b', label: 'Below threshold' },
+            { color: '#bfdbfe', label: 'No reported violence' },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5 mb-0.5">
               <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
@@ -844,11 +892,11 @@ export default function ConflictMap({
       }
       return (
         <>
-          <p className="font-semibold text-gray-700 mb-1.5">Ward Status</p>
+          <p className="font-semibold text-gray-700 mb-1.5">Woreda Status</p>
           {[
             { color: '#d73027', label: 'Affected' },
             { color: '#fd8d3c', label: 'Below threshold' },
-            { color: '#e8e8e8', label: 'No violence' },
+            { color: '#bfdbfe', label: 'No violence' },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5 mb-0.5">
               <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
@@ -918,7 +966,7 @@ export default function ConflictMap({
     }
     return (
       <>
-        <p className="font-semibold text-gray-700 mb-1.5">Ward Share Affected</p>
+        <p className="font-semibold text-gray-700 mb-1.5">Woreda Share Affected</p>
         {[
           { color: '#253494', label: '> 50%' },
           { color: '#2c7fb8', label: '30–50%' },
@@ -940,7 +988,7 @@ export default function ConflictMap({
       <div ref={mapContainer} className="w-full h-full" />
       {loading && (
         <div className="absolute top-3 left-3 bg-white/90 px-3 py-1.5 rounded shadow text-sm text-gray-600">
-          Loading{level === 3 ? ' ward data…' : '…'}
+          Loading{level === 3 ? ' woreda data…' : '…'}
         </div>
       )}
       {error && (

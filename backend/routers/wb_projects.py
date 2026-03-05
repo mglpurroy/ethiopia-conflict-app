@@ -8,7 +8,7 @@ router = APIRouter(tags=["wb-projects"])
 def get_wb_projects(
     status: str | None = Query(None, description="Filter by project status (Active, Closed, Dropped, Pipeline)"),
 ):
-    """GeoJSON FeatureCollection of World Bank project sites in Nigeria, merged with project metadata."""
+    """GeoJSON FeatureCollection of World Bank project sites merged with project metadata."""
     return load_wb_projects(status_filter=status)
 
 
@@ -20,8 +20,8 @@ def wb_state_summary_endpoint():
 
 @router.get("/wb-projects/by-unit")
 def get_wb_projects_by_unit(
-    level: int = Query(..., description="Admin level: 1=state, 2=LGA, 3=ward"),
-    name: str = Query(..., description="Unit name (e.g. 'Kano', 'Kano State')"),
+    level: int = Query(..., description="Admin level: 1=admin-1, 2=admin-2, 3=admin-3"),
+    name: str = Query(..., description="Unit name (e.g. 'Amhara', 'Amhara Region')"),
     status: str | None = Query(None, description="Optional status filter"),
 ):
     """List of WB projects whose sites fall within the specified admin unit."""

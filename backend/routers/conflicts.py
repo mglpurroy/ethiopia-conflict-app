@@ -81,7 +81,7 @@ def by_admin(
     level: int = Query(1, ge=1, le=3),
     start: Optional[str] = Query(None),
     end: Optional[str] = Query(None),
-    parent: Optional[str] = Query(None, description="Parent unit name to filter by (LGA name for level 3)"),
+    parent: Optional[str] = Query(None, description="Parent unit name to filter by (zone name for level 3)"),
 ):
     try:
         return get_by_admin(level, start, end, parent=parent)

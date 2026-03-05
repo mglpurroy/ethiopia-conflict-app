@@ -15,6 +15,7 @@ def test_generate_12_month_periods_is_deterministic_and_sorted():
 
     assert periods_1 == periods_2
     assert len(periods_1) > 1
+    assert periods_1[0]["type"] == "rolling_latest"
     assert periods_1[0]["sort_index"] >= periods_1[1]["sort_index"]
     assert all("_" in p["id"] for p in periods_1)
 
@@ -99,7 +100,7 @@ def test_classify_and_aggregate_threshold_logic():
                 "ACLED_BRD_total": 9,
                 "ACLED_BRD_state": 4,
                 "ACLED_BRD_nonstate": 5,
-                "event_count": 2,
+                "event_count": 1,
             },
         ]
     )

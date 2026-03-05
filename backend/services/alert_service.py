@@ -42,7 +42,7 @@ def compute_conflict_index(reference_days: int = 365) -> list[dict]:
     """
     Compute per-state Conflict Index (0–10) based on 4 dimensions:
       1. Deadliness: deaths per 100k population
-      2. Geographic diffusion: % wards with any events
+      2. Geographic diffusion: % woredas with any events
       3. Civilian danger: share of Violence against Civilians events
       4. Actor fragmentation: count of distinct actors
     """
@@ -54,7 +54,7 @@ def compute_conflict_index(reference_days: int = 365) -> list[dict]:
     df = load_raw_acled()
     pop = load_population_data()
     state_pop = _state_population(pop)
-    total_wards_by_state = pop.groupby('ADM1_EN')['ADM3_PCODE'].count().to_dict()
+    total_woredas_by_state = pop.groupby('ADM1_EN')['ADM3_PCODE'].count().to_dict()
 
     period_df = _get_period(df, reference_days)
 
@@ -64,20 +64,20 @@ def compute_conflict_index(reference_days: int = 365) -> list[dict]:
     for state in states:
         sdf = period_df[period_df['admin1'] == state]
         pop_count = state_pop.get(state, 1_000_000)
-        total_wards = total_wards_by_state.get(state, 1)
+        total_woredas = total_woredas_by_state.get(state, 1)
 
         # 1. Deadliness (0–10): deaths per 100k, capped at 100
         deaths = float(sdf['fatalities'].sum())
         death_rate = (deaths / pop_count) * 100_000
         dim_deadliness = min(death_rate / 10.0, 10.0)
 
-        # 2. Geographic diffusion (0–10): % wards with events, scaled
+        # 2. Geographic diffusion (0–10): % woredas with events, scaled
         if 'admin3' in sdf.columns:
-            wards_with_events = sdf['admin3'].dropna().nunique()
+            woredas_with_events = sdf['admin3'].dropna().nunique()
         else:
-            wards_with_events = sdf['admin2'].dropna().nunique()
-        pct_wards = min(wards_with_events / max(total_wards, 1), 1.0)
-        dim_diffusion = pct_wards * 10.0
+            woredas_with_events = sdf['admin2'].dropna().nunique()
+        pct_woredas = min(woredas_with_events / max(total_woredas, 1), 1.0)
+        dim_diffusion = pct_woredas * 10.0
 
         # 3. Civilian danger (0–10): share of non-state violence
         total_events = len(sdf)

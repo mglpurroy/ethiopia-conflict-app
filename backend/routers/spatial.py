@@ -97,7 +97,8 @@ def classification(
     analysis_type: str = Query("conflict_metrics", pattern="^(conflict_metrics|trajectory)$"),
     map_var: str = Query("share_woredas", pattern="^(share_woredas|share_population)$"),
     conflict_metric: str = Query("conflict_affected", pattern="^(conflict_affected|highly_conflict_affected)$"),
-    agg_thresh: float = Query(0.2, ge=0.0, le=1.0),
+    parent_pcode: str = Query(""),
+    parent_level: Optional[int] = Query(None, ge=1, le=2),
     trajectory_categories: Optional[str] = Query(
         None, description="Comma-separated trajectory categories to include"
     ),
@@ -115,7 +116,8 @@ def classification(
             analysis_type=analysis_type,
             map_var=map_var,
             conflict_metric=conflict_metric,
-            agg_thresh=agg_thresh,
+            parent_pcode=parent_pcode,
+            parent_level=parent_level,
             trajectory_categories=cats,
         )
         return JSONResponse(content=data, headers={"Cache-Control": "public, max-age=3600"})

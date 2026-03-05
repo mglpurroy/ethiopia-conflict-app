@@ -45,11 +45,8 @@ def _filter_df(
 @router.get("/export/fcv-monitor", response_class=HTMLResponse)
 def fcv_monitor_report():
     """Serve a legacy FCV monitor HTML report if present."""
-    path = os.path.join(DATA_DIR, "nigeria-fcv-monitor.html")
-    legacy_path = os.path.join(DATA_DIR, "_legacy_nigeria", "nigeria-fcv-monitor.html")
+    path = os.path.join(DATA_DIR, "ethiopia-fcv-monitor.html")
     try:
-        if not os.path.exists(path) and os.path.exists(legacy_path):
-            path = legacy_path
         with open(path, "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
     except FileNotFoundError:
@@ -94,13 +91,13 @@ def export_excel(
         state_agg = get_by_admin(1, start, end)
         state_df = pd.DataFrame(state_agg)
 
-        ward_data = load_conflict_data()
+        woreda_data = load_conflict_data()
 
         buf = io.BytesIO()
         with pd.ExcelWriter(buf, engine='openpyxl') as writer:
             events_df.to_excel(writer, sheet_name='Events', index=False)
             state_df.to_excel(writer, sheet_name='State Summary', index=False)
-            ward_data.head(5000).to_excel(writer, sheet_name='Ward Aggregates', index=False)
+            woreda_data.head(5000).to_excel(writer, sheet_name='Woreda Aggregates', index=False)
         buf.seek(0)
 
         return StreamingResponse(
@@ -136,7 +133,7 @@ def export_aggregated(
         pop = load_population_data()
         conflict = load_conflict_data()
         agg_level = "ADM1" if level == "ADM1" else "ADM2"
-        aggregated, wards = classify_and_aggregate(
+        aggregated, woredas = classify_and_aggregate(
             pop,
             conflict,
             period["start_year"],
@@ -149,7 +146,7 @@ def export_aggregated(
             agg_level=agg_level,
         )
 
-        df = wards if level == "ADM3" else aggregated
+        df = woredas if level == "ADM3" else aggregated
         buf = io.StringIO()
         df.to_csv(buf, index=False)
         buf.seek(0)

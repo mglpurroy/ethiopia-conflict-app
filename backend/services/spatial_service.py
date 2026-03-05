@@ -5,6 +5,7 @@ from __future__ import annotations
 import calendar
 import datetime as dt
 import json
+import re
 from typing import Optional
 
 import geopandas as gpd
@@ -28,10 +29,96 @@ from services.conflict_service import (
 )
 
 BOUNDARY_DIR = DATA_DIR / "eth_adm_csa_bofedb_2021_shp"
+STATUS_LABELS = {
+    0: "No reported violence",
+    1: "Below threshold",
+    2: "Conflict-Affected",
+    3: "Highly Conflict-Affected",
+}
 
 
 def _empty_fc() -> dict:
     return {"type": "FeatureCollection", "features": []}
+
+
+def _status_from_share(share: float, has_violence: bool) -> tuple[int, str]:
+    if not has_violence:
+        return 0, STATUS_LABELS[0]
+    if share >= 0.2:
+        return 3, STATUS_LABELS[3]
+    if share >= 0.1:
+        return 2, STATUS_LABELS[2]
+    return 1, STATUS_LABELS[1]
+
+
+def _build_admin_status_aggregates(woreda_data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Build zone and region aggregates from woreda-level classification output."""
+    woredas = woreda_data.copy()
+    if woredas.empty:
+        return pd.DataFrame(), pd.DataFrame()
+
+    woredas["has_reported_violence"] = (woredas["event_count"] > 0) | (woredas["ACLED_BRD_total"] > 0)
+    woredas["is_conflict_or_high"] = woredas["conflict_affected"] | woredas["highly_conflict_affected"]
+    woredas["conflict_affected_population"] = np.where(woredas["is_conflict_or_high"], woredas["pop_count"], 0)
+
+    zone = (
+        woredas.groupby(["ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN"], as_index=False)
+        .agg(
+            pop_count=("pop_count", "sum"),
+            total_woredas=("ADM3_PCODE", "count"),
+            affected_woredas=("is_conflict_or_high", "sum"),
+            conflict_affected_woredas=("conflict_affected", "sum"),
+            highly_conflict_affected_woredas=("highly_conflict_affected", "sum"),
+            conflict_affected_population=("conflict_affected_population", "sum"),
+            event_count=("event_count", "sum"),
+            ACLED_BRD_total=("ACLED_BRD_total", "sum"),
+            has_reported_violence=("has_reported_violence", "max"),
+        )
+    )
+    zone["share_woredas_conflict_affected"] = np.where(
+        zone["total_woredas"] > 0, zone["affected_woredas"] / zone["total_woredas"], 0
+    )
+    zone["share_population_conflict_affected"] = np.where(
+        zone["pop_count"] > 0, zone["conflict_affected_population"] / zone["pop_count"], 0
+    )
+    zone_status = zone.apply(
+        lambda row: _status_from_share(float(row["share_woredas_conflict_affected"]), bool(row["has_reported_violence"])),
+        axis=1,
+    )
+    zone["status_code"] = zone_status.map(lambda t: t[0])
+    zone["status_label"] = zone_status.map(lambda t: t[1])
+    zone["is_conflict_or_high_status"] = zone["status_code"] >= 2
+
+    region = (
+        zone.groupby(["ADM1_PCODE", "ADM1_EN"], as_index=False)
+        .agg(
+            pop_count=("pop_count", "sum"),
+            total_zones=("ADM2_PCODE", "count"),
+            affected_zones=("is_conflict_or_high_status", "sum"),
+            total_woredas=("total_woredas", "sum"),
+            affected_woredas=("affected_woredas", "sum"),
+            conflict_affected_population=("conflict_affected_population", "sum"),
+            event_count=("event_count", "sum"),
+            ACLED_BRD_total=("ACLED_BRD_total", "sum"),
+            has_reported_violence=("has_reported_violence", "max"),
+        )
+    )
+    region["share_zones_conflict_affected"] = np.where(
+        region["total_zones"] > 0, region["affected_zones"] / region["total_zones"], 0
+    )
+    region["share_woredas_conflict_affected"] = np.where(
+        region["total_woredas"] > 0, region["affected_woredas"] / region["total_woredas"], 0
+    )
+    region["share_population_conflict_affected"] = np.where(
+        region["pop_count"] > 0, region["conflict_affected_population"] / region["pop_count"], 0
+    )
+    region_status = region.apply(
+        lambda row: _status_from_share(float(row["share_zones_conflict_affected"]), bool(row["has_reported_violence"])),
+        axis=1,
+    )
+    region["status_code"] = region_status.map(lambda t: t[0])
+    region["status_label"] = region_status.map(lambda t: t[1])
+    return zone, region
 
 
 def _simplify(gdf: gpd.GeoDataFrame, level: int) -> gpd.GeoDataFrame:
@@ -88,7 +175,7 @@ def load_admin_boundaries() -> dict[int, gpd.GeoDataFrame]:
     return result
 
 
-def _load_acled_ward_join() -> pd.DataFrame:
+def _load_acled_admin3_join() -> pd.DataFrame:
     """Compatibility helper used during startup warmup."""
     key = _cache_key("acled_adm3_events", "v1")
     cached = _get_cached(key)
@@ -97,15 +184,15 @@ def _load_acled_ward_join() -> pd.DataFrame:
     raw = load_raw_acled()
     df = raw[["event_id_cnty", "event_date", "fatalities", "admin1", "admin2", "admin3"]].copy()
     df = df[df["admin3"].notna() & (df["admin3"] != "")]
-    df = df.rename(columns={"admin3": "ward_name"})
+    df = df.rename(columns={"admin3": "adm3_name"})
     _set_cached(key, df)
     return df
 
 
-def get_by_ward(
+def get_by_admin3(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-    parent_lga: Optional[str] = None,
+    parent_zone: Optional[str] = None,
 ) -> list[dict]:
     """Compatibility helper for level-3 admin summaries from raw events."""
     df = load_raw_acled().copy()
@@ -113,8 +200,8 @@ def get_by_ward(
         df = df[df["event_date"] >= pd.to_datetime(start_date)]
     if end_date:
         df = df[df["event_date"] <= pd.to_datetime(end_date)]
-    if parent_lga:
-        df = df[df["admin2"] == parent_lga]
+    if parent_zone:
+        df = df[df["admin2"] == parent_zone]
     df = df[df["admin3"].notna() & (df["admin3"] != "")]
     agg = (
         df.groupby(["admin1", "admin2", "admin3"], as_index=False)
@@ -173,6 +260,96 @@ def _name_from_pcode(level: int, pcode: str) -> Optional[str]:
     return str(m.iloc[0])
 
 
+def _normalize_admin_name(value: object) -> str:
+    s = str(value or "").strip().lower()
+    s = re.sub(r"[^a-z0-9]+", " ", s)
+    s = " ".join(s.split())
+    # Canonicalize common Ethiopia spelling variants seen across sources.
+    s = s.replace("gumz", "gumuz")
+    s = s.replace("benshangul", "benishangul")
+    return s
+
+
+def _filter_by_admin_scope(df: pd.DataFrame, level: int, name: str) -> pd.DataFrame:
+    col = "admin1" if level == 1 else "admin2" if level == 2 else "admin3"
+    if col not in df.columns or not name:
+        return df
+
+    # Exact match first (fast path).
+    exact = df[df[col] == name]
+    if not exact.empty:
+        return exact
+
+    # Normalized equality for punctuation/spelling differences.
+    target_norm = _normalize_admin_name(name)
+    norm_col = df[col].map(_normalize_admin_name)
+    normalized = df[norm_col == target_norm]
+    if not normalized.empty:
+        return normalized
+
+    if level == 1:
+        # Alias fallback for known ADM1 naming drift between boundaries and ACLED.
+        alias_map = {
+            "snnp": ["south ethiopia region", "central ethiopia"],
+            "south west ethiopia": ["south west"],
+            "benishangul gumuz": ["benishangul gumuz", "benshangul gumuz"],
+        }
+        aliases = alias_map.get(target_norm, [])
+        if aliases:
+            alias_norms = {_normalize_admin_name(a) for a in aliases}
+            aliased = df[norm_col.isin(alias_norms)]
+            if not aliased.empty:
+                return aliased
+
+    return df.iloc[0:0]
+
+
+def _filter_by_pcode_children(df: pd.DataFrame, level: int, pcode: str) -> pd.DataFrame:
+    """Fallback scope filter using population hierarchy when admin-name matching fails.
+
+    For level 1/2 filters, match raw events by normalized ADM3 names belonging to the
+    target region/zone. This is robust to admin2 naming drift in ACLED.
+    """
+    if level not in (1, 2) or not pcode or df.empty:
+        return df.iloc[0:0]
+
+    pop = load_population_data()
+    if pop.empty:
+        return df.iloc[0:0]
+
+    if level == 1:
+        rows = pop.loc[pop["ADM1_PCODE"] == pcode]
+    else:
+        rows = pop.loc[pop["ADM2_PCODE"] == pcode]
+    if rows.empty:
+        return df.iloc[0:0]
+
+    admin3_norms = {
+        _normalize_admin_name(v)
+        for v in rows["ADM3_EN"].dropna().astype(str).tolist()
+        if _normalize_admin_name(v)
+    }
+    if admin3_norms:
+        admin3_col = df["admin3"].map(_normalize_admin_name)
+        by_admin3 = df[admin3_col.isin(admin3_norms)]
+        if not by_admin3.empty:
+            return by_admin3
+
+    # Last fallback: normalized ADM2 name matching from the hierarchy rows.
+    admin2_norms = {
+        _normalize_admin_name(v)
+        for v in rows["ADM2_EN"].dropna().astype(str).tolist()
+        if _normalize_admin_name(v)
+    }
+    if admin2_norms:
+        admin2_col = df["admin2"].map(_normalize_admin_name)
+        by_admin2 = df[admin2_col.isin(admin2_norms)]
+        if not by_admin2.empty:
+            return by_admin2
+
+    return df.iloc[0:0]
+
+
 def get_events_geojson(
     start_year: Optional[int] = None,
     start_month: Optional[int] = None,
@@ -201,12 +378,12 @@ def get_events_geojson(
         if not name and pcode:
             name = _name_from_pcode(level, pcode) or ""
         if name:
-            if level == 1:
-                df = df[df["admin1"] == name]
-            elif level == 2:
-                df = df[df["admin2"] == name]
-            else:
-                df = df[df["admin3"] == name]
+            scoped = _filter_by_admin_scope(df, level, name)
+            if scoped.empty and pcode and level in (1, 2):
+                scoped = _filter_by_pcode_children(df, level, pcode)
+            df = scoped
+        elif pcode and level in (1, 2):
+            df = _filter_by_pcode_children(df, level, pcode)
 
     if len(df) > limit:
         df = df.nlargest(limit, "fatalities")
@@ -248,12 +425,12 @@ def get_unit_history(level: int, pcode: str = "", name: str = "") -> dict:
     if not name and pcode:
         name = _name_from_pcode(level, pcode) or ""
 
-    if level == 1:
-        unit_df = raw[raw["admin1"] == name]
-    elif level == 2:
-        unit_df = raw[raw["admin2"] == name]
+    if level in (1, 2, 3):
+        unit_df = _filter_by_admin_scope(raw, level, name)
+        if unit_df.empty and pcode and level in (1, 2):
+            unit_df = _filter_by_pcode_children(raw, level, pcode)
     else:
-        unit_df = raw[raw["admin3"] == name]
+        unit_df = raw.iloc[0:0]
 
     if unit_df.empty:
         return {
@@ -385,7 +562,7 @@ def get_choropleth_data(
 
     for col in [
         "ACLED_BRD_total",
-        "share_wards_affected",
+        "share_woredas_affected",
         "share_population_affected",
         "above_threshold",
         "violence_affected",
@@ -406,7 +583,8 @@ def get_classification_geojson(
     analysis_type: str = "conflict_metrics",
     map_var: str = "share_woredas",
     conflict_metric: str = "conflict_affected",
-    agg_thresh: float = 0.2,
+    parent_pcode: str = "",
+    parent_level: Optional[int] = None,
     trajectory_categories: Optional[list[str]] = None,
 ) -> dict:
     """Return map-ready GeoJSON for conflict metrics or trajectory mode."""
@@ -441,7 +619,7 @@ def get_classification_geojson(
         period["end_month"],
         rate_thresh=rate_thresh,
         abs_thresh=abs_thresh,
-        agg_thresh=agg_thresh,
+        agg_thresh=0.2,
         agg_level=agg_level,
     )
 
@@ -459,24 +637,54 @@ def get_classification_geojson(
                 "highly_conflict_affected",
                 "violence_affected",
                 "pop_count",
+                "status_code",
+                "status_label",
             ]
             cols = [c for c in cols if c in ward_data.columns]
             merged = gdf.merge(ward_data[cols], on="ADM3_PCODE", how="left")
             for c in cols:
                 if c != "ADM3_PCODE":
                     merged[c] = merged[c].fillna(0 if c not in ["conflict_affected", "highly_conflict_affected", "violence_affected"] else False)
+            if "status_code" in merged.columns:
+                merged["status_code"] = merged["status_code"].fillna(0).astype(int)
+            if "status_label" in merged.columns:
+                merged["status_label"] = merged["status_label"].fillna(STATUS_LABELS[0])
+            if parent_pcode:
+                if parent_level == 1 and "ADM1_PCODE" in merged.columns:
+                    merged = merged[merged["ADM1_PCODE"] == parent_pcode]
+                elif parent_level == 2 and "ADM2_PCODE" in merged.columns:
+                    merged = merged[merged["ADM2_PCODE"] == parent_pcode]
             return json.loads(_simplify(merged, 3).to_json())
 
+        zone_agg, region_agg = _build_admin_status_aggregates(ward_data)
         level = 1 if agg_level == "ADM1" else 2
         gdf = boundaries.get(level, gpd.GeoDataFrame())
         if gdf.empty:
             return _empty_fc()
-        pcode_col = "ADM1_PCODE" if level == 1 else "ADM2_PCODE"
-        merged = gdf.merge(aggregated, on=pcode_col, how="left")
-        if map_var == "share_population":
-            merged["metric_value"] = merged["share_population_affected"].fillna(0)
+
+        if level == 1:
+            merged = gdf.merge(region_agg, on=["ADM1_PCODE", "ADM1_EN"], how="left")
         else:
-            merged["metric_value"] = merged["share_wards_affected"].fillna(0)
+            merged = gdf.merge(zone_agg, on=["ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN"], how="left")
+            if parent_pcode and "ADM1_PCODE" in merged.columns:
+                merged = merged[merged["ADM1_PCODE"] == parent_pcode]
+
+        if map_var == "share_population":
+            merged["map_metric_value"] = merged["share_population_conflict_affected"].fillna(0)
+            merged["map_metric_label"] = "Share of Population in Conflict-Affected Woredas"
+        else:
+            merged["map_metric_value"] = merged["share_woredas_conflict_affected"].fillna(0)
+            merged["map_metric_label"] = "Share of Conflict-Affected Woredas"
+
+        merged["status_code"] = merged["status_code"].fillna(0).astype(int)
+        merged["status_label"] = merged["status_label"].fillna(STATUS_LABELS[0])
+        for col in ["pop_count", "event_count", "ACLED_BRD_total", "affected_woredas", "total_woredas"]:
+            if col in merged.columns:
+                merged[col] = merged[col].fillna(0)
+        if "share_population_conflict_affected" in merged.columns:
+            merged["share_population_conflict_affected"] = merged["share_population_conflict_affected"].fillna(0)
+        if "share_woredas_conflict_affected" in merged.columns:
+            merged["share_woredas_conflict_affected"] = merged["share_woredas_conflict_affected"].fillna(0)
         return json.loads(_simplify(merged, level).to_json())
 
     # Trajectory mode
@@ -492,6 +700,11 @@ def get_classification_geojson(
         merged = gdf.merge(traj[cols], on="ADM3_PCODE", how="left")
         merged["trajectory"] = merged["trajectory"].fillna("Insufficient Data")
         merged["trajectory_selected"] = merged["trajectory_selected"].fillna(False)
+        if parent_pcode:
+            if parent_level == 1 and "ADM1_PCODE" in merged.columns:
+                merged = merged[merged["ADM1_PCODE"] == parent_pcode]
+            elif parent_level == 2 and "ADM2_PCODE" in merged.columns:
+                merged = merged[merged["ADM2_PCODE"] == parent_pcode]
         return json.loads(_simplify(merged, 3).to_json())
 
     level = 1 if agg_level == "ADM1" else 2
@@ -517,6 +730,8 @@ def get_classification_geojson(
 
     summary = traj.groupby(pcode_col).apply(_summarize).reset_index()
     merged = gdf.merge(summary, on=pcode_col, how="left")
+    if level == 2 and parent_pcode and "ADM1_PCODE" in merged.columns:
+        merged = merged[merged["ADM1_PCODE"] == parent_pcode]
     merged["selected_share"] = merged["selected_share"].fillna(0)
     merged["selected_count"] = merged["selected_count"].fillna(0)
     merged["predominant_trajectory"] = merged["predominant_trajectory"].fillna("Insufficient Data")

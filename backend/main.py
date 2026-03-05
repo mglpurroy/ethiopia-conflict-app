@@ -16,13 +16,13 @@ async def lifespan(app: FastAPI):
     """Warm up data caches on startup."""
     try:
         from services.conflict_service import load_conflict_data, load_population_data, load_raw_acled
-        from services.spatial_service import load_admin_boundaries, _load_acled_ward_join
+        from services.spatial_service import load_admin_boundaries, _load_acled_admin3_join
         print("Warming up data caches...")
         load_raw_acled()
         load_conflict_data()
         load_population_data()
         load_admin_boundaries()
-        _load_acled_ward_join()
+        _load_acled_admin3_join()
         print("Cache warm-up complete.")
     except Exception as e:
         print(f"Cache warm-up warning: {e}")

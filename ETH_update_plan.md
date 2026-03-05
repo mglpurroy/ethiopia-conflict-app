@@ -41,8 +41,8 @@ Add a verification script (e.g., `backend/scripts/verify_ethiopia_data.py`) that
 file existence, required columns, non-empty datasets, parseable dates, expected ADM columns.
 Fail with actionable errors.
 
-4. **BL-003: Archive conflicting Nigeria data assets**
-Move Nigeria-only runtime data to `backend/data/_legacy_nigeria/` to avoid accidental load.
+4. **BL-003: Archive conflicting legacy data assets**
+Move prior-country runtime data to `backend/data/_legacy_country/` to avoid accidental load.
 Do not hard-delete in v1.
 
 5. **BL-004: Persist backlog markdown file in repo**
@@ -53,7 +53,7 @@ Update services to default to Ethiopia file names/paths and ADM geometry set:
 raw ACLED from `backend/data/acled_Ethiopia.csv`
 processed conflict from `backend/data/processed/intersection_result_acled.csv`
 boundaries from `backend/data/eth_adm_csa_bofedb_2021_shp/`.
-Remove Nigeria-specific defaults (`acled_Nigeria.csv`, wards/LGA assumptions).
+Remove prior-country defaults (legacy ACLED filenames and prior admin naming assumptions).
 
 7. **BL-006: Period preset service**
 Implement canonical 12‑month period generator and `GET /api/meta/periods` with stable IDs.
@@ -94,7 +94,7 @@ Set active v1 navigation to:
 Hide `/actors`, `/early-warning`, `/reports` from nav for v1.
 
 16. **BL-015: Home page Ethiopia overview**
-Replace Nigeria headline metrics and copy with Ethiopia “Current Situation” KPIs and quick start.
+Replace legacy headline metrics and copy with Ethiopia “Current Situation” KPIs and quick start.
 
 17. **BL-016: Interactive Maps page parity**
 Implement controls from old Ethiopia flow:
@@ -139,18 +139,18 @@ API endpoints and expected schemas.
 ## Test Cases and Scenarios
 1. Data sync script populates all mapped Ethiopia files in `backend/data/` and skips raster.
 2. Data verification script passes on copied files and fails with clear messages when a required file/column is removed.
-3. Backend boots using Ethiopia paths with no fallback to Nigeria defaults.
+3. Backend boots using Ethiopia paths with no fallback to legacy defaults.
 4. `/api/meta/periods` returns deterministic 12‑month presets in newest-first order.
 5. `/api/spatial/classification` returns valid GeoJSON for both analysis modes and all admin levels.
 6. `/api/spatial/events` correctly scopes incidents by `period_id` and location.
 7. `/api/trends/location` returns series + trajectory consistent with classification logic.
 8. `/api/absolute/series` returns aligned zero-filled series for selected locations.
-9. UI shows no WB controls and no Nigeria branding on active v1 pages.
+9. UI shows no WB controls and no legacy branding on active v1 pages.
 10. Core 3 flows function end-to-end with Ethiopia data only.
 
 ## Assumptions and Defaults
 1. Data is fetched directly from the old Ethiopia repo as first step; no prior local dataset assumption remains.
 2. `population_data.json` is sufficient for runtime; raster extraction workflows are optional and deferred.
-3. Nigeria data is archived, not deleted, during v1 transition.
+3. Legacy prior-country data is archived, not deleted, during v1 transition.
 4. No DB is introduced in v1; file-based + in-memory caching remains.
 5. Core v1 scope is strictly Maps, Trend, Absolute Data.

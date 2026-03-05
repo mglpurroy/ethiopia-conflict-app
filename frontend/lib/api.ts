@@ -119,7 +119,6 @@ export const api = {
     analysis_type?: 'conflict_metrics' | 'trajectory';
     map_var?: 'share_woredas' | 'share_population';
     conflict_metric?: 'conflict_affected' | 'highly_conflict_affected';
-    agg_thresh?: number;
     trajectory_categories?: string;
   }) => apiFetch<object>('/api/spatial/classification', params),
 
