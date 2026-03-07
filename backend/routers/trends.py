@@ -3,6 +3,7 @@
 from fastapi import APIRouter, HTTPException, Query
 
 from services.conflict_service import (
+    _get_event_ids_by_woreda_period,
     calculate_trajectory_classification,
     generate_12_month_periods,
     get_location_trend_data,
@@ -66,7 +67,16 @@ def trends_location(
         location = _location_meta(pop, normalized_level, pcode)
         periods = generate_12_month_periods()
         series_df = get_location_trend_data(conflict, pop, pcode, level=normalized_level, periods_list=periods)
-        trajectory = calculate_trajectory_classification(series_df, lookback_periods=lookback_periods)
+        event_ids_by_period = None
+        if normalized_level == "woreda":
+            event_ids_map = _get_event_ids_by_woreda_period(periods, max_periods=6)
+            event_ids_by_period = {
+                pid: event_ids_map.get((pcode, pid), set())
+                for pid in (series_df["period_id"].tolist() if not series_df.empty else [])
+            }
+        trajectory = calculate_trajectory_classification(
+            series_df, lookback_periods=min(lookback_periods, 6), event_ids_by_period=event_ids_by_period
+        )
 
         records = series_df.to_dict(orient="records")
         latest = records[-1] if records else None

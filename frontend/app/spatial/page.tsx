@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Layers, Map as MapIcon, Search, TrendingUp } from 'lucide-react';
+import { Layers, Map as MapIcon, Search, Sparkles, TrendingUp } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from 'recharts';
 
 import { api } from '@/lib/api';
@@ -25,11 +25,12 @@ type AnalysisType = 'conflict_metrics' | 'trajectory';
 const TRAJECTORY_OPTIONS = [
   'At-Risk',
   'Onset',
+  'LT Conflict',
+  'Escalation',
+  'LT High Conflict',
+  'Decreasing Conflict',
   'Recovery',
-  'Turnaround',
-  'Stable',
-  'Fluctuating',
-  'Insufficient Data',
+  'Below threshold',
 ];
 
 interface MonthlyPoint {
@@ -58,27 +59,19 @@ interface MonthlyChartPoint {
 }
 
 const STATUS_LABEL_BY_CODE: Record<ClassificationCode, string> = {
-  0: 'No reported violence',
+  0: 'Below threshold',
   1: 'Below threshold',
   2: 'Conflict-Affected',
   3: 'Highly Conflict-Affected',
 };
 
 const STATUS_COLOR_BY_CODE: Record<ClassificationCode, string> = {
-  0: '#bfdbfe',
+  0: '#f59e0b',
   1: '#f59e0b',
   2: '#ef4444',
   3: '#b91c1c',
 };
 
-function classifyFromCounts(deaths: number, events: number, population: number): ClassificationCode {
-  const deathRate = population > 0 ? (deaths / population) * 1e5 : 0;
-
-  if (events <= 0 && deaths <= 0) return 0;
-  if (deathRate >= 10 && deaths >= 20 && events >= 3) return 3;
-  if (deathRate >= 2 && deaths >= 5 && events >= 2) return 2;
-  return 1;
-}
 
 function getUnitName(props: Record<string, any>, level: AdminLevel): string {
   if (level === 1) return props.ADM1_EN ?? props.ADM1_PCODE ?? 'Unknown';
@@ -122,6 +115,9 @@ export default function SpatialPage() {
   const [adminLevel, setAdminLevel] = useState<AdminLevel>(1);
   const [analysisType, setAnalysisType] = useState<AnalysisType>('conflict_metrics');
   const [showEvents, setShowEvents] = useState(false);
+  const [showWbProjects, setShowWbProjects] = useState(true);
+  const [showPsnp, setShowPsnp] = useState(false);
+  const [wbStatusFilter, setWbStatusFilter] = useState<string[]>(['Active']);
   const [trajectoryCategories, setTrajectoryCategories] = useState<string[]>(TRAJECTORY_OPTIONS);
 
   const [drillState, setDrillState] = useState<{ pcode: string; name: string } | null>(null);
@@ -130,6 +126,19 @@ export default function SpatialPage() {
   const [selectedProps, setSelectedProps] = useState<Record<string, any> | null>(null);
   const [unitHistory, setUnitHistory] = useState<UnitHistory | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [aiSummary, setAiSummary] = useState<{ summary: string; generated_at: string; event_count: number } | null>(null);
+  const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
+  const [aiSummaryError, setAiSummaryError] = useState<string | null>(null);
+  const [trajectoryLabel, setTrajectoryLabel] = useState<string | null>(null);
+  const [periodSeries, setPeriodSeries] = useState<{ period: string; classification: number; classification_label: string; deaths: number; events: number }[]>([]);
+
+  type WbProject = {
+    proj_id: string; name: string; status: string; practice: string;
+    approval_fy: number | null; commitment_amt: number | null;
+    location_count: number; locations: string[]; objective: string;
+  };
+  const [wbUnitProjects, setWbUnitProjects] = useState<WbProject[]>([]);
+  const [wbUnitLoading, setWbUnitLoading] = useState(false);
 
   const [locationQuery, setLocationQuery] = useState('');
   const [locationStatus, setLocationStatus] = useState<string | null>(null);
@@ -226,6 +235,61 @@ export default function SpatialPage() {
       .catch(() => setUnitHistory(null))
       .finally(() => setHistoryLoading(false));
   }, [selectedProps, adminLevel]);
+
+  useEffect(() => {
+    if (!selectedProps || !selectedPeriod) {
+      setAiSummary(null);
+      setAiSummaryError(null);
+      return;
+    }
+    const clickedLevel = (selectedProps._clickedLevel ?? adminLevel) as AdminLevel;
+    const name = getUnitName(selectedProps, clickedLevel);
+
+    setAiSummaryLoading(true);
+    setAiSummary(null);
+    setAiSummaryError(null);
+    api
+      .unitSummary({
+        level: clickedLevel,
+        name,
+        start_year: selectedPeriod.start_year,
+        start_month: selectedPeriod.start_month,
+        end_year: selectedPeriod.end_year,
+        end_month: selectedPeriod.end_month,
+      })
+      .then((d) => setAiSummary(d))
+      .catch((e) => setAiSummaryError(e instanceof Error ? e.message : 'Failed to load AI summary'))
+      .finally(() => setAiSummaryLoading(false));
+  }, [selectedProps, selectedPeriod, adminLevel]);
+
+  useEffect(() => {
+    if (!selectedProps) {
+      setTrajectoryLabel(null);
+      setPeriodSeries([]);
+      return;
+    }
+    const clickedLevel = (selectedProps._clickedLevel ?? adminLevel) as AdminLevel;
+    const pcode = getPcode(selectedProps, clickedLevel);
+    const level = clickedLevel === 1 ? 'ADM1' : clickedLevel === 2 ? 'ADM2' : 'ADM3';
+    api.trendsLocation({ pcode, level, lookback_periods: 20 }).then((r) => {
+      setTrajectoryLabel(r.trajectory);
+      setPeriodSeries((r as any).series ?? []);
+    }).catch(() => { setTrajectoryLabel(null); setPeriodSeries([]); });
+  }, [selectedProps, adminLevel]);
+
+  useEffect(() => {
+    if (!selectedProps || !showWbProjects) {
+      setWbUnitProjects([]);
+      return;
+    }
+    const clickedLevel = (selectedProps._clickedLevel ?? adminLevel) as AdminLevel;
+    const name = getUnitName(selectedProps, clickedLevel);
+    setWbUnitLoading(true);
+    api.wbProjectsByUnit(clickedLevel, name)
+      .then(setWbUnitProjects)
+      .catch(() => setWbUnitProjects([]))
+      .finally(() => setWbUnitLoading(false));
+  }, [selectedProps, adminLevel, showWbProjects]);
 
   const toggleTrajectoryCategory = (value: string, checked: boolean) => {
     setTrajectoryCategories((prev) => {
@@ -333,19 +397,19 @@ export default function SpatialPage() {
     return out;
   }, [historySeries]);
 
-  const yearlyClassificationForLastTen = useMemo(() => {
-    if (yearlyForLastTen.length === 0) return [];
-    const population = Number(selectedProps?.pop_count ?? 0);
-    return yearlyForLastTen.map((point) => {
-      const yearlyClass = classifyFromCounts(Number(point.deaths ?? 0), Number(point.events ?? 0), population);
-      return {
-        year: point.year,
-        classification: yearlyClass,
-        label: STATUS_LABEL_BY_CODE[yearlyClass],
-        color: STATUS_COLOR_BY_CODE[yearlyClass],
-      };
-    });
-  }, [yearlyForLastTen, selectedProps]);
+  // Trend API uses 0=Below threshold, 1=Conflict-Affected, 2=Highly Conflict-Affected
+  const TREND_LABEL: Record<number, string> = { 0: 'Below threshold', 1: 'Conflict-Affected', 2: 'Highly Conflict-Affected' };
+  const TREND_COLOR: Record<number, string> = { 0: '#f59e0b', 1: '#ef4444', 2: '#b91c1c' };
+
+  const periodClassificationSeries = useMemo(() => {
+    if (periodSeries.length === 0) return [];
+    return periodSeries.map((p) => ({
+      period: p.period,
+      classification: p.classification,
+      label: TREND_LABEL[p.classification] ?? p.classification_label,
+      color: TREND_COLOR[p.classification] ?? '#f59e0b',
+    }));
+  }, [periodSeries]);
 
   return (
     <div className="space-y-4">
@@ -432,7 +496,13 @@ export default function SpatialPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setAnalysisType('trajectory')}
+                onClick={() => {
+                  setAnalysisType('trajectory');
+                  setAdminLevel(3);
+                  setDrillState(null);
+                  setDrillZone(null);
+                  setSelectedProps(null);
+                }}
                 className={`text-xs rounded border px-2 py-1.5 ${
                   analysisType === 'trajectory' ? 'bg-[#667eea] text-white border-[#667eea]' : 'border-gray-200 text-gray-700'
                 }`}
@@ -474,6 +544,54 @@ export default function SpatialPage() {
                 Show detailed incidents
               </label>
             </div>
+            <div className="flex items-center gap-2">
+              <input
+                id="show-wb-projects"
+                type="checkbox"
+                checked={showWbProjects}
+                onChange={(e) => setShowWbProjects(e.target.checked)}
+                className="accent-[#56b4e9]"
+              />
+              <label htmlFor="show-wb-projects" className="text-xs font-medium text-gray-600 cursor-pointer">
+                Show WB project sites
+              </label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                id="show-psnp"
+                type="checkbox"
+                checked={showPsnp}
+                onChange={(e) => setShowPsnp(e.target.checked)}
+                className="accent-[#cc79a7]"
+              />
+              <label htmlFor="show-psnp" className="text-xs font-medium text-gray-600 cursor-pointer">
+                Show PSNP woredas
+              </label>
+            </div>
+            {showWbProjects && (
+              <div className="ml-5 space-y-1">
+                {(['Active', 'Closed', 'Other'] as const).map((status) => {
+                  const colors: Record<string, string> = { Active: '#56b4e9', Closed: '#999999', Other: '#e69f00' };
+                  return (
+                    <div key={status} className="flex items-center gap-1.5">
+                      <input
+                        id={`wb-status-${status}`}
+                        type="checkbox"
+                        checked={wbStatusFilter.includes(status)}
+                        onChange={(e) =>
+                          setWbStatusFilter((prev) =>
+                            e.target.checked ? [...prev, status] : prev.filter((s) => s !== status),
+                          )
+                        }
+                        className="accent-[#56b4e9]"
+                      />
+                      <div className="w-2.5 h-2.5 shrink-0 border border-white shadow-sm" style={{ background: colors[status], transform: 'rotate(45deg)' }} />
+                      <label htmlFor={`wb-status-${status}`} className="text-xs text-gray-500 cursor-pointer">{status}</label>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="pt-1 border-t border-gray-100 space-y-2">
@@ -515,6 +633,9 @@ export default function SpatialPage() {
             parentLevel={parentLevel}
             regionPcode={drillState?.pcode || undefined}
             showEvents={showEvents}
+            showWbProjects={showWbProjects}
+            wbStatusFilter={wbStatusFilter}
+            showPsnp={showPsnp}
             onDrillDown={handleDrillDown}
             onUnitClick={(props) => setSelectedProps(props)}
             flyToCoords={flyToCoords}
@@ -524,14 +645,43 @@ export default function SpatialPage() {
 
       {(selectedProps || historyLoading) && (
         <div className="bg-white rounded-lg shadow-sm p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <TrendingUp className="h-4 w-4 text-[#667eea]" />
-            <h2 className="text-sm font-semibold text-gray-800">
-              {selectedProps ? getUnitName(selectedProps, (selectedProps._clickedLevel ?? adminLevel) as AdminLevel) : 'Loading...'}
-            </h2>
+          <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-[#667eea]" />
+              <h2 className="text-sm font-semibold text-gray-800">
+                {selectedProps ? getUnitName(selectedProps, (selectedProps._clickedLevel ?? adminLevel) as AdminLevel) : 'Loading...'}
+              </h2>
+            </div>
+            {trajectoryLabel && (
+              <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">
+                Trajectory: {trajectoryLabel}
+              </span>
+            )}
           </div>
 
           {historyLoading && <div className="h-40 bg-gray-100 animate-pulse rounded" />}
+
+          {(aiSummaryLoading || aiSummary || aiSummaryError) && (
+            <div className="rounded-lg border border-gray-200 bg-gray-50/50 p-3 mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-[#667eea]" />
+                <h3 className="text-sm font-semibold text-gray-800">AI Summary</h3>
+              </div>
+              {aiSummaryLoading && <div className="h-20 bg-gray-100 animate-pulse rounded" />}
+              {aiSummaryError && (
+                <p className="text-sm text-amber-700">{aiSummaryError}</p>
+              )}
+              {!aiSummaryLoading && aiSummary && (
+                <>
+                  <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{aiSummary.summary}</p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    AI-generated · Based on ACLED data · Verify before operational use
+                    {aiSummary.event_count > 0 && ` · ${aiSummary.event_count.toLocaleString()} events`}
+                  </p>
+                </>
+              )}
+            </div>
+          )}
 
           {!historyLoading && unitHistory && (
             <div className="space-y-4">
@@ -608,22 +758,22 @@ export default function SpatialPage() {
 
                 <div className="h-72">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={yearlyClassificationForLastTen} margin={{ top: 18, right: 16, bottom: 8, left: 6 }}>
+                    <LineChart data={periodClassificationSeries} margin={{ top: 18, right: 16, bottom: 8, left: 6 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#ececec" />
-                      <XAxis dataKey="year" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
+                      <XAxis dataKey="period" tick={{ fontSize: 9 }} interval="preserveStartEnd" />
                       <YAxis
                         tick={{ fontSize: 10 }}
-                        domain={[0, 3]}
-                        ticks={[0, 1, 2, 3]}
-                        tickFormatter={(value) => STATUS_LABEL_BY_CODE[value as ClassificationCode] ?? ''}
+                        domain={[0, 2]}
+                        ticks={[0, 1, 2]}
+                        tickFormatter={(value) => TREND_LABEL[value as number] ?? ''}
                         width={145}
                       />
                       <Tooltip
-                        formatter={(value: number) => {
-                          const code = Number(value) as ClassificationCode;
-                          return [STATUS_LABEL_BY_CODE[code] ?? 'Unknown', 'Classification'];
+                        formatter={(value: number | undefined) => {
+                          if (value === undefined) return ['Unknown', 'Classification'];
+                          return [TREND_LABEL[Number(value)] ?? 'Unknown', 'Classification'];
                         }}
-                        labelFormatter={(value) => `Year: ${value}`}
+                        labelFormatter={(value) => `Period: ${value}`}
                       />
                       <Line
                         type="linear"
@@ -649,6 +799,65 @@ export default function SpatialPage() {
                   </ResponsiveContainer>
                 </div>
               </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {showWbProjects && selectedProps && (
+        <div className="bg-white rounded-lg shadow-sm p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-3 h-3 shrink-0 border border-white shadow-sm" style={{ background: '#009fda', transform: 'rotate(45deg)' }} />
+            <h2 className="font-semibold text-sm text-gray-800">
+              WB Projects — {getUnitName(selectedProps, (selectedProps._clickedLevel ?? adminLevel) as AdminLevel)}
+            </h2>
+            {wbUnitLoading && <span className="text-xs text-gray-400 ml-1">Loading…</span>}
+          </div>
+
+          {!wbUnitLoading && wbUnitProjects.length === 0 && (
+            <p className="text-xs text-gray-400">No WB project sites recorded for this unit.</p>
+          )}
+
+          {wbUnitProjects.length > 0 && (
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs border-collapse">
+                <thead>
+                  <tr className="bg-gray-50 text-left">
+                    <th className="px-2 py-1.5 font-medium text-gray-600 border-b border-gray-200">Project</th>
+                    <th className="px-2 py-1.5 font-medium text-gray-600 border-b border-gray-200">Status</th>
+                    <th className="px-2 py-1.5 font-medium text-gray-600 border-b border-gray-200">Practice Area</th>
+                    <th className="px-2 py-1.5 font-medium text-gray-600 border-b border-gray-200 text-right">FY</th>
+                    <th className="px-2 py-1.5 font-medium text-gray-600 border-b border-gray-200 text-right">Commitment</th>
+                    <th className="px-2 py-1.5 font-medium text-gray-600 border-b border-gray-200">Sites</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {wbUnitProjects.map((p) => {
+                    const statusColor = p.status === 'Active' ? '#009fda' : p.status === 'Closed' ? '#888' : '#f59e0b';
+                    const commitment = p.commitment_amt == null ? '—'
+                      : p.commitment_amt >= 1_000_000_000
+                        ? `$${(p.commitment_amt / 1_000_000_000).toFixed(1)}B`
+                        : `$${Math.round(p.commitment_amt / 1_000_000)}M`;
+                    return (
+                      <tr key={`${p.proj_id}-${p.locations[0]}`} className="border-b border-gray-100 hover:bg-gray-50" title={p.objective || undefined}>
+                        <td className="px-2 py-1.5 max-w-[200px]">
+                          <p className="font-medium text-gray-800 truncate">{p.name || p.proj_id}</p>
+                          <p className="text-gray-400 text-[10px]">{p.proj_id}</p>
+                        </td>
+                        <td className="px-2 py-1.5">
+                          <span className="font-semibold" style={{ color: statusColor }}>{p.status || '—'}</span>
+                        </td>
+                        <td className="px-2 py-1.5 text-gray-600 max-w-[160px] truncate">{p.practice || '—'}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-600">{p.approval_fy ? `FY${p.approval_fy}` : '—'}</td>
+                        <td className="px-2 py-1.5 text-right font-mono text-gray-700">{commitment}</td>
+                        <td className="px-2 py-1.5 text-gray-500">
+                          <span title={p.locations.join(', ')}>{p.location_count} site{p.location_count !== 1 ? 's' : ''}</span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

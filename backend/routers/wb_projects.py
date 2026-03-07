@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from services.wb_service import load_wb_projects, get_projects_by_unit, get_wb_state_summary
+from services.wb_service import load_wb_projects, get_projects_by_unit
 
 router = APIRouter(tags=["wb-projects"])
 
@@ -11,11 +11,6 @@ def get_wb_projects(
     """GeoJSON FeatureCollection of World Bank project sites merged with project metadata."""
     return load_wb_projects(status_filter=status)
 
-
-@router.get("/wb-projects/state-summary")
-def wb_state_summary_endpoint():
-    """Aggregated WB project stats per state (active count + total commitment)."""
-    return get_wb_state_summary()
 
 
 @router.get("/wb-projects/by-unit")

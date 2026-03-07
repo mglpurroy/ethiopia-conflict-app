@@ -27,3 +27,6 @@ frontend/.next/
 
 # Logs
 *.log
+
+# Large data files — too big for git, upload to Render Disk manually
+backend/data/eth_pop_2025_CN_100m_R2025A_v1.tif

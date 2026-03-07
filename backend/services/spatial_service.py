@@ -6,6 +6,8 @@ import calendar
 import datetime as dt
 import json
 import re
+import time
+import warnings
 from typing import Optional
 
 import geopandas as gpd
@@ -28,9 +30,10 @@ from services.conflict_service import (
     load_raw_acled,
 )
 
-BOUNDARY_DIR = DATA_DIR / "eth_adm_csa_bofedb_2021_shp"
+BOUNDARY_DIR = DATA_DIR / "Woredas_FCVModified"
+_LEGACY_BOUNDARY_DIR = DATA_DIR / "eth_adm_csa_bofedb_2021_shp"
 STATUS_LABELS = {
-    0: "No reported violence",
+    0: "Below threshold",
     1: "Below threshold",
     2: "Conflict-Affected",
     3: "Highly Conflict-Affected",
@@ -130,9 +133,24 @@ def _simplify(gdf: gpd.GeoDataFrame, level: int) -> gpd.GeoDataFrame:
     return out
 
 
+_FCV_COL_RENAME = {
+    "MergeTEXT": "ADM3_PCODE",
+    "admin3Name": "ADM3_EN",
+    "admin2Name": "ADM2_EN",
+    "admin2Pcod": "ADM2_PCODE",
+    "admin1Name": "ADM1_EN",
+    "admin1Pcod": "ADM1_PCODE",
+}
+
+
 def load_admin_boundaries() -> dict[int, gpd.GeoDataFrame]:
-    """Load ADM1/ADM2/ADM3 boundaries from Ethiopia shapefiles."""
-    key = _cache_key("eth_boundaries", "v1")
+    """Load ADM1/ADM2/ADM3 boundaries from Ethiopia shapefiles.
+
+    Prefers the Woredas_FCVModified shapefile (Eth_Admin3_v2.shp) and derives
+    ADM2/ADM1 boundaries by dissolving.  Falls back to the legacy CSA/BoFEDB
+    shapefiles if the new one is missing.
+    """
+    key = _cache_key("eth_boundaries", "v3_fcv")
     cached = _get_cached(key)
     if cached is not None:
         return cached
@@ -142,24 +160,27 @@ def load_admin_boundaries() -> dict[int, gpd.GeoDataFrame]:
         _set_cached(key, pkl)
         return pkl
 
-    adm1_path = BOUNDARY_DIR / "eth_admbnda_adm1_csa_bofedb_2021.shp"
-    adm2_path = BOUNDARY_DIR / "eth_admbnda_adm2_csa_bofedb_2021.shp"
-    adm3_path = BOUNDARY_DIR / "eth_admbnda_adm3_csa_bofedb_2021.shp"
-
     empty = gpd.GeoDataFrame()
-    if not adm3_path.exists():
-        result = {1: empty, 2: empty, 3: empty}
-        return result
 
-    adm3 = gpd.read_file(adm3_path).to_crs("EPSG:4326")
-    if adm2_path.exists():
-        adm2 = gpd.read_file(adm2_path).to_crs("EPSG:4326")
+    fcv_path = BOUNDARY_DIR / "Eth_Admin3_v2.shp"
+    legacy_adm3 = _LEGACY_BOUNDARY_DIR / "eth_admbnda_adm3_csa_bofedb_2021.shp"
+
+    if fcv_path.exists():
+        adm3 = gpd.read_file(fcv_path).to_crs("EPSG:4326")
+        adm3 = adm3.rename(columns=_FCV_COL_RENAME)
+    elif legacy_adm3.exists():
+        adm3 = gpd.read_file(legacy_adm3).to_crs("EPSG:4326")
     else:
-        adm2 = adm3.dissolve(by=["ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN"], as_index=False)
-    if adm1_path.exists():
-        adm1 = gpd.read_file(adm1_path).to_crs("EPSG:4326")
-    else:
-        adm1 = adm2.dissolve(by=["ADM1_PCODE", "ADM1_EN"], as_index=False)
+        return {1: empty, 2: empty, 3: empty}
+
+    for col in ["ADM3_PCODE", "ADM3_EN", "ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN"]:
+        if col not in adm3.columns:
+            adm3[col] = ""
+
+    adm2 = adm3.dissolve(
+        by=["ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN"], as_index=False
+    )
+    adm1 = adm2.dissolve(by=["ADM1_PCODE", "ADM1_EN"], as_index=False)
 
     keep1 = [c for c in ["ADM1_PCODE", "ADM1_EN", "geometry"] if c in adm1.columns]
     keep2 = [c for c in ["ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN", "geometry"] if c in adm2.columns]
@@ -598,11 +619,12 @@ def get_classification_geojson(
     categories = trajectory_categories or [
         "At-Risk",
         "Onset",
+        "LT Conflict",
+        "Escalation",
+        "LT High Conflict",
+        "Decreasing Conflict",
         "Recovery",
-        "Turnaround",
-        "Stable",
-        "Fluctuating",
-        "Insufficient Data",
+        "Below threshold",
     ]
 
     if conflict_metric == "highly_conflict_affected":
@@ -698,7 +720,7 @@ def get_classification_geojson(
             return _empty_fc()
         cols = ["ADM3_PCODE", "trajectory", "trajectory_selected", "current_classification", "current_deaths", "current_death_rate"]
         merged = gdf.merge(traj[cols], on="ADM3_PCODE", how="left")
-        merged["trajectory"] = merged["trajectory"].fillna("Insufficient Data")
+        merged["trajectory"] = merged["trajectory"].fillna("Below threshold")
         merged["trajectory_selected"] = merged["trajectory_selected"].fillna(False)
         if parent_pcode:
             if parent_level == 1 and "ADM1_PCODE" in merged.columns:
@@ -716,7 +738,7 @@ def get_classification_geojson(
     def _summarize(group: pd.DataFrame) -> pd.Series:
         total = len(group)
         counts = group["trajectory"].value_counts()
-        predominant = counts.index[0] if not counts.empty else "Insufficient Data"
+        predominant = counts.index[0] if not counts.empty else "Below threshold"
         selected_count = int(group["trajectory_selected"].sum())
         selected_share = selected_count / total if total else 0
         return pd.Series(
@@ -734,5 +756,173 @@ def get_classification_geojson(
         merged = merged[merged["ADM1_PCODE"] == parent_pcode]
     merged["selected_share"] = merged["selected_share"].fillna(0)
     merged["selected_count"] = merged["selected_count"].fillna(0)
-    merged["predominant_trajectory"] = merged["predominant_trajectory"].fillna("Insufficient Data")
+    merged["predominant_trajectory"] = merged["predominant_trajectory"].fillna("Below threshold")
     return json.loads(_simplify(merged, level).to_json())
+
+
+# ---------------------------------------------------------------------------
+# PSNP Woredas overlay
+# ---------------------------------------------------------------------------
+
+_PSNP_CACHE: dict = {}
+_PSNP_TTL = 3600
+_PSNP_FUZZY_THRESHOLD = 0.65
+_PSNP_SKIP_SHEETS = {"Summary", "Special Woredas"}
+
+# Region name corrections: xlsx value -> shapefile ADM1_EN
+_PSNP_REGION_FIX: dict[str, str] = {
+    "Centeral Ethiopia": "Central Ethiopia",
+    "Diredawa": "Dire Dawa",
+    "South West": "South West Ethiopia",
+}
+
+# Woreda name corrections: xlsx value -> shapefile admin3Name
+_PSNP_NAME_FIX: dict[str, str] = {
+    "Glomekeda": "Gulo Mekeda",
+    "Seweha sasiea": "Sebuha Saesie",
+    "Klte awulaelo": "Kilte Awulaelo",
+    "Tanqa mlash": "Tanqua Melashe",
+    "Keyh Tekeli": "Keyhe tekli",
+    "Myknetal": "Endafelasi",
+    "Emeba senieat": "Emba Sieneti",
+    "Hahayele": "Hahayle",
+    "Adewa": "Adwa",
+    "Ahisae": "Ahsea",
+    "Adi Arbate": "Rama Adi Arbaete",
+    "L/maychwe": "Laelay Maychew",
+    "T/Maichew": "Tahtay Maychew",
+    "Naedire": "Naeder",
+    "selekeleka": "Laelay Koraro",
+    "T/koraro": "Tahtay Koraro",
+    "Asegede": "Asgede",
+    "Seyemet Addeyabo": "Seyemti Adyabo",
+    "M/adeyabo": "Maekel Adiyabo",
+    "T/adetyabo": "Tahtay Adiyabo",
+    "AdiDaerop": "Adi Daero",
+    "Abergele Yechila": "Abergele (TG)",
+    "Tseda emba": "Tsaeda Emba",
+    "Tsirea Wonberta": "Agulae",
+    "Bezet": "Bizet",
+    "Gerealeta": "Geraleta",
+    "Sahereti": "Saharti",
+    "Hntalo": "Hintalo",
+    "Wajrat": "Wajirat",
+    "Neqeseg": "Neqsege",
+    "TSiemebela": "Tsimbla",
+    "Raya chercher": "Chercher",
+    "Enda Mehoni": "Endamehoni",
+    "Kola Temben": "Kola Tembien",
+}
+
+
+def _normalize_name(s: object) -> str:
+    if not s or isinstance(s, float):
+        return ""
+    return re.sub(r"[\s\-_/.()+]+", "", str(s).lower().strip())
+
+
+def _fuzzy_match(norm_w: str, candidates: "gpd.GeoDataFrame") -> "gpd.GeoDataFrame":
+    from difflib import SequenceMatcher
+    scores = candidates["norm_ADM3_EN"].apply(
+        lambda x: SequenceMatcher(None, norm_w, x).ratio()
+    )
+    best_idx = scores.idxmax()
+    if scores[best_idx] >= _PSNP_FUZZY_THRESHOLD:
+        return candidates.loc[[best_idx]]
+    return candidates.iloc[0:0]
+
+
+def get_psnp_woredas_geojson() -> dict:
+    """Return a GeoJSON FeatureCollection of PSNP woreda centroids (all regions)."""
+    now = time.time()
+    if "psnp" in _PSNP_CACHE and now - _PSNP_CACHE.get("psnp_ts", 0) < _PSNP_TTL:
+        return _PSNP_CACHE["psnp"]
+
+    psnp_path = DATA_DIR / "EFY 2018 PSNP Woredas list..xlsx"
+    if not psnp_path.exists():
+        return {"type": "FeatureCollection", "features": []}
+
+    try:
+        import openpyxl  # noqa: F401
+        xl = pd.ExcelFile(psnp_path)
+        frames = []
+        for sheet in xl.sheet_names:
+            if sheet in _PSNP_SKIP_SHEETS:
+                continue
+            df_sheet = pd.read_excel(xl, sheet_name=sheet)
+            df_sheet.columns = df_sheet.columns.str.strip()
+            frames.append(df_sheet)
+        df = pd.concat(frames, ignore_index=True)
+        df.columns = df.columns.str.strip()
+        df["Woreda"] = df["Woreda"].str.strip()
+        df["Region"] = df["Region"].str.strip().replace(_PSNP_REGION_FIX)
+        df["Zone"] = df["Zone"].str.strip()
+        df = df.dropna(subset=["Region", "Woreda"])
+    except Exception as e:
+        print(f"PSNP load error: {e}")
+        return {"type": "FeatureCollection", "features": []}
+
+    boundaries = load_admin_boundaries()
+    gdf = boundaries.get(3, gpd.GeoDataFrame())
+    if gdf.empty:
+        return {"type": "FeatureCollection", "features": []}
+
+    warnings.filterwarnings("ignore")
+    gdf_proj = gdf.to_crs("EPSG:32637")
+    gdf = gdf.copy()
+    centroids = gdf_proj.geometry.centroid.to_crs("EPSG:4326")
+    gdf["centroid_lon"] = centroids.x
+    gdf["centroid_lat"] = centroids.y
+
+    for col in ["ADM3_EN", "ADM1_EN"]:
+        gdf[f"norm_{col}"] = gdf[col].apply(_normalize_name)
+
+    features = []
+    for _, row in df.iterrows():
+        region = row["Region"]
+        woreda = row["Woreda"]
+        zone = row.get("Zone", "")
+
+        lookup_name = _PSNP_NAME_FIX.get(woreda, woreda)
+        norm_w = _normalize_name(lookup_name)
+        norm_r = _normalize_name(region)
+
+        candidates = gdf[gdf["norm_ADM1_EN"] == norm_r]
+        if candidates.empty:
+            continue
+
+        match = candidates[candidates["norm_ADM3_EN"] == norm_w]
+        if match.empty:
+            for col in ["norm_ADM3_EN", "norm_ADM1_EN"]:
+                pass  # already checked
+            # check alt/ref name columns if present
+            for col in [c for c in gdf.columns if c.startswith("norm_") and c not in ("norm_ADM3_EN", "norm_ADM1_EN")]:
+                match = candidates[candidates[col] == norm_w]
+                if not match.empty:
+                    break
+        if match.empty and len(norm_w) >= 4:
+            match = candidates[candidates["norm_ADM3_EN"].str.startswith(norm_w[:6], na=False)]
+        if match.empty:
+            match = _fuzzy_match(norm_w, candidates)
+        if match.empty:
+            continue
+
+        hit = match.iloc[0]
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [float(hit["centroid_lon"]), float(hit["centroid_lat"])],
+            },
+            "properties": {
+                "woreda": woreda,
+                "region": region,
+                "zone": str(zone) if pd.notna(zone) else "",
+                "pcode": hit.get("ADM3_PCODE", ""),
+            },
+        })
+
+    result = {"type": "FeatureCollection", "features": features}
+    _PSNP_CACHE["psnp"] = result
+    _PSNP_CACHE["psnp_ts"] = now
+    return result

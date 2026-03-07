@@ -91,8 +91,11 @@ ACLED_DATA = _find_acled()
 # ---------------------------------------------------------------------------
 
 def generate_12_month_periods(start_year: int = START_YEAR) -> list[dict]:
-    """Generate rolling latest-12, Jan-Dec, and Jul-Jun periods (latest first)."""
-    key = _cache_key("periods", start_year)
+    """Generate strictly Jan-Dec and Jul-Jun 12-month periods (latest first).
+
+    Only includes a period if data exists covering at least part of it.
+    """
+    key = _cache_key("periods_v2", start_year)
     cached = _get_cached(key)
     if cached is not None:
         return cached
@@ -108,63 +111,37 @@ def generate_12_month_periods(start_year: int = START_YEAR) -> list[dict]:
         pass
 
     periods: list[dict] = []
-    seen_ids: set[str] = set()
 
-    # Always include an explicit rolling latest 12-month window as the first option.
-    latest_total = (max_year * 12 + (max_month - 1))
-    start_total = latest_total - 11
-    latest_start_year = start_total // 12
-    latest_start_month = (start_total % 12) + 1
-    rolling_id = f"{latest_start_year:04d}{latest_start_month:02d}_{max_year:04d}{max_month:02d}"
-    periods.append(
-        {
-            "id": rolling_id,
-            "label": f"{dt.date(latest_start_year, latest_start_month, 1):%b %Y} - {dt.date(max_year, max_month, 1):%b %Y} (Latest 12 Months)",
-            "start_year": latest_start_year,
-            "start_month": latest_start_month,
-            "end_year": max_year,
-            "end_month": max_month,
-            "type": "rolling_latest",
-            "sort_index": max_year * 1000 + max_month * 10 + 9,
-        }
-    )
-    seen_ids.add(rolling_id)
+    def _period_ended(ey: int, em: int) -> bool:
+        """Only include a period if its end month is fully covered by data."""
+        return (ey < max_year) or (ey == max_year and em <= max_month)
 
     for year in range(start_year, max_year + 1):
-        # Include current-year Jan-Dec even if incomplete (latest operational window).
-        if year < max_year or max_month >= 1:
-            pid = f"{year:04d}01_{year:04d}12"
-            if pid not in seen_ids:
-                periods.append(
-                    {
-                        "id": pid,
-                        "label": f"Jan {year} - Dec {year}",
-                        "start_year": year,
-                        "start_month": 1,
-                        "end_year": year,
-                        "end_month": 12,
-                        "type": "calendar",
-                        "sort_index": year * 1000 + 10,
-                    }
-                )
-                seen_ids.add(pid)
-        # Include Jul-Jun only when the end year is available.
-        if year < max_year:
-            pid = f"{year:04d}07_{year + 1:04d}06"
-            if pid not in seen_ids:
-                periods.append(
-                    {
-                        "id": pid,
-                        "label": f"Jul {year} - Jun {year + 1}",
-                        "start_year": year,
-                        "start_month": 7,
-                        "end_year": year + 1,
-                        "end_month": 6,
-                        "type": "mid_year",
-                        "sort_index": year * 1000 + 70,
-                    }
-                )
-                seen_ids.add(pid)
+        # Jan-Dec calendar year
+        if _period_ended(year, 12):
+            periods.append({
+                "id": f"{year:04d}01_{year:04d}12",
+                "label": f"Jan {year} - Dec {year}",
+                "start_year": year,
+                "start_month": 1,
+                "end_year": year,
+                "end_month": 12,
+                "type": "calendar",
+                "sort_index": year * 1000 + 12,
+            })
+
+        # Jul-Jun mid-year
+        if _period_ended(year + 1, 6):
+            periods.append({
+                "id": f"{year:04d}07_{year + 1:04d}06",
+                "label": f"Jul {year} - Jun {year + 1}",
+                "start_year": year,
+                "start_month": 7,
+                "end_year": year + 1,
+                "end_month": 6,
+                "type": "mid_year",
+                "sort_index": year * 1000 + 70,
+            })
 
     periods.sort(key=lambda p: p["sort_index"], reverse=True)
     _set_cached(key, periods)
@@ -285,9 +262,21 @@ def load_raw_acled() -> pd.DataFrame:
     return df
 
 
+_FCV_SHP = DATA_DIR / "Woredas_FCVModified" / "Eth_Admin3_v2.shp"
+_FCV_COL_RENAME = {
+    "MergeTEXT": "ADM3_PCODE",
+    "admin3Name": "ADM3_EN",
+    "admin2Name": "ADM2_EN",
+    "admin2Pcod": "ADM2_PCODE",
+    "admin1Name": "ADM1_EN",
+    "admin1Pcod": "ADM1_PCODE",
+}
+
+
 def load_population_data() -> pd.DataFrame:
-    """Load ADM3 population data from JSON with shapefile fallback."""
-    key = _cache_key("population", "ethiopia_v1")
+    """Load ADM3 population data from JSON, then merge in any new woredas
+    from the FCV-modified shapefile so every boundary polygon has a row."""
+    key = _cache_key("population", "ethiopia_v2_fcv")
     cached = _get_cached(key)
     if cached is not None:
         return cached
@@ -297,40 +286,34 @@ def load_population_data() -> pd.DataFrame:
         _set_cached(key, pkl)
         return pkl
 
+    _REQUIRED = [
+        "ADM3_PCODE", "ADM3_EN", "ADM2_PCODE", "ADM2_EN",
+        "ADM1_PCODE", "ADM1_EN", "ADM0_PCODE", "pop_count", "pop_count_millions",
+    ]
+
     json_path = DATA_DIR / "population_data.json"
     if json_path.exists():
         pop = pd.read_json(json_path)
     else:
-        shp = DATA_DIR / "eth_adm_csa_bofedb_2021_shp" / "eth_admbnda_adm3_csa_bofedb_2021.shp"
+        shp = _FCV_SHP if _FCV_SHP.exists() else (
+            DATA_DIR / "eth_adm_csa_bofedb_2021_shp" / "eth_admbnda_adm3_csa_bofedb_2021.shp"
+        )
         if not shp.exists():
-            pop = pd.DataFrame(
-                columns=[
-                    "ADM3_PCODE",
-                    "ADM3_EN",
-                    "ADM2_PCODE",
-                    "ADM2_EN",
-                    "ADM1_PCODE",
-                    "ADM1_EN",
-                    "ADM0_PCODE",
-                    "pop_count",
-                    "pop_count_millions",
-                ]
-            )
+            pop = pd.DataFrame(columns=_REQUIRED)
         else:
             gdf = gpd.read_file(shp)
-            pop = pd.DataFrame(
-                {
-                    "ADM3_PCODE": gdf.get("ADM3_PCODE", ""),
-                    "ADM3_EN": gdf.get("ADM3_EN", ""),
-                    "ADM2_PCODE": gdf.get("ADM2_PCODE", ""),
-                    "ADM2_EN": gdf.get("ADM2_EN", ""),
-                    "ADM1_PCODE": gdf.get("ADM1_PCODE", ""),
-                    "ADM1_EN": gdf.get("ADM1_EN", ""),
-                    "ADM0_PCODE": gdf.get("ADM0_PCODE", "ETH"),
-                    "pop_count": 0,
-                    "pop_count_millions": 0.0,
-                }
-            )
+            gdf = gdf.rename(columns=_FCV_COL_RENAME)
+            pop = pd.DataFrame({
+                "ADM3_PCODE": gdf.get("ADM3_PCODE", ""),
+                "ADM3_EN": gdf.get("ADM3_EN", ""),
+                "ADM2_PCODE": gdf.get("ADM2_PCODE", ""),
+                "ADM2_EN": gdf.get("ADM2_EN", ""),
+                "ADM1_PCODE": gdf.get("ADM1_PCODE", ""),
+                "ADM1_EN": gdf.get("ADM1_EN", ""),
+                "ADM0_PCODE": gdf.get("ADM0_PCODE", "ETH"),
+                "pop_count": 0,
+                "pop_count_millions": 0.0,
+            })
 
     for col in ["ADM3_PCODE", "ADM3_EN", "ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN"]:
         if col not in pop.columns:
@@ -344,6 +327,27 @@ def load_population_data() -> pd.DataFrame:
 
     pop["pop_count"] = pd.to_numeric(pop["pop_count"], errors="coerce").fillna(0).astype(int)
     pop["pop_count_millions"] = pop["pop_count"] / 1e6
+
+    # Merge in new woredas from the FCV shapefile that aren't in the pop JSON.
+    if _FCV_SHP.exists():
+        try:
+            fcv = gpd.read_file(_FCV_SHP).rename(columns=_FCV_COL_RENAME)
+            fcv_cols = ["ADM3_PCODE", "ADM3_EN", "ADM2_PCODE", "ADM2_EN", "ADM1_PCODE", "ADM1_EN"]
+            fcv_df = pd.DataFrame({c: fcv[c] for c in fcv_cols if c in fcv.columns})
+            for c in fcv_cols:
+                if c not in fcv_df.columns:
+                    fcv_df[c] = ""
+                fcv_df[c] = fcv_df[c].astype(str)
+
+            existing = set(pop["ADM3_PCODE"].tolist())
+            new_rows = fcv_df[~fcv_df["ADM3_PCODE"].isin(existing)].copy()
+            if not new_rows.empty:
+                new_rows["ADM0_PCODE"] = "ETH"
+                new_rows["pop_count"] = 0
+                new_rows["pop_count_millions"] = 0.0
+                pop = pd.concat([pop, new_rows], ignore_index=True)
+        except Exception:
+            pass
 
     _set_cached(key, pop)
     _save_pickle(key, pop)
@@ -555,7 +559,7 @@ def classify_and_aggregate(
     )
     merged["status_label"] = merged["status_code"].map(
         {
-            0: "No reported violence",
+            0: "Below threshold",
             1: "Below threshold",
             2: "Conflict-Affected",
             3: "Highly Conflict-Affected",
@@ -766,6 +770,88 @@ def get_actors(
 # Trajectory helpers
 # ---------------------------------------------------------------------------
 
+# Classification codes: 0=below/no violence, 1=conflict-affected, 2=highly conflict-affected
+CLASS_BELOW = 0
+CLASS_CONFLICT = 1
+CLASS_HIGH = 2
+
+
+def _get_event_ids_by_woreda_period(
+    periods: list[dict], max_periods: int = 6
+) -> dict[tuple[str, str], set[str]]:
+    """
+    Map (ADM3_PCODE, period_id) -> set of event_id_cnty for the most recent max_periods.
+    Used for Onset "new/unique conflict event" detection.
+    """
+    key = _cache_key("event_ids_traj", max_periods, periods[0]["id"] if periods else "none")
+    cached = _get_cached(key)
+    if cached is not None:
+        return cached
+
+    raw = load_raw_acled()
+    pop = load_population_data()
+    if raw.empty or pop.empty or "event_id_cnty" not in raw.columns:
+        _set_cached(key, {})
+        return {}
+
+    # Use same matching as _derive_event_counts_from_raw
+    raw_keyed = raw[["year", "month", "event_id_cnty", "admin1", "admin2", "admin3"]].copy()
+    raw_keyed["admin1_key"] = _normalize_text_series(raw_keyed["admin1"])
+    raw_keyed["admin2_key"] = _normalize_text_series(raw_keyed["admin2"])
+    raw_keyed["admin3_key"] = _normalize_text_series(raw_keyed["admin3"])
+
+    pop_keyed = pop[["ADM3_PCODE", "ADM1_EN", "ADM2_EN", "ADM3_EN"]].drop_duplicates().copy()
+    pop_keyed["ADM1_EN_key"] = _normalize_text_series(pop_keyed["ADM1_EN"])
+    pop_keyed["ADM2_EN_key"] = _normalize_text_series(pop_keyed["ADM2_EN"])
+    pop_keyed["ADM3_EN_key"] = _normalize_text_series(pop_keyed["ADM3_EN"])
+
+    strict = raw_keyed.merge(
+        pop_keyed[["ADM3_PCODE", "ADM1_EN_key", "ADM2_EN_key", "ADM3_EN_key"]],
+        left_on=["admin1_key", "admin2_key", "admin3_key"],
+        right_on=["ADM1_EN_key", "ADM2_EN_key", "ADM3_EN_key"],
+        how="left",
+    )
+
+    strict_match = strict[strict["ADM3_PCODE"].notna()][["ADM3_PCODE", "year", "month", "event_id_cnty"]].copy()
+    unmatched = strict[strict["ADM3_PCODE"].isna()][["year", "month", "event_id_cnty", "admin3_key"]].copy()
+    name_lookup = pop_keyed[["ADM3_PCODE", "ADM3_EN_key"]].drop_duplicates()
+    unique_names = name_lookup.groupby("ADM3_EN_key")["ADM3_PCODE"].nunique().reset_index(name="n")
+    unique_name_keys = set(unique_names[unique_names["n"] == 1]["ADM3_EN_key"].tolist())
+    name_lookup = name_lookup[name_lookup["ADM3_EN_key"].isin(unique_name_keys)]
+    fallback = unmatched.merge(name_lookup, left_on="admin3_key", right_on="ADM3_EN_key", how="left")
+    fallback_match = fallback[fallback["ADM3_PCODE"].notna()][["ADM3_PCODE", "year", "month", "event_id_cnty"]].copy()
+    combined = pd.concat([strict_match, fallback_match], ignore_index=True)
+
+    if combined.empty:
+        _set_cached(key, {})
+        return {}
+
+    combined["event_id_cnty"] = combined["event_id_cnty"].astype(str)
+
+    # Take most recent max_periods, oldest-first
+    recent_periods = periods[:max_periods][::-1]
+    result: dict[tuple[str, str], set[str]] = {}
+
+    for period in recent_periods:
+        pid = period["id"]
+        sy, sm = period["start_year"], period["start_month"]
+        ey, em = period["end_year"], period["end_month"]
+        if sy == ey:
+            mask = (combined["year"] == sy) & (combined["month"] >= sm) & (combined["month"] <= em)
+        else:
+            mask = (
+                ((combined["year"] == sy) & (combined["month"] >= sm))
+                | ((combined["year"] > sy) & (combined["year"] < ey))
+                | ((combined["year"] == ey) & (combined["month"] <= em))
+            )
+        period_events = combined[mask]
+        for pcode, grp in period_events.groupby("ADM3_PCODE"):
+            result[(str(pcode), pid)] = set(grp["event_id_cnty"].dropna().astype(str).tolist())
+
+    _set_cached(key, result)
+    return result
+
+
 def get_location_trend_data(
     conflict_data: pd.DataFrame,
     pop_data: pd.DataFrame,
@@ -804,7 +890,7 @@ def get_location_trend_data(
             classification_label = "Conflict-Affected"
         else:
             classification = 0
-            classification_label = "No reported violence" if (events <= 0 and deaths <= 0) else "Below threshold"
+            classification_label = "Below threshold"
 
         rows.append(
             {
@@ -827,51 +913,130 @@ def get_location_trend_data(
     return df
 
 
-def calculate_trajectory_classification(historical_data: pd.DataFrame, lookback_periods: int = 10) -> str:
-    """Classify a location's trajectory over recent periods."""
+def calculate_trajectory_classification(
+    historical_data: pd.DataFrame,
+    lookback_periods: int = 10,
+    event_ids_by_period: Optional[dict[str, set[str]]] = None,
+) -> str:
+    """
+    Classify a location's trajectory using rule-based transitions.
+    historical_data must be sorted oldest-first (by start_year, start_month).
+    event_ids_by_period: optional dict[period_id] -> set of event_id_cnty for Onset detection.
+    """
     if len(historical_data) < 3:
-        return "Insufficient Data"
+        return "Below threshold"
 
-    recent = historical_data.tail(lookback_periods)
+    recent = historical_data.tail(lookback_periods).reset_index(drop=True)
+    recent = recent.sort_values(["start_year", "start_month"]).reset_index(drop=True)
     classifications = recent["classification"].values
-    death_rates = recent["death_rate"].values
-    deaths = recent["deaths"].values
+    period_ids = recent["period_id"].tolist()
 
-    conflict_periods = int(np.sum(classifications >= 1))
-    total_periods = len(recent)
-    conflict_ratio = conflict_periods / total_periods if total_periods else 0
+    last_4 = recent.tail(4)
+    last_3 = recent.tail(3)
+    c4 = last_4["classification"].values
+    c3 = last_3["classification"].values
 
-    if len(death_rates) > 1:
-        x = np.arange(len(death_rates))
-        slope = np.polyfit(x, death_rates, 1)[0]
-    else:
-        slope = 0
+    def transition_below_to_conflict(i: int) -> bool:
+        if i <= 0:
+            return False
+        return classifications[i - 1] == CLASS_BELOW and classifications[i] == CLASS_CONFLICT
 
-    if len(deaths) > 1:
-        x = np.arange(len(deaths))
-        death_slope = np.polyfit(x, deaths, 1)[0]
-    else:
-        death_slope = 0
+    def transition_to_high(i: int) -> bool:
+        if i <= 0:
+            return False
+        prev = classifications[i - 1]
+        curr = classifications[i]
+        return curr == CLASS_HIGH and (prev == CLASS_CONFLICT or prev == CLASS_BELOW)
 
-    if conflict_ratio == 0:
-        return "At-Risk" if (slope > 0.5 or death_slope > 5) else "Stable"
-    if conflict_ratio < 0.3:
-        if slope > 1.0 or death_slope > 10:
-            return "At-Risk"
-        if slope < -0.5 or death_slope < -5:
-            return "Recovery"
-        return "Stable"
-    if conflict_ratio < 0.7:
-        if slope > 1.0 or death_slope > 10:
-            return "Onset"
-        if slope < -1.0 or death_slope < -10:
-            return "Recovery"
-        return "Turnaround"
-    if slope > 0.5 or death_slope > 5:
-        return "Onset"
-    if slope < -1.0 or death_slope < -10:
+    def transition_high_to_conflict(i: int) -> bool:
+        if i <= 0:
+            return False
+        return classifications[i - 1] == CLASS_HIGH and classifications[i] == CLASS_CONFLICT
+
+    def transition_to_below(i: int) -> bool:
+        if i <= 0:
+            return False
+        prev = classifications[i - 1]
+        curr = classifications[i]
+        return curr == CLASS_BELOW and (prev == CLASS_HIGH or prev == CLASS_CONFLICT)
+
+    def has_new_event_in_period(period_idx: int) -> bool:
+        if not event_ids_by_period or period_idx <= 0:
+            return True
+        curr_pid = period_ids[period_idx]
+        prev_pid = period_ids[period_idx - 1]
+        curr_ids = event_ids_by_period.get(curr_pid, set())
+        prev_ids = event_ids_by_period.get(prev_pid, set())
+        return bool(curr_ids - prev_ids)
+
+    # Indices in last_3 (0=oldest of 3, 2=newest)
+    n = len(last_3)
+    idx_offset = len(recent) - n
+
+    below_to_conflict_count = sum(
+        1 for i in range(1, len(recent)) if transition_below_to_conflict(i)
+    )
+    below_to_conflict_last3 = sum(
+        1 for i in range(idx_offset, len(recent)) if i >= 1 and transition_below_to_conflict(i)
+    )
+    to_high_last3 = sum(
+        1 for i in range(idx_offset, len(recent)) if i >= 1 and transition_to_high(i)
+    )
+    high_to_conflict_last3 = sum(
+        1 for i in range(idx_offset, len(recent)) if i >= 1 and transition_high_to_conflict(i)
+    )
+    to_below_last3 = sum(
+        1 for i in range(idx_offset, len(recent)) if i >= 1 and transition_to_below(i)
+    )
+
+    conflict_affected_count_4 = int((c4 >= CLASS_CONFLICT).sum())
+    high_count_4 = int((c4 == CLASS_HIGH).sum())
+
+    # Onset: need 2 below->conflict in last 3, each with new event
+    onset_periods = [
+        i for i in range(idx_offset, len(recent))
+        if i >= 1 and transition_below_to_conflict(i)
+    ]
+    onset_with_new_event = sum(1 for i in onset_periods if has_new_event_in_period(i))
+    onset_ok = below_to_conflict_last3 >= 2 and onset_with_new_event >= 2
+
+    # Recovery persistence: last conflict/high period index, within 6 intervals?
+    last_conflict_idx = None
+    for i in range(len(recent) - 1, -1, -1):
+        if classifications[i] >= CLASS_CONFLICT:
+            last_conflict_idx = i
+            break
+    intervals_since_conflict = (len(recent) - 1 - last_conflict_idx) if last_conflict_idx is not None else 999
+    recovery_persists = intervals_since_conflict <= 6
+
+    # Recovery: sustained de-escalation — last 2 periods both below threshold, within 6 intervals of last conflict.
+    # (Requires actual sustained calm, not oscillation between conflict and below.)
+    actually_recovering = (
+        len(classifications) >= 2
+        and classifications[-1] == CLASS_BELOW
+        and classifications[-2] == CLASS_BELOW
+        and last_conflict_idx is not None
+        and recovery_persists
+    )
+
+    # Priority order: LT High Conflict -> Escalation -> LT Conflict -> Decreasing -> Recovery -> Onset -> At-Risk -> Below
+    # Escalation is checked before LT Conflict so that woredas actively escalating to highly-conflict-affected
+    # are not suppressed by the long-term conflict label.
+    if high_count_4 >= 3:
+        return "LT High Conflict"
+    if 1 <= to_high_last3 <= 2:
+        return "Escalation"
+    if conflict_affected_count_4 >= 3:
+        return "LT Conflict"
+    if high_to_conflict_last3 >= 2:
+        return "Decreasing Conflict"
+    if actually_recovering:
         return "Recovery"
-    return "Fluctuating"
+    if onset_ok:
+        return "Onset"
+    if below_to_conflict_last3 >= 1:
+        return "At-Risk"
+    return "Below threshold"
 
 
 def classify_trajectory_data(
@@ -879,17 +1044,27 @@ def classify_trajectory_data(
     conflict_data: pd.DataFrame,
     periods: list[dict],
 ) -> pd.DataFrame:
-    """Calculate trajectory classes for every ADM3 unit."""
-    key = _cache_key("trajectory_all", len(pop_data), len(conflict_data), periods[0]["id"] if periods else "none")
+    """Calculate trajectory classes for every ADM3 unit using rule-based logic."""
+    key = _cache_key("trajectory_v2", len(pop_data), len(conflict_data), periods[0]["id"] if periods else "none")
     cached = _get_cached(key)
     if cached is not None:
         return cached
 
+    event_ids_map = _get_event_ids_by_woreda_period(periods, max_periods=6)
     units = pop_data[["ADM1_PCODE", "ADM1_EN", "ADM2_PCODE", "ADM2_EN", "ADM3_PCODE", "ADM3_EN"]].drop_duplicates()
     out_rows: list[dict] = []
     for _, unit in units.iterrows():
         trend = get_location_trend_data(conflict_data, pop_data, unit["ADM3_PCODE"], level="woreda", periods_list=periods)
-        trajectory = calculate_trajectory_classification(trend) if not trend.empty else "Insufficient Data"
+        pcode = unit["ADM3_PCODE"]
+        event_ids_by_period = {
+            pid: event_ids_map.get((pcode, pid), set())
+            for pid in (trend["period_id"].tolist() if not trend.empty else [])
+        }
+        trajectory = (
+            calculate_trajectory_classification(trend, lookback_periods=6, event_ids_by_period=event_ids_by_period)
+            if len(trend) >= 3
+            else "Below threshold"
+        )
         current = trend.iloc[-1] if not trend.empty else None
         out_rows.append(
             {

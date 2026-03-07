@@ -151,6 +151,16 @@ export const api = {
       params,
     ),
 
+  wbProjects: () =>
+    apiFetch<object>('/api/wb-projects'),
+
+  wbProjectsByUnit: (level: number, name: string) =>
+    apiFetch<{
+      proj_id: string; name: string; status: string; practice: string;
+      approval_fy: number | null; commitment_amt: number | null;
+      location_count: number; locations: string[]; objective: string;
+    }[]>('/api/wb-projects/by-unit', { level, name }),
+
   exportCsvUrl: (params: Record<string, string | undefined>) => {
     const url = toUrlObject('/api/export/csv');
     Object.entries(params).forEach(([k, v]) => {

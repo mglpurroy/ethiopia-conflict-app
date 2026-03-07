@@ -15,7 +15,7 @@ def test_generate_12_month_periods_is_deterministic_and_sorted():
 
     assert periods_1 == periods_2
     assert len(periods_1) > 1
-    assert periods_1[0]["type"] == "rolling_latest"
+    assert periods_1[0]["type"] in ("calendar", "mid_year")
     assert periods_1[0]["sort_index"] >= periods_1[1]["sort_index"]
     assert all("_" in p["id"] for p in periods_1)
 
@@ -128,17 +128,47 @@ def test_classify_and_aggregate_threshold_logic():
     assert row["highly_conflict_affected"] == 1
 
 
+def _trend_df(rows: list[dict]) -> pd.DataFrame:
+    """Build trend DataFrame with required columns."""
+    return pd.DataFrame([
+        {
+            "period_id": f"p{i}",
+            "start_year": 2022 + (i // 4),
+            "start_month": 1 + (i % 4) * 3,
+            "classification": r.get("c", 0),
+            "death_rate": 0.0,
+            "deaths": 0,
+        }
+        for i, r in enumerate(rows)
+    ])
+
+
 def test_trajectory_classifier_outputs_expected_categories():
-    insufficient = pd.DataFrame({"classification": [0, 0], "death_rate": [0.0, 0.0], "deaths": [0.0, 0.0]})
-    assert calculate_trajectory_classification(insufficient) == "Insufficient Data"
+    # < 3 periods -> Below threshold
+    insufficient = _trend_df([{"c": 0}, {"c": 0}])
+    assert calculate_trajectory_classification(insufficient) == "Below threshold"
 
-    stable = pd.DataFrame({"classification": [0, 0, 0, 0], "death_rate": [0.0, 0.0, 0.0, 0.0], "deaths": [0, 0, 0, 0]})
-    assert calculate_trajectory_classification(stable) == "Stable"
+    # All below, no transitions -> Below threshold
+    stable = _trend_df([{"c": 0}, {"c": 0}, {"c": 0}, {"c": 0}])
+    assert calculate_trajectory_classification(stable) == "Below threshold"
 
-    onset = pd.DataFrame({"classification": [1, 1, 1, 1], "death_rate": [2.0, 4.0, 6.0, 8.0], "deaths": [12, 20, 30, 45]})
-    assert calculate_trajectory_classification(onset) == "Onset"
+    # LT Conflict: 3+ of last 4 conflict-affected
+    lt_conflict = _trend_df([{"c": 1}, {"c": 1}, {"c": 1}, {"c": 1}])
+    assert calculate_trajectory_classification(lt_conflict) == "LT Conflict"
 
-    recovery = pd.DataFrame(
-        {"classification": [2, 2, 2, 2], "death_rate": [20.0, 12.0, 7.0, 3.0], "deaths": [120, 75, 40, 20]}
-    )
+    # LT High Conflict: 3+ of last 4 highly conflict-affected
+    lt_high = _trend_df([{"c": 2}, {"c": 2}, {"c": 2}, {"c": 2}])
+    assert calculate_trajectory_classification(lt_high) == "LT High Conflict"
+
+    # At-Risk: 1 of last 3 periods transitioned below -> conflict
+    at_risk = _trend_df([{"c": 0}, {"c": 0}, {"c": 0}, {"c": 1}])  # last period: below->conflict
+    assert calculate_trajectory_classification(at_risk) == "At-Risk"
+
+    # Recovery: was in conflict, now last 2 periods are both below threshold
+    # (genuine de-escalation, not oscillation)
+    recovery = _trend_df([{"c": 1}, {"c": 1}, {"c": 1}, {"c": 1}, {"c": 0}, {"c": 0}])
     assert calculate_trajectory_classification(recovery) == "Recovery"
+
+    # Oscillating conflict/below should NOT be Recovery (was the old bug)
+    oscillating = _trend_df([{"c": 1}, {"c": 0}, {"c": 1}, {"c": 0}])
+    assert calculate_trajectory_classification(oscillating) != "Recovery"

@@ -31,6 +31,31 @@ function featureBbox(geometry: any): [[number, number], [number, number]] {
   ];
 }
 
+function buildWbPopupHtml(props: Record<string, any>): string {
+  const name = props.name || props.proj_id || 'WB Project';
+  const status = props.status || '';
+  const practice = props.practice || '';
+  const location = props.location_name || props.admin1 || '';
+  const approvalFy = props.approval_fy ? `FY${props.approval_fy}` : '';
+  const commitment = props.commitment_amt != null
+    ? props.commitment_amt >= 1_000_000_000
+      ? `$${(props.commitment_amt / 1_000_000_000).toFixed(1)}B`
+      : `$${Math.round(props.commitment_amt / 1_000_000)}M`
+    : '';
+  const statusColor = status === 'Active' ? '#56b4e9' : status === 'Closed' ? '#999999' : '#e69f00';
+  return `<div style="font-family:sans-serif;font-size:12px;min-width:220px;line-height:1.6">
+    <div style="font-weight:700;margin-bottom:3px">${name}</div>
+    <div style="margin-bottom:4px">
+      <span style="color:${statusColor};font-weight:600;font-size:11px">${status}</span>
+      ${approvalFy ? `<span style="color:#888;font-size:11px;margin-left:6px">${approvalFy}</span>` : ''}
+    </div>
+    ${practice ? `<div style="color:#555;font-size:11px;margin-bottom:3px">${practice}</div>` : ''}
+    ${location ? `<div style="color:#666;font-size:11px;margin-bottom:2px">📍 ${location}</div>` : ''}
+    ${commitment ? `Commitment: <b>${commitment}</b><br/>` : ''}
+    <div style="color:#888;font-size:10px;margin-top:3px">${props.proj_id}</div>
+  </div>`;
+}
+
 interface ConflictMapProps {
   level: 1 | 2 | 3;
   variable: 'deaths' | 'ward_share' | 'rate' | 'events' | 'density';
@@ -49,6 +74,9 @@ interface ConflictMapProps {
   parentLevel?: 1 | 2;
   regionPcode?: string;
   showEvents?: boolean;
+  showWbProjects?: boolean;
+  wbStatusFilter?: string[];
+  showPsnp?: boolean;
   showChoropleth?: boolean;
   showBoundaries?: boolean;
   activeEventTypes?: string[];
@@ -121,26 +149,37 @@ function getClassificationColor(
   analysisType: 'conflict_metrics' | 'trajectory',
 ) {
   if (analysisType === 'trajectory') {
-    return [
+    const trajectoryColor: any = [
       'match',
-      ['coalesce', ['get', 'trajectory'], ['get', 'predominant_trajectory'], 'Insufficient Data'],
+      ['coalesce', ['get', 'trajectory'], ['get', 'predominant_trajectory'], 'Below threshold'],
       'At-Risk', '#f97316',
       'Onset', '#dc2626',
+      'LT Conflict', '#b91c1c',
+      'Escalation', '#ea580c',
+      'LT High Conflict', '#7f1d1d',
+      'Decreasing Conflict', '#0284c7',
       'Recovery', '#16a34a',
-      'Turnaround', '#0284c7',
-      'Stable', '#64748b',
-      'Fluctuating', '#7c3aed',
       '#d1d5db',
+    ];
+    // Gray out woredas where trajectory_selected=false, or aggregates where selected_share=0
+    return [
+      'case',
+      // Woreda: backend sets trajectory_selected=false when category is filtered out
+      ['!', ['coalesce', ['get', 'trajectory_selected'], true]],
+      '#e5e7eb',
+      // Aggregate (region/zone): no sub-units match the filter
+      ['==', ['coalesce', ['get', 'selected_share'], 1], 0],
+      '#e5e7eb',
+      trajectoryColor,
     ];
   }
 
   return [
     'match',
-    ['coalesce', ['get', 'status_label'], 'No reported violence'],
+    ['coalesce', ['get', 'status_label'], 'Below threshold'],
     'Highly Conflict-Affected', '#b91c1c',
     'Conflict-Affected', '#ef4444',
-    'Below threshold', '#f59e0b',
-    '#bfdbfe',
+    '#f59e0b',
   ];
 }
 
@@ -157,7 +196,7 @@ function buildPopupHtml(
 ): string {
   if (analysisType === 'trajectory') {
     const name = level === 1 ? (props.ADM1_EN ?? 'Unknown') : level === 2 ? (props.ADM2_EN ?? 'Unknown') : (props.ADM3_EN ?? 'Unknown');
-    const trajectory = props.trajectory ?? props.predominant_trajectory ?? 'Insufficient Data';
+    const trajectory = props.trajectory ?? props.predominant_trajectory ?? 'Below threshold';
     const selectedShare = props.selected_share != null ? `${(Number(props.selected_share) * 100).toFixed(1)}%` : 'N/A';
     return `<div style="font-family:sans-serif;font-size:12px;min-width:280px;line-height:1.5">
       <div style="font-weight:700;margin-bottom:2px">${name}</div>
@@ -170,7 +209,7 @@ function buildPopupHtml(
     const woreda = props.ADM3_EN ?? 'Unknown Woreda';
     const zone = props.ADM2_EN ?? '';
     const region = props.ADM1_EN ?? '';
-    const status = String(props.status_label ?? 'No reported violence');
+    const status = String(props.status_label ?? 'Below threshold');
     const deaths = Number(props.ACLED_BRD_total ?? 0).toLocaleString();
     const rate = Number(props.acled_total_death_rate ?? 0).toFixed(2);
     const pop = props.pop_count ? Number(props.pop_count).toLocaleString() : 'N/A';
@@ -187,7 +226,7 @@ function buildPopupHtml(
     </div>`;
   }
   const name = level === 2 ? (props.ADM2_EN ?? 'Unknown') : (props.ADM1_EN ?? 'Unknown');
-  const status = String(props.status_label ?? 'No reported violence');
+  const status = String(props.status_label ?? 'Below threshold');
   const parent = level === 2 && props.ADM1_EN ? `Region: <b>${props.ADM1_EN}</b><br/>` : '';
   const pop = props.pop_count ? Number(props.pop_count).toLocaleString() : 'N/A';
   const deaths = Number(props.ACLED_BRD_total ?? 0).toLocaleString();
@@ -230,17 +269,22 @@ const FILL_ID = 'choropleth-fill';
 const OUTLINE_ID = 'choropleth-outline';
 const EVENTS_SOURCE_ID = 'acled-events';
 const EVENTS_LAYER_ID = 'acled-events-circles';
+const WB_SOURCE_ID = 'wb-projects';
+const WB_LAYER_ID = 'wb-projects-symbols';
+const PSNP_SOURCE_ID = 'psnp-woredas';
+const PSNP_LAYER_ID = 'psnp-woredas-symbols';
 const DENSITY_SOURCE_ID = 'density-heatmap';
 const DENSITY_LAYER_ID = 'density-heatmap-layer';
 
+// Colors chosen to contrast with trajectory fills (avoid red/orange over Onset/At-Risk)
 const EVENT_TYPE_COLORS: Record<string, string> = {
-  'Battles': '#0072B2',
-  'Violence against civilians': '#CC79A7',
-  'Explosions/Remote violence': '#009E73',
-  'Riots': '#5D3A9B',
-  'Protests': '#8C564B',
+  'Battles': '#0369a1',
+  'Violence against civilians': '#7c3aed',
+  'Explosions/Remote violence': '#0d9488',
+  'Riots': '#c026d3',
+  'Protests': '#ca8a04',
 };
-const EVENT_TYPE_DEFAULT_COLOR = '#4D4D4D';
+const EVENT_TYPE_DEFAULT_COLOR = '#475569';
 
 const EVENT_TYPE_LABELS = Object.keys(EVENT_TYPE_COLORS);
 
@@ -265,6 +309,9 @@ export default function ConflictMap({
   parentLevel,
   regionPcode,
   showEvents = false,
+  showWbProjects = false,
+  wbStatusFilter = ['Active'],
+  showPsnp = false,
   showChoropleth = true,
   showBoundaries = true,
   activeEventTypes,
@@ -288,6 +335,15 @@ export default function ConflictMap({
   const eventsLeaveHandlerRef = useRef<(() => void) | null>(null);
   const eventsPopupRef = useRef<maplibregl.Popup | null>(null);
   const eventsRequestRef = useRef(0);
+  // WB projects overlay refs
+  const wbStatusFilterRef = useRef(wbStatusFilter);
+  useEffect(() => { wbStatusFilterRef.current = wbStatusFilter; }, [wbStatusFilter]);
+  const wbEnterHandlerRef = useRef<((e: any) => void) | null>(null);
+  const wbLeaveHandlerRef = useRef<(() => void) | null>(null);
+  const wbPopupRef = useRef<maplibregl.Popup | null>(null);
+  const psnpEnterHandlerRef = useRef<((e: any) => void) | null>(null);
+  const psnpLeaveHandlerRef = useRef<(() => void) | null>(null);
+  const psnpPopupRef = useRef<maplibregl.Popup | null>(null);
 
   const onUnitClickRef = useRef(onUnitClick);
   const onDrillDownRef = useRef(onDrillDown);
@@ -340,6 +396,182 @@ export default function ConflictMap({
         `&end_year=${endYear}&end_month=${endMonth}`,
         parentEventFilter,
       ].join('');
+
+  const removeWbLayer = useCallback(() => {
+    if (!map.current) return;
+    if (wbEnterHandlerRef.current) {
+      map.current.off('mouseenter', WB_LAYER_ID, wbEnterHandlerRef.current);
+      wbEnterHandlerRef.current = null;
+    }
+    if (wbLeaveHandlerRef.current) {
+      map.current.off('mouseleave', WB_LAYER_ID, wbLeaveHandlerRef.current);
+      wbLeaveHandlerRef.current = null;
+    }
+    if (map.current.getLayer(WB_LAYER_ID)) map.current.removeLayer(WB_LAYER_ID);
+    if (map.current.getSource(WB_SOURCE_ID)) map.current.removeSource(WB_SOURCE_ID);
+    wbPopupRef.current?.remove();
+  }, []);
+
+  /** Move WB + PSNP pin layers to top of the stack so they're never occluded. */
+  const bringPinsToTop = useCallback(() => {
+    if (!map.current) return;
+    if (map.current.getLayer(EVENTS_LAYER_ID)) map.current.moveLayer(EVENTS_LAYER_ID);
+    if (map.current.getLayer(WB_LAYER_ID)) map.current.moveLayer(WB_LAYER_ID);
+    if (map.current.getLayer(PSNP_LAYER_ID)) map.current.moveLayer(PSNP_LAYER_ID);
+  }, []);
+
+  const loadWbProjects = useCallback(async () => {
+    if (!map.current) return;
+    if (!showWbProjects) { removeWbLayer(); return; }
+    try {
+      const res = await fetch(apiUrl('/api/wb-projects'));
+      if (!res.ok) throw new Error(`API error ${res.status}`);
+      const geojson = await res.json();
+      removeWbLayer();
+      if (!map.current) return;
+
+      // Load pin SDF image once
+      if (!map.current.hasImage('wb-pin')) {
+        const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path fill="white" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`;
+        const img = new Image(32, 32);
+        await new Promise<void>((resolve) => {
+          img.onload = () => {
+            if (map.current && !map.current.hasImage('wb-pin')) {
+              map.current.addImage('wb-pin', img, { sdf: true });
+            }
+            resolve();
+          };
+          img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(pinSvg)}`;
+        });
+      }
+      if (!map.current) return;
+
+      map.current.addSource(WB_SOURCE_ID, { type: 'geojson', data: geojson });
+      map.current.addLayer({
+        id: WB_LAYER_ID,
+        type: 'symbol',
+        source: WB_SOURCE_ID,
+        layout: {
+          'icon-image': 'wb-pin',
+          'icon-size': 0.9,
+          'icon-anchor': 'bottom',
+          'icon-allow-overlap': true,
+        },
+        paint: {
+          'icon-color': [
+            'match', ['get', 'status'],
+            'Active', '#56b4e9',
+            'Closed', '#999999',
+            '#e69f00',
+          ],
+          'icon-opacity': 0.9,
+        },
+      } as any);
+      const initialFilter = wbStatusFilterRef.current;
+      const expanded = initialFilter.flatMap((s) => (s === 'Other' ? [s, ''] : [s]));
+      if (expanded.length > 0) {
+        map.current.setFilter(WB_LAYER_ID, ['in', ['get', 'status'], ['literal', expanded]] as any);
+      }
+      if (!wbPopupRef.current) {
+        wbPopupRef.current = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+      }
+      const popup = wbPopupRef.current;
+      const enterHandler = (e: any) => {
+        if (!map.current) return;
+        map.current.getCanvas().style.cursor = 'pointer';
+        popup.setLngLat(e.lngLat).setHTML(buildWbPopupHtml(e.features?.[0]?.properties ?? {})).addTo(map.current);
+      };
+      const leaveHandler = () => { if (!map.current) return; map.current.getCanvas().style.cursor = ''; popup.remove(); };
+      wbEnterHandlerRef.current = enterHandler;
+      wbLeaveHandlerRef.current = leaveHandler;
+      map.current.on('mouseenter', WB_LAYER_ID, enterHandler);
+      map.current.on('mouseleave', WB_LAYER_ID, leaveHandler);
+    } catch (err) {
+      console.error('WB projects load error:', err);
+    }
+  }, [showWbProjects, removeWbLayer]);
+
+  const removePsnpLayer = useCallback(() => {
+    if (!map.current) return;
+    if (psnpEnterHandlerRef.current) {
+      map.current.off('mouseenter', PSNP_LAYER_ID, psnpEnterHandlerRef.current);
+      psnpEnterHandlerRef.current = null;
+    }
+    if (psnpLeaveHandlerRef.current) {
+      map.current.off('mouseleave', PSNP_LAYER_ID, psnpLeaveHandlerRef.current);
+      psnpLeaveHandlerRef.current = null;
+    }
+    if (map.current.getLayer(PSNP_LAYER_ID)) map.current.removeLayer(PSNP_LAYER_ID);
+    if (map.current.getSource(PSNP_SOURCE_ID)) map.current.removeSource(PSNP_SOURCE_ID);
+    psnpPopupRef.current?.remove();
+  }, []);
+
+  const loadPsnpLayer = useCallback(async () => {
+    if (!map.current) return;
+    if (!showPsnp) { removePsnpLayer(); return; }
+    try {
+      const res = await fetch(apiUrl('/api/spatial/psnp-woredas'));
+      if (!res.ok) throw new Error(`API error ${res.status}`);
+      const geojson = await res.json();
+      removePsnpLayer();
+      if (!map.current) return;
+
+      if (!map.current.hasImage('psnp-pin')) {
+        const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path fill="white" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`;
+        const img = new Image(32, 32);
+        await new Promise<void>((resolve) => {
+          img.onload = () => {
+            if (map.current && !map.current.hasImage('psnp-pin')) {
+              map.current.addImage('psnp-pin', img, { sdf: true });
+            }
+            resolve();
+          };
+          img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(pinSvg)}`;
+        });
+      }
+      if (!map.current) return;
+
+      map.current.addSource(PSNP_SOURCE_ID, { type: 'geojson', data: geojson });
+      map.current.addLayer({
+        id: PSNP_LAYER_ID,
+        type: 'symbol',
+        source: PSNP_SOURCE_ID,
+        layout: {
+          'icon-image': 'psnp-pin',
+          'icon-size': 0.9,
+          'icon-anchor': 'bottom',
+          'icon-allow-overlap': true,
+        },
+        paint: {
+          'icon-color': '#cc79a7',
+          'icon-opacity': 0.9,
+        },
+      } as any);
+
+      if (!psnpPopupRef.current) {
+        psnpPopupRef.current = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+      }
+      const popup = psnpPopupRef.current;
+      const enterHandler = (e: any) => {
+        if (!map.current) return;
+        map.current.getCanvas().style.cursor = 'pointer';
+        const props = e.features?.[0]?.properties ?? {};
+        const html = `<div style="font-family:sans-serif;font-size:12px;line-height:1.6">
+          <div style="font-weight:700;margin-bottom:2px">${props.woreda ?? ''}</div>
+          <div style="color:#555;font-size:11px">${props.zone ? props.zone + ' Zone · ' : ''}${props.region ?? ''}</div>
+          <div style="color:#cc79a7;font-size:10px;margin-top:2px;font-weight:600">PSNP Woreda</div>
+        </div>`;
+        popup.setLngLat(e.lngLat).setHTML(html).addTo(map.current);
+      };
+      const leaveHandler = () => { if (!map.current) return; map.current.getCanvas().style.cursor = ''; popup.remove(); };
+      psnpEnterHandlerRef.current = enterHandler;
+      psnpLeaveHandlerRef.current = leaveHandler;
+      map.current.on('mouseenter', PSNP_LAYER_ID, enterHandler);
+      map.current.on('mouseleave', PSNP_LAYER_ID, leaveHandler);
+    } catch (err) {
+      console.error('PSNP layer load error:', err);
+    }
+  }, [showPsnp, removePsnpLayer]);
 
   /** Remove events layer + source from the map (idempotent). */
   const removeEventsLayer = useCallback(() => {
@@ -426,11 +658,14 @@ export default function ConflictMap({
             20, 10,
             100, 15,
           ],
-          'circle-opacity': 0.8,
-          'circle-stroke-width': 0.5,
-          'circle-stroke-color': 'rgba(0,0,0,0.3)',
+          'circle-opacity': 0.85,
+          'circle-stroke-width': 1.5,
+          'circle-stroke-color': '#ffffff',
         },
       });
+
+      // Keep pin overlays on top of event circles
+      bringPinsToTop();
 
       if (!eventsPopupRef.current) {
         eventsPopupRef.current = new maplibregl.Popup({
@@ -470,6 +705,7 @@ export default function ConflictMap({
     showEvents,
     eventsUrl,
     removeEventsLayer,
+    bringPinsToTop,
     level,
     parentLevel,
     parentPcode,
@@ -628,6 +864,9 @@ export default function ConflictMap({
         },
       }, beforeLayer);
 
+      // Always keep pin overlays above choropleth
+      bringPinsToTop();
+
       // Create shared popup
       if (!popupRef.current) {
         popupRef.current = new maplibregl.Popup({
@@ -727,6 +966,7 @@ export default function ConflictMap({
     level,
     periodId,
     analysisType,
+    bringPinsToTop,
   ]);
 
   useEffect(() => {
@@ -754,13 +994,19 @@ export default function ConflictMap({
     map.current.on('load', () => {
       loadChoropleth();
       loadEvents();
+      loadWbProjects();
+      loadPsnpLayer();
       onMapReady?.(map.current!);
     });
 
     return () => {
       removeEventsLayer();
+      removeWbLayer();
+      removePsnpLayer();
       popupRef.current = null;
       eventsPopupRef.current = null;
+      wbPopupRef.current = null;
+      psnpPopupRef.current = null;
       map.current?.remove();
     };
   }, []);
@@ -777,6 +1023,30 @@ export default function ConflictMap({
       loadEvents();
     }
   }, [loadEvents]);
+
+  // Load / remove WB projects overlay
+  useEffect(() => {
+    if (map.current?.isStyleLoaded()) {
+      loadWbProjects();
+    }
+  }, [loadWbProjects]);
+
+  // Load / remove PSNP woredas overlay
+  useEffect(() => {
+    if (map.current?.isStyleLoaded()) {
+      loadPsnpLayer();
+    }
+  }, [loadPsnpLayer]);
+
+  // Apply status filter on WB layer without reloading
+  useEffect(() => {
+    if (!map.current?.getLayer(WB_LAYER_ID)) return;
+    const expanded = wbStatusFilter.flatMap((s) => (s === 'Other' ? [s, ''] : [s]));
+    const filter = expanded.length > 0
+      ? ['in', ['get', 'status'], ['literal', expanded]]
+      : ['==', ['literal', false], ['literal', true]];
+    map.current.setFilter(WB_LAYER_ID, filter as any);
+  }, [wbStatusFilter]);
 
   // Toggle choropleth fill visibility
   useEffect(() => {
@@ -834,13 +1104,14 @@ export default function ConflictMap({
         <>
           <p className="font-semibold text-gray-700 mb-1.5">Trajectory</p>
           {[
+            { color: '#7f1d1d', label: 'LT High Conflict' },
+            { color: '#b91c1c', label: 'LT Conflict' },
             { color: '#dc2626', label: 'Onset' },
+            { color: '#ea580c', label: 'Escalation' },
             { color: '#f97316', label: 'At-Risk' },
+            { color: '#0284c7', label: 'Decreasing Conflict' },
             { color: '#16a34a', label: 'Recovery' },
-            { color: '#0284c7', label: 'Turnaround' },
-            { color: '#64748b', label: 'Stable' },
-            { color: '#7c3aed', label: 'Fluctuating' },
-            { color: '#d1d5db', label: 'Insufficient Data' },
+            { color: '#d1d5db', label: 'Below threshold' },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5 mb-0.5">
               <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
@@ -859,7 +1130,6 @@ export default function ConflictMap({
             { color: '#b91c1c', label: 'Highly Conflict-Affected' },
             { color: '#ef4444', label: 'Conflict-Affected' },
             { color: '#f59e0b', label: 'Below threshold' },
-            { color: '#bfdbfe', label: 'No reported violence' },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5 mb-0.5">
               <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
@@ -1014,6 +1284,29 @@ export default function ConflictMap({
       </button>
       <div className="absolute bottom-8 right-3 bg-white/95 rounded shadow p-3 text-xs min-w-[150px] max-h-[300px] overflow-y-auto">
         {renderLegend()}
+        {showWbProjects && (
+          <div className="border-t border-gray-200 mt-2 pt-2">
+            <p className="font-semibold text-gray-700 mb-1.5">WB Projects</p>
+            {[
+              { color: '#56b4e9', label: 'Active' },
+              { color: '#999999', label: 'Closed' },
+              { color: '#e69f00', label: 'Other' },
+            ].map(({ color, label }) => (
+              <div key={label} className="flex items-center gap-1.5 mb-0.5">
+                <div className="w-3 h-3 rounded-full border border-white shadow-sm shrink-0" style={{ background: color }} />
+                <span className="text-gray-600">{label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        {showPsnp && (
+          <div className="border-t border-gray-200 mt-2 pt-2">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <div className="w-3 h-3 rounded-full border border-white shadow-sm shrink-0" style={{ background: '#cc79a7' }} />
+              <span className="text-gray-600">PSNP Woredas</span>
+            </div>
+          </div>
+        )}
         {showEvents && (
           <>
             <div className="border-t border-gray-200 mt-2 pt-2">

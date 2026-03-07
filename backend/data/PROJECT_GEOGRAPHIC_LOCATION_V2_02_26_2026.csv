@@ -1,0 +1,1239 @@
+"Service","Project Geographic Location","","","","","","","","","","","","","","","","","","","","","",""
+"Data Classification","Official Use Only","","","","","","","","","","","","","","","","","","","","","",""
+"Data Extract As Of","25 February 2026 01:34 PM EST","","","","","","","","","","","","","","","","","","","","","",""
+"","","","","","","","","","","","","","","","","","","","","","","",""
+PROJ_ID,GEO_LOC_ID,PLACE_ID,WBG_CNTRY_KEY,ISO_CNTRY_CODE,GEO_LOC_NME,GEO_LATITUDE_NBR,GEO_LONGITUDE_NBR,ADMIN_UNIT1_CODE,ADMIN_UNIT1_NAME,ADMIN_UNIT2_CODE,ADMIN_UNIT2_NAME,FEAT_CLASS_CODE,FEAT_CLASS_NAME,FEAT_CLASS_TEXT,FEAT_CODE,FEAT_NAME,POP_CNT,PROPOSED_IND,ACT_IND,SAP_UPD_DATE,SAP_UPD_USER_ID,UPD_DATE,LAST_CHGD_BY
+P156466,444178,PLA0068719,,ET,Adis Abeba Astedader,9.0,38.75,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2017-10-11,RFC-PROJECTS
+P090789,336488,PLA0001666,,ET,Gimbo,7.4000001,36.23333,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,336494,PLA0001667,,ET,Gimbi,9.4499998,39.26667,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,336494,PLA0001668,,ET,Gimbi,9.4499998,39.26667,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,336563,PLA0001669,,ET,Gibe,9.53333,38.599998,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,336820,PLA0001670,,ET,Geregera,11.76667,38.75,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,337405,PLA0001671,,ET,Gambela,8.25,34.583328,49,Gambela,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P107139,337405,PLA0001672,,ET,Gambela,8.25,34.583328,49,Gambela,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P101556,333314,PLA0001812,,ET,K'eranyo,10.96667,37.966671,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,333373,PLA0001813,,ET,Kombolcha,11.08155,39.743389,46,The State of Amhara,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P049395,333439,PLA0001814,,ET,Kela,7.7333298,39.566669,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,333517,PLA0001815,,ET,K'ebri Beyah,9.10361,43.174721,52,Somalia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,333766,PLA0001816,,ET,Jimma Zone,7.6666698,37.0,51,Oromia Regional State,333766,Jimma Zone,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P101556,333875,PLA0001817,,ET,Jemu,6.6385498,35.782848,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,333892,PLA0001818,,ET,Jembero,7.9333301,37.849998,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P113032,333961,PLA0001819,,ET,Jarso,10.05,38.299999,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P092353,334099,PLA0001820,,ET,Irb Shet',11.98333,37.566669,46,The State of Amhara,,,H,,,STM,stream,0,,,,,2011-07-01,
+P096323,334099,PLA0001821,,ET,Irb Shet',11.98333,37.566669,46,The State of Amhara,,,H,,,STM,stream,0,,X,,,2015-06-12,WB88572
+P091077,340119,PLA0001976,,ET,Dalol,14.2382,40.189259,45,Afar Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P113032,341021,PLA0001977,,ET,Guraghe Zone,8.25,38.0,54,SSNPR,341021,Guraghe Zone,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P099480,344797,PLA0002100,,ET,Adwa,14.16347,38.899239,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,344797,PLA0002101,,ET,Adwa,14.16347,38.899239,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P117644,344797,PLA0002102,,ET,Adwa,14.16347,38.899239,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P120172,344979,PLA0002103,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba Astedader,,,P,,,PPLC,capital of a political entity,0,,,,,2011-07-01,
+P101556,344979,PLA0002104,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba Astedader,,,P,,,PPLC,capital of a political entity,0,,,,,2011-07-01,
+P077380,344979,PLA0002105,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba Astedader,,,P,,,PPLC,capital of a political entity,0,,,,,2011-07-01,
+P101473,344979,PLA0002106,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba Astedader,,,P,,,PPLC,capital of a political entity,0,,,,,2011-07-01,
+P098132,344979,PLA0002107,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba Astedader,,,P,,,PPLC,capital of a political entity,0,X,X,,,2013-08-07,WB402247
+P101474,344979,PLA0002108,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba Astedader,,,P,,,PPLC,capital of a political entity,0,,X,,,2011-10-18,WB165448
+P107139,334335,PLA0001823,,ET,Ilubabor Kifle Hager,7.5,35.0,49,Gambela,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P106872,334609,PLA0001824,,ET,Hosa'ina,7.5833302,37.883331,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,334902,PLA0001825,,ET,Harshin,9.2169399,43.58778,52,Somalia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,335035,PLA0001827,,ET,Harer,9.3138704,42.118149,50,Harari Regional State,,,P,,,PPLA,seat of a first-order administrative division,0,,X,,,2011-10-18,WB165448
+P049395,335136,PLA0001828,,ET,Hamusit,11.78333,37.566669,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P096323,335614,PLA0001829,,ET,Gumara,12.28333,37.5,46,The State of Amhara,,,H,,,STMI,intermittent stream,0,,X,,,2015-06-12,WB88572
+P106872,335649,PLA0001830,,ET,Guliso,9.1666698,35.466671,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P099480,335797,PLA0001831,,ET,Guba,11.26667,35.283329,47,The State of Benshangul/Gumuz,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,335797,PLA0001832,,ET,Guba,11.26667,35.283329,47,The State of Benshangul/Gumuz,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,341397,PLA0001978,,ET,Bure,10.7,37.066669,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,341397,PLA0001979,,ET,Bure,10.7,37.066669,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,341664,PLA0001980,,ET,Borena Awraja,4.6666698,40.0,51,Oromia Regional State,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P101556,341664,PLA0001981,,ET,Borena Awraja,4.6666698,40.0,51,Oromia Regional State,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P049395,341680,PLA0001982,,ET,Boreda,9.3353996,41.28569,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,341689,PLA0001983,,ET,Bore,6.3666701,38.616669,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,341721,PLA0001984,,ET,Boo,9.3666697,35.816669,47,The State of Benshangul/Gumuz,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,341963,PLA0001985,,ET,Bitata,5.46667,39.48333,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,341981,PLA0001986,,ET,Bishoftu,9.1000004,37.25,51,Oromia Regional State,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P101556,342190,PLA0001987,,ET,Bichena,10.45,38.200001,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,342347,PLA0001988,,ET,Berbere,7.0833302,40.799999,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P096323,342423,PLA0001989,,ET,Beles Shet',11.9,39.466671,46,The State of Amhara,,,H,,,STM,stream,0,,X,,,2015-06-12,WB88572
+P049395,444179,PLA0002424,,ET,Afar Kilil,12.0,41.5,45,Afar Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P091077,444179,PLA0002425,,ET,Afar Kilil,12.0,41.5,45,Afar Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,444179,PLA0002426,,ET,Afar Kilil,12.0,41.5,45,Afar Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P106872,444179,PLA0002427,,ET,Afar Kilil,12.0,41.5,45,Afar Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P113220,444179,PLA0002428,,ET,Afar Kilil,12.0,41.5,45,Afar Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P108932,444179,PLA0002429,,ET,Afar Kilil,12.0,41.5,45,Afar Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P113220,444184,PLA0002430,,ET,Harari Hizb Kilil,9.25,42.166672,50,Harari Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P049395,444184,PLA0002431,,ET,Harari Hizb Kilil,9.25,42.166672,50,Harari Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P049395,444185,PLA0002432,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P091077,444185,PLA0002433,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P107139,326141,PLA0001518,,ET,Weyra Wuha,12.45,39.76667,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P074011,326265,PLA0001519,,ET,Weregenu,9.0166702,38.633331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,326394,PLA0001520,,ET,Welega,9.3000002,35.366669,51,Oromia Regional State,,,L,,,LCTY,locality,0,,,,,2011-07-01,
+P049395,326652,PLA0001521,,ET,Walga Wenz,8.3333302,37.466671,51,Oromia Regional State,,,H,,,STM,stream,0,,,,,2011-07-01,
+P101556,327544,PLA0001522,,ET,Cima,10.85,37.01667,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,327739,PLA0001523,,ET,Temben Awraja,13.5,39.0,53,Tigray Regional State,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P092353,327932,PLA0001524,,ET,Lake Tana,12.0,37.333328,46,The State of Amhara,,,H,,,LK,lake,0,,,,,2011-07-01,
+P096323,327932,PLA0001525,,ET,Lake Tana,12.0,37.333328,46,The State of Amhara,,,H,,,LK,lake,0,,X,,,2015-06-12,WB88572
+P101474,328247,PLA0001526,,ET,Sodo,6.9000001,37.75,54,SSNPR,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P090789,328630,PLA0001527,,ET,Sheko,7.0666699,35.650002,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,328630,PLA0001528,,ET,Sheko,7.0666699,35.650002,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,328649,PLA0001529,,ET,Shehet,13.35531,39.75478,45,Afar Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,328689,PLA0001530,,ET,Shashemene,7.1999998,38.599998,51,Oromia Regional State,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P049395,328776,PLA0001531,,ET,Seru,7.6666698,40.200001,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,328932,PLA0001532,,ET,Selekleka,14.11389,38.475559,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,338634,PLA0001673,,ET,Dora,10.07343,39.81358,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P117644,338726,PLA0001674,,ET,Dodola,6.9833298,39.183331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,338726,PLA0001675,,ET,Dodola,6.9833298,39.183331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P099480,338726,PLA0001676,,ET,Dodola,6.9833298,39.183331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,338750,PLA0001677,,ET,Dobi,9.7333298,36.833328,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,338770,PLA0001678,,ET,Doba,9.2857199,41.093971,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,339004,PLA0001679,,ET,Diksis,8.0500002,39.549999,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,339219,PLA0001680,,ET,Dese,11.13333,39.633331,46,The State of Amhara,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P120172,339219,PLA0001681,,ET,Dese,11.13333,39.633331,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,339318,PLA0001682,,ET,Dera,8.6333303,39.549999,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,339622,PLA0001683,,ET,Dedo,7.5166702,36.866669,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,340121,PLA0001684,,ET,Dalocha,7.78333,38.25,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,340304,PLA0001685,,ET,Dachi,6.9333301,37.183331,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,341826,PLA0001686,,ET,Boko,6.9333301,40.150002,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,326320,PLA0001693,,ET,Wendo,9.7333298,37.200001,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,326355,PLA0001694,,ET,Wolkite,8.28333,37.783329,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,326406,PLA0001695,,ET,Weldiya,11.8277,39.59164,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P099480,326406,PLA0001696,,ET,Weldiya,11.8277,39.59164,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,326706,PLA0001697,,ET,Wadera,5.75,39.316669,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,328354,PLA0001698,,ET,Simen Awraja,13.25,38.25,46,The State of Amhara,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P107139,328370,PLA0001699,,ET,Silt'e,8.0166702,38.333328,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P113032,328435,PLA0001700,,ET,Sidama Awraja,6.75,38.5,54,SSNPR,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P082998,328526,PLA0001701,,ET,Shire,14.13833,38.402779,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,329358,PLA0001533,,ET,Sama Gaba,8.0500002,35.166672,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,329376,PLA0001534,,ET,Sali,11.71667,38.349998,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,329585,PLA0001535,,ET,Robit,12.35,37.366669,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,344979,PLA0002109,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba Astedader,,,P,,,PPLC,capital of a political entity,0,,,,,2011-07-01,
+P101474,345149,PLA0002110,,ET,Adigrat,14.277,39.462002,53,Tigray Regional State,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P049395,345408,PLA0002111,,ET,Adele,8.5546103,41.02224,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,345781,PLA0002112,,ET,Abelti,8.1666698,37.566669,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P099480,328526,PLA0001702,,ET,Shire,14.13833,38.402779,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,328526,PLA0001703,,ET,Shire,14.13833,38.402779,53,Tigray Regional State,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P101556,328577,PLA0001704,,ET,Shewa Kifle Hager,9.0,39.0,51,Oromia Regional State,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P101556,328579,PLA0001705,,ET,Shewa Gimira,6.96667,35.76667,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P099480,328688,PLA0001706,,ET,Shashemene,8.78333,38.716671,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,342446,PLA0001708,,ET,Bele,6.7666702,40.433331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,342562,PLA0001709,,ET,Bedeno,9.1097202,41.631939,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,343088,PLA0001710,,ET,Awubere,9.6344404,43.244438,52,Somalia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101473,343137,PLA0001712,,ET,Awasa,7.0620499,38.476349,54,SSNPR,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P120172,343137,PLA0001713,,ET,Awasa,7.0620499,38.476349,54,SSNPR,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P049395,343591,PLA0001714,,ET,Arek'it,10.37225,39.709469,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,336014,PLA0001854,,ET,Gonder,12.6,37.466671,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P074011,336014,PLA0001855,,ET,Gonder,12.6,37.466671,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101473,336014,PLA0001856,,ET,Gonder,12.6,37.466671,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,336014,PLA0001857,,ET,Gonder,12.6,37.466671,46,The State of Amhara,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P107139,336164,PLA0001859,,ET,Gojam Kifle Hager,11.0,37.0,46,The State of Amhara,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P101556,342817,PLA0001990,,ET,Bale Kifle Hager,6.7713399,40.513489,52,Somalia Regional State,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P101556,342884,PLA0001991,,ET,Bahir Dar,11.59364,37.39077,46,The State of Amhara,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P120172,342884,PLA0001992,,ET,Bahir Dar,11.59364,37.39077,46,The State of Amhara,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P101474,342884,PLA0001993,,ET,Bahir Dar,11.59364,37.39077,46,The State of Amhara,,,P,,,PPLA,seat of a first-order administrative division,0,,X,,,2011-10-18,WB165448
+P077380,342884,PLA0001994,,ET,Bahir Dar,11.59364,37.39077,46,The State of Amhara,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P074011,342884,PLA0001995,,ET,Bahir Dar,11.59364,37.39077,46,The State of Amhara,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P101556,336164,PLA0001860,,ET,Gojam Kifle Hager,11.0,37.0,46,The State of Amhara,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P099480,336215,PLA0001861,,ET,Gof Gof,11.75,38.400002,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,336215,PLA0001862,,ET,Gof Gof,11.75,38.400002,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,336215,PLA0001863,,ET,Gof Gof,11.75,38.400002,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,336350,PLA0001864,,ET,Goba,7.0166702,39.98333,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P099480,336350,PLA0001865,,ET,Goba,7.0166702,39.98333,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,336372,PLA0001866,,ET,Giyon,8.5341702,37.965149,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,336372,PLA0001867,,ET,Giyon,8.5341702,37.965149,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P113032,336372,PLA0001868,,ET,Giyon,8.5341702,37.965149,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,337083,PLA0001869,,ET,Gedo,9.0166702,37.450001,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,337093,PLA0001870,,ET,Gedi Adis,9.1999998,35.73333,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,337712,PLA0001871,,ET,Finote Selam,10.7,37.26667,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,337877,PLA0001872,,ET,Fedis,9.2503796,42.09164,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,337996,PLA0001873,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A,,,PCLI,independent political entity,0,,,,,2011-07-01,
+P074020,337996,PLA0001874,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A,,,PCLI,independent political entity,0,,,,,2011-07-01,
+P097271,444185,PLA0002434,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P082998,444185,PLA0002435,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P090789,444185,PLA0002436,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P099480,444185,PLA0002438,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P113220,444185,PLA0002439,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P113032,444185,PLA0002440,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P108932,444185,PLA0002441,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P106872,444185,PLA0002442,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,444185,PLA0002443,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,444185,PLA0002444,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P107139,444185,PLA0002445,,ET,Oromiya Kilil,8.0,39.0,51,Oromia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,444186,PLA0002446,,ET,Sumale Kilil,7.0,44.0,52,Somalia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P108932,444186,PLA0002447,,ET,Sumale Kilil,7.0,44.0,52,Somalia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P113220,444186,PLA0002448,,ET,Sumale Kilil,7.0,44.0,52,Somalia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P049395,444186,PLA0002449,,ET,Sumale Kilil,7.0,44.0,52,Somalia Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P049395,444187,PLA0002450,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P099480,444187,PLA0002451,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P090789,444187,PLA0002453,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P082998,444187,PLA0002454,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P097271,444187,PLA0002455,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P091077,444187,PLA0002456,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P113220,444187,PLA0002457,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P120172,444187,PLA0002458,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101474,343663,PLA0001715,,ET,Arba Minch',6.03333,37.549999,54,SSNPR,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P106872,343814,PLA0001716,,ET,Ankober,9.59624,39.73243,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,344268,PLA0001717,,ET,`Alem Teferi,8.8999996,35.23333,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,344275,PLA0001718,,ET,`Alem Gena,8.9166698,38.650002,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,344275,PLA0001719,,ET,`Alem Gena,8.9166698,38.650002,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,344318,PLA0001720,,ET,Alefa,11.95,36.866669,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,344318,PLA0001721,,ET,Alefa,11.95,36.866669,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,344609,PLA0001722,,ET,Agew Midir Awraja,11.25,36.75,46,The State of Amhara,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P101556,344609,PLA0001723,,ET,Agew Midir Awraja,11.25,36.75,46,The State of Amhara,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P101556,344625,PLA0001724,,ET,Agena,8.1333303,38.01667,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,345320,PLA0001725,,ET,Adi Abun,14.18722,38.88361,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,345418,PLA0001726,,ET,Adeda,11.51667,38.333328,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,345504,PLA0001727,,ET,Adama,9.53333,38.833328,51,Oromia Regional State,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P107139,329585,PLA0001581,,ET,Robit,12.35,37.366669,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,330118,PLA0001582,,ET,Nek'emte,9.0833302,36.549999,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,330134,PLA0001583,,ET,Negele,5.3166699,39.583328,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P077380,330186,PLA0001584,,ET,Nazret,8.5500002,39.26667,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,330186,PLA0001585,,ET,Nazret,8.5500002,39.26667,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P120172,330186,PLA0001587,,ET,Nazret,8.5500002,39.26667,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,330203,PLA0001588,,ET,Nansebo,6.4833298,39.099998,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,330237,PLA0001589,,ET,Nada,7.5999999,37.216671,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,328688,PLA0001750,,ET,Shashemene,8.78333,38.716671,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,328953,PLA0001751,,ET,Sela Dingay,9.9543304,39.630791,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,329412,PLA0001752,,ET,Saja,7.96667,37.433331,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,329605,PLA0001753,,ET,Robe,9.6082697,39.135502,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,329873,PLA0001754,,ET,Oncho Hurgesa,9.1000004,35.416672,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,329881,PLA0001755,,ET,Omo Nada,7.6333299,37.25,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,329881,PLA0001756,,ET,Omo Nada,7.6333299,37.25,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P113220,444180,PLA0001904,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P106872,444180,PLA0001905,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,444180,PLA0001906,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P107139,444180,PLA0001907,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P099480,444180,PLA0001908,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P096323,444180,PLA0001909,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,X,,,2015-06-12,WB88572
+P097271,444180,PLA0001910,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P049395,444180,PLA0001911,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P082998,444180,PLA0001912,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P107139,444187,PLA0002480,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Regional State,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P107139,330780,PLA0001591,,ET,Meti Ciafi,7.2333298,35.316669,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P074011,330789,PLA0001592,,ET,Metema,12.95479,36.155491,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,330839,PLA0001593,,ET,Mesketo,6.25,36.416672,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,330853,PLA0001594,,ET,Meshenti,11.46667,37.283329,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,330947,PLA0001595,,ET,Meraro,7.4166698,39.25,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,331180,PLA0001596,,ET,Mek'ele,13.49667,39.475281,53,Tigray Regional State,,,P,,,PPLA,seat of a first-order administrative division,0,,X,,,2011-10-18,WB165448
+P101473,331180,PLA0001597,,ET,Mek'ele,13.49667,39.475281,53,Tigray Regional State,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P049395,331197,PLA0001598,,ET,Mekane Iyesus,11.63333,38.066669,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,331331,PLA0001599,,ET,Mechara,10.0,38.533329,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P099480,331331,PLA0001600,,ET,Mechara,10.0,38.533329,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,331331,PLA0001601,,ET,Mechara,10.0,38.533329,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,330067,PLA0001757,,ET,Nole Kaba,8.8333302,35.75,51,Oromia Regional State,,,L,,,LCTY,locality,0,,,,,2011-07-01,
+P049395,330158,PLA0001758,,ET,Nefas Mewch'a,11.73333,38.466671,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,330790,PLA0001759,,ET,Metekel Awraja,11.0,36.0,47,The State of Benshangul/Gumuz,330790,Metekel Awraja,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P049395,330866,PLA0001760,,ET,Mesela,9.0776596,41.174541,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,330876,PLA0001761,,ET,Merti,9.5,36.98333,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,331010,PLA0001762,,ET,Menghi,13.68333,38.883331,53,Tigray Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,331083,PLA0001763,,ET,Melka Werer,9.5500002,40.400002,45,Afar Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,331261,PLA0001764,,ET,Mega,11.61667,38.5,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,331334,PLA0001765,,ET,Mech'a,9.8500004,38.633331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,331677,PLA0001766,,ET,Bench Maji Zone,6.45994,35.305489,54,SSNPR,331677,Bench Maji Zone,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P098132,332288,PLA0001767,,ET,Lalibela,12.03219,39.047562,46,The State of Amhara,,,P,,,PPL,populated place,0,X,X,,,2013-08-07,WB402247
+P101556,332495,PLA0001768,,ET,K'uni,9.0209503,40.903278,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,332562,PLA0001769,,ET,Kula,7.96667,39.700001,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,342884,PLA0002035,,ET,Bahir Dar,11.59364,37.39077,46,The State of Amhara,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P106872,343134,PLA0002036,,ET,Awash,8.9833298,40.166672,45,Afar Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,343291,PLA0002037,,ET,The State of Benishangul-Gumuz,10.0,34.5,47,The State of Benshangul/Gumuz,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P082998,343292,PLA0002038,,ET,Asosa,10.06667,34.533329,47,The State of Benshangul/Gumuz,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P090789,343292,PLA0002039,,ET,Asosa,10.06667,34.533329,47,The State of Benshangul/Gumuz,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P099480,343292,PLA0002040,,ET,Asosa,10.06667,34.533329,47,The State of Benshangul/Gumuz,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P107139,343292,PLA0002041,,ET,Asosa,10.06667,34.533329,47,The State of Benshangul/Gumuz,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P117644,343370,PLA0002042,,ET,Asela,7.9499998,39.133331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P099480,343370,PLA0002043,,ET,Asela,7.9499998,39.133331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P082998,343370,PLA0002044,,ET,Asela,7.9499998,39.133331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P113032,343450,PLA0002046,,ET,Arsi Kifle Hager,7.5,39.5,51,Oromia Regional State,343450,Arsi Kifle Hager,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P101556,343450,PLA0002047,,ET,Arsi Kifle Hager,7.5,39.5,51,Oromia Regional State,343450,Arsi Kifle Hager,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P106872,343535,PLA0002048,,ET,Argobba,9.5,39.950001,45,Afar Regional State,,,L,,,LCTY,locality,0,,,,,2011-07-01,
+P101556,343952,PLA0002049,,ET,Amuru,9.9166698,37.0,51,Oromia Regional State,,,L,,,LCTY,locality,0,,,,,2011-07-01,
+P107139,332106,PLA0001624,,ET,Lemen,8.4833298,38.433331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,332106,PLA0001625,,ET,Lemen,8.4833298,38.433331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,332519,PLA0001626,,ET,Kumbi,8.5666704,41.466671,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,332836,PLA0001627,,ET,Kon Abo,11.71667,39.150002,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,332902,PLA0001628,,ET,Kokosa,6.7333298,38.783329,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,333027,PLA0001629,,ET,Kimir Dingay,11.81667,38.216671,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,333595,PLA0001630,,ET,Karamile,9.3768396,41.377441,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P074011,444180,PLA0001914,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P090789,444180,PLA0001915,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P077380,337996,PLA0001916,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A,,,PCLI,independent political entity,0,,,,,2011-07-01,
+P112688,337996,PLA0001918,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A,,,PCLI,independent political entity,0,,,,,2011-07-01,
+P107217,337996,PLA0001919,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A,,,PCLI,independent political entity,0,,,,,2011-07-01,
+P120172,338832,PLA0001920,,ET,Dire Dawa,9.5930595,41.866112,48,Dire Dawa Region,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P113220,338832,PLA0001921,,ET,Dire Dawa,9.5930595,41.866112,48,Dire Dawa Region,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P077380,338832,PLA0001922,,ET,Dire Dawa,9.5930595,41.866112,48,Dire Dawa Region,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P101474,338832,PLA0001923,,ET,Dire Dawa,9.5930595,41.866112,48,Dire Dawa Region,,,P,,,PPLA,seat of a first-order administrative division,0,,X,,,2011-10-18,WB165448
+P049395,338832,PLA0001924,,ET,Dire Dawa,9.5930595,41.866112,48,Dire Dawa Region,,,P,,,PPLA,seat of a first-order administrative division,0,,,,,2011-07-01,
+P101474,338998,PLA0001925,,ET,Dila,6.4166698,38.316669,54,SSNPR,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P099480,339317,PLA0001926,,ET,Dera,9.3666697,38.400002,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,339448,PLA0001927,,ET,Dembi Dolo,8.53333,34.799999,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,339448,PLA0001928,,ET,Dembi Dolo,8.53333,34.799999,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,339666,PLA0001930,,ET,Debre Zeyit,8.7522497,38.978458,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,339823,PLA0001931,,ET,Debark',13.15611,37.89806,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,339865,PLA0001932,,ET,Dawe,9.2622204,41.860561,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,339910,PLA0001933,,ET,Daro Lebu Bota,8.1666698,40.783329,51,Oromia Regional State,,,L,,,LCTY,locality,0,,,,,2011-07-01,
+P101556,340008,PLA0001934,,ET,Dangila,11.26667,36.833328,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,340051,PLA0001935,,ET,Damot,11.76667,38.283329,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P091077,444180,PLA0001936,,ET,Amara Kilil,11.5,38.5,46,The State of Amhara,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P090789,444181,PLA0001937,,ET,Binshangul Gumuz Kilil,11.0,35.5,47,The State of Benshangul/Gumuz,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P099480,444181,PLA0001938,,ET,Binshangul Gumuz Kilil,11.0,35.5,47,The State of Benshangul/Gumuz,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P107139,344010,PLA0002050,,ET,Ameya,7.0833302,36.666672,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P120172,344128,PLA0002051,,ET,Amara Saint,11.16667,39.166672,46,The State of Amhara,,,L,,,LCTY,locality,0,,,,,2011-07-01,
+P098132,344420,PLA0002052,,ET,Aksum,14.12109,38.72337,53,Tigray Regional State,,,P,,,PPL,populated place,0,X,X,,,2013-08-07,WB402247
+P101474,344420,PLA0002053,,ET,Aksum,14.12109,38.72337,53,Tigray Regional State,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P049395,344655,PLA0002054,,ET,Agat',11.6,38.466671,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,444181,PLA0001939,,ET,Binshangul Gumuz Kilil,11.0,35.5,47,The State of Benshangul/Gumuz,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,444181,PLA0001941,,ET,Binshangul Gumuz Kilil,11.0,35.5,47,The State of Benshangul/Gumuz,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,444182,PLA0001942,,ET,Dire Dawa Region,9.5670004,42.014,48,Dire Dawa Region,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P049395,444182,PLA0001943,,ET,Dire Dawa Region,9.5670004,42.014,48,Dire Dawa Region,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P049395,444183,PLA0001944,,ET,Gambela Regional State,7.8333302,34.5,49,Gambela,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P090789,444183,PLA0001945,,ET,Gambela Regional State,7.8333302,34.5,49,Gambela,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P097271,444183,PLA0001946,,ET,Gambela Regional State,7.8333302,34.5,49,Gambela,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,444183,PLA0001947,,ET,Gambela Regional State,7.8333302,34.5,49,Gambela,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P107139,444183,PLA0001949,,ET,Gambela Regional State,7.8333302,34.5,49,Gambela,,,A,,,ADM1,first-order administrative division,0,,,,,2011-07-01,
+P101556,333680,PLA0001631,,ET,Kachisi,9.6000004,37.833328,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101474,333772,PLA0001632,,ET,Jima,7.6666698,36.833328,51,Oromia Regional State,,,P,,,PPL,populated place,0,,X,,,2011-10-18,WB165448
+P101473,333772,PLA0001633,,ET,Jima,7.6666698,36.833328,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P101556,333923,PLA0001634,,ET,Jeldu,9.0166702,37.666672,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,334212,PLA0001635,,ET,Indibir,8.1166697,37.933331,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P106872,334280,PLA0001636,,ET,Inango,9.1666698,35.683331,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,334898,PLA0001637,,ET,Hartishek,9.1572199,43.354172,52,Somalia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,334933,PLA0001638,,ET,Harekelo,5.3833299,39.533329,51,Oromia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P049395,335316,PLA0001639,,ET,Hadew,9.3636103,42.669441,52,Somalia Regional State,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P090789,335342,PLA0001640,,ET,Habru,11.6,39.76667,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,335342,PLA0001641,,ET,Habru,11.6,39.76667,46,The State of Amhara,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P107139,336011,PLA0001642,,ET,Gonder Kifle Hager,12.5,37.0,46,The State of Amhara,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P101556,336011,PLA0001643,,ET,Gonder Kifle Hager,12.5,37.0,46,The State of Amhara,,,A,,,ADMD,administrative division,0,,,,,2011-07-01,
+P107139,336488,PLA0001644,,ET,Gimbo,7.4000001,36.23333,54,SSNPR,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P079275,444183,PLA0023173,,ET,Gambela Hizboch Kilil,7.8333302,34.5,49,Gambela Hizboch Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P115564,444188,PLA0022992,,ET,YeDebub Biheroch Bihereseboch na Hizboch Kilil,6.05862,36.727299,54,YeDebub Biheroch Bihereseboch na Hizboch Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-10-18,WB253690
+P113032,7667963,PLA0020025,,ET,Decha,6.8333302,36.166672,,,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P079275,444186,PLA0023196,,ET,Sumale Kilil,7.0,44.0,52,Sumale Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P049395,6942033,PLA0021357,,ET,Tiya,8.4333296,38.616669,,,,,P,,,PPL,populated place,0,,,,,2011-07-01,
+P113032,7670720,PLA0020341,,ET,East Shewa Zone,8.2135296,38.848091,51,Oromia Regional State,7670720,East Shewa Zone,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670721,PLA0020342,,ET,East Wellega Zone,9.5192804,36.757622,51,Oromia Regional State,7670721,East Wellega Zone,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670726,PLA0020343,,ET,North Gonder,12.65807,37.088371,46,The State of Amhara,7670726,North Gonder,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670728,PLA0020344,,ET,Siltie Zone,7.83219,38.268719,54,SSNPR,7670728,Siltie Zone,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670729,PLA0020345,,ET,Dawuro,6.9698501,37.10862,,,7670729,Dawuro,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P117731,444188,PLA0035004,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,,X,,,2013-05-08,WB379174
+P113032,7670626,PLA0020254,,ET,Hidabu Abote,9.8333302,38.5,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670627,PLA0020255,,ET,Yaya Gulelena Debre Liban,9.5,38.666672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670628,PLA0020256,,ET,Dendi,8.9166698,38.166672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P133592,342884,PLA0037549,,ET,Bahir Dar,11.59364,37.39077,46,Amhara Region,,,PPLA,seat of a first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444180,PLA0037556,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444180,PLA0037557,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P113032,7667942,PLA0022197,,ET,Limmu Sakka,8.3333302,37.0,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670629,PLA0020257,,ET,Ambo,9.0,37.75,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670634,PLA0020258,,ET,Diga Leka,8.8333302,36.5,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670636,PLA0020259,,ET,Guduru,9.5,37.583328,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670637,PLA0020260,,ET,Gechi,8.3333302,36.666672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670643,PLA0020281,,ET,Munesa,7.5,38.833328,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670644,PLA0020282,,ET,Adaba,7.0,39.5,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670645,PLA0020283,,ET,Dodola,6.8333302,39.166672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670646,PLA0020284,,ET,Kofele,7.1666698,38.833328,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670651,PLA0020285,,ET,Alamata,12.33333,39.5,53,Tigray Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670652,PLA0020286,,ET,Raya Azebo,12.66667,39.75,53,Tigray Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670653,PLA0020287,,ET,Ofla,12.5,39.333328,53,Tigray Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670654,PLA0020288,,ET,Endamehoni,12.75,39.5,53,Tigray Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670659,PLA0020289,,ET,Jabi Tehnan,10.83333,37.166672,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670660,PLA0020290,,ET,Bahir Dar Zuria,11.25,37.166672,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670661,PLA0020291,,ET,Dejen,10.33333,38.0,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670662,PLA0020292,,ET,Enemay,10.66667,38.0,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670668,PLA0020293,,ET,Alefa,12.25,36.333328,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670669,PLA0020294,,ET,Dera,11.75,37.5,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670670,PLA0020295,,ET,Efratana Gidim,9.5,39.666672,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670630,PLA0022301,,ET,Becho,8.5833302,38.25,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670631,PLA0022302,,ET,Wonchi,8.6666698,37.916672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670632,PLA0022303,,ET,Ada'a Chukala,8.5833302,38.916672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670633,PLA0022304,,ET,Gimbichu,8.8333302,39.166672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670638,PLA0022305,,ET,Bedele,8.5,36.333328,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670639,PLA0022306,,ET,Didessa,8.0833302,36.666672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670640,PLA0022307,,ET,Gomma,7.8333302,36.666672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670641,PLA0022308,,ET,Gera,7.6666698,36.25,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670642,PLA0022309,,ET,Sherka,7.5833302,39.5,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670647,PLA0022310,,ET,Sinanana Dinsho,7.1666698,39.916672,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670648,PLA0022311,,ET,Gaserana,7.3333302,40.25,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670649,PLA0022312,,ET,Agarfa,7.3333302,39.333328,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670650,PLA0022313,,ET,Walmara,8.9166698,38.583328,51,Oromia Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670655,PLA0022314,,ET,Tsegede,13.5,37.166672,53,Tigray Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670656,PLA0022315,,ET,Wolqayt,13.75,37.333328,53,Tigray Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670657,PLA0022316,,ET,Kafta Humera,14.0,37.0,53,Tigray Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670658,PLA0022317,,ET,Tahtay Adiyabo,14.33333,37.833328,53,Tigray Regional State,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670663,PLA0022318,,ET,Ankesha,11.0,36.666672,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670664,PLA0022319,,ET,Guangua,11.0,36.333328,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670665,PLA0022320,,ET,Dangila,11.41667,36.666672,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670666,PLA0022321,,ET,Metemma,13.0,36.25,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670667,PLA0022322,,ET,Qwara,12.5,35.75,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670672,PLA0022323,,ET,Kewet,10.16667,39.75,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670673,PLA0022324,,ET,Termaber,10.16667,39.5,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670674,PLA0022325,,ET,Chena,7.25,35.75,,,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670680,PLA0022326,,ET,Yem,7.8333302,37.5,,,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670681,PLA0022327,,ET,Basketo,6.25,36.583328,,,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670715,PLA0022332,,ET,West Shewa,9.1394796,37.850159,,,7670715,West Shewa,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670722,PLA0022333,,ET,West Gojam,11.12001,37.175041,46,The State of Amhara,7670722,West Gojam,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670724,PLA0022334,,ET,East Gojam,10.52907,37.852821,46,The State of Amhara,7670724,East Gojam,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670725,PLA0022335,,ET,Awi,10.96059,36.696869,46,The State of Amhara,7670725,Awi,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670732,PLA0022337,,ET,Gedeo,6.1272702,38.277161,,,7670732,Gedeo,A,,,ADM2,second-order administrative division,0,,,,,2011-07-01,
+P113032,7670671,PLA0020296,,ET,Antsokiyana Gemza,10.75,39.666672,46,The State of Amhara,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670676,PLA0020297,,ET,Enemorina Eaner,8.0,37.666672,,,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670677,PLA0020298,,ET,Shebedino,6.8333302,38.5,,,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P113032,7670679,PLA0020299,,ET,Bule,6.25,38.333328,,,,,A,,,ADM3,third-order administrative division,0,,,,,2011-07-01,
+P101474,343137,PLA0022997,,ET,Awasa,7.0620499,38.476349,54,YeDebub Biheroch Bihereseboch na Hizboch Kilil,,,PPLA,seat of a first-order administrative division,,,,0,,X,,,2011-10-18,WB165448
+P079275,444179,PLA0023169,,ET,Afar Kilil,12.0,41.5,45,Afar Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P079275,444180,PLA0023170,,ET,Amara Kilil,11.5,38.5,46,Amara Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P079275,444181,PLA0023171,,ET,Binshangul Gumuz Kilil,11.0,35.5,47,Binshangul Gumuz Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P079275,444182,PLA0023172,,ET,Dire Dawa Astedader,9.5670004,42.014,48,Dire Dawa Astedader,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P079275,444184,PLA0023194,,ET,Hareri Hizb Kilil,9.25,42.166672,50,Hareri Hizb Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P079275,444185,PLA0023195,,ET,Oromiya Kilil,8.0,39.0,51,Oromiya Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P079275,444187,PLA0023197,,ET,Tigray Kilil,14.16667,38.833328,53,Tigray Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P079275,444188,PLA0023198,,ET,YeDebub Biheroch Bihereseboch na Hizboch Kilil,6.05862,36.727299,54,YeDebub Biheroch Bihereseboch na Hizboch Kilil,,,ADM1,first-order administrative division,,,,0,,X,,,2011-11-21,WB268876
+P098428,328247,0026395,,ET,Sodo,6.9000001,37.75,,,,,,,,,,0,,,,,2011-07-01,
+P098428,7874084,0026396,,ET,Humbo,6.6666698,37.833328,,,,,,,,,,0,,,,,2011-07-01,
+P101474,328688,0026397,,ET,Shashemene,8.78333,38.716671,,,,,,,,,,0,,,,,2011-07-01,
+P101474,330186,0026398,,ET,Nazret,8.5500002,39.26667,,,,,,,,,,0,,,,,2011-07-01,
+P101474,334227,0026399,,ET,Inda Silase,14.10307,38.28289,,,,,,,,,,0,,,,,2011-07-01,
+P101474,339666,0026400,,ET,Debre Zeyit,8.7522497,38.978458,,,,,,,,,,0,,,,,2011-07-01,
+P125307,327932,0023754,,ET,Lake Tana,12.0,37.333328,,,,,,,,,,0,,,,,2011-07-01,
+P125307,331250,0023755,,ET,Megech',11.65,38.599998,,,,,,,,,,0,,,,,2011-07-01,
+P125307,332030,0023756,,ET,Libo,12.2,37.883331,,,,,,,,,,0,,,,,2011-07-01,
+P125307,337669,0023757,,ET,Fogera,11.95,37.583328,,,,,,,,,,0,,,,,2011-07-01,
+P125316,328689,0023758,,ET,Shashemene,7.1999998,38.599998,,,,,,,,,,0,,,,,2011-07-01,
+P125316,331180,0023759,,ET,Mek'ele,13.49667,39.475281,,,,,,,,,,0,,,,,2011-07-01,
+P125316,333373,0023760,,ET,Kombolcha,11.08155,39.743389,,,,,,,,,,0,,,,,2011-07-01,
+P125316,333772,0023761,,ET,Jima,7.6666698,36.833328,,,,,,,,,,0,,,,,2011-07-01,
+P125316,334227,0023762,,ET,Inda Silase,14.10307,38.28289,,,,,,,,,,0,,,,,2011-07-01,
+P125316,335035,0023763,,ET,Harer,9.3138704,42.118149,,,,,,,,,,0,,,,,2011-07-01,
+P125316,336014,0023764,,ET,Gonder,12.6,37.466671,,,,,,,,,,0,,,,,2011-07-01,
+P125316,338832,0023765,,ET,Dire Dawa,9.5930595,41.866112,,,,,,,,,,0,,,,,2011-07-01,
+P125316,338998,0023766,,ET,Dila,6.4166698,38.316669,,,,,,,,,,0,,,,,2011-07-01,
+P125316,339219,0023767,,ET,Dese,11.13333,39.633331,,,,,,,,,,0,,,,,2011-07-01,
+P125316,341981,0023768,,ET,Bishoftu,9.1000004,37.25,,,,,,,,,,0,,,,,2011-07-01,
+P125316,342884,0023769,,ET,Bahir Dar,11.59364,37.39077,,,,,,,,,,0,,,,,2011-07-01,
+P125316,343137,0023770,,ET,Awasa,7.0620499,38.476349,,,,,,,,,,0,,,,,2011-07-01,
+P125316,343663,0023771,,ET,Arba Minchi,6.03333,37.549999,,,,,,,,,,0,,,,,2011-07-01,
+P125316,344420,0023772,,ET,Aksum,14.12109,38.72337,,,,,,,,,,0,,,,,2011-07-01,
+P125316,344979,0023773,,ET,Addis Ababa,9.0249701,38.746891,,,,,,,,,,0,,,,,2011-07-01,
+P125316,345149,0023774,,ET,Adigrat,14.277,39.462002,,,,,,,,,,0,,,,,2011-07-01,
+P125316,345505,0023775,,ET,Adama,8.9166698,38.916672,,,,,,,,,,0,,,,,2011-07-01,
+P125316,7910079,0023776,,ET,Wolayta Sodo,6.8600001,37.761589,,,,,,,,,,0,,,,,2011-07-01,
+P128891,444187,PLA0033582,,ET,Tigray Region,14.16667,38.833328,53,Tigray Region,,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P076735,444179,PLA0035483,,ET,Afar Region,12.0,41.5,45,Afar Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,1454366,X,X,,,2013-08-14,WB239603
+P076735,444180,PLA0035460,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,X,,,2013-08-14,WB239603
+P076735,444183,PLA0035461,,ET,Gambela,7.8333302,34.5,49,Gambela,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,X,,,2013-08-14,WB239603
+P133133,444183,PLA0036742,,ET,Gambela Region,7.8333302,34.5,49,Gambela,,,ADM1,first-order administrative division,,,,0,X,,,,2014-02-28,WB269425
+P133133,444180,PLA0036755,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-02-28,WB269425
+P106855,444183,PLA0034968,,ET,Gambela Region,7.8333302,34.5,49,Gambela,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P106855,444188,PLA0034969,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P130276,444185,PLA0034950,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,,X,,,2013-04-24,WB268876
+P133591,444187,PLA0035984,,ET,Tigray Region,14.16667,38.833328,53,Tigray Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,,,,2013-10-13,WB239603
+P133592,444181,PLA0037568,,ET,Benishangul-Gumuz Region,11.0,35.5,47,Benishangul-Gumuz Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444184,PLA0037552,,ET,Harari Region,9.25,42.166672,50,Harari Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,344045,PLA0037585,,ET,Amboy,9.3166704,37.966671,51,Oromiya Region,,,PPL,populated place,,,,0,X,,,,2014-06-05,WB165448
+P133592,444185,PLA0037587,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444188,PLA0037572,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P106855,444184,PLA0034984,,ET,Harari Region,9.25,42.166672,50,Harari Region,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P117731,444180,PLA0034997,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,,X,,,2013-05-08,WB379174
+P076735,444186,PLA0035482,,ET,Somali Region,7.0,44.0,52,Somali Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,X,,,2013-08-14,WB239603
+P133591,444188,PLA0035956,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,,,,2013-10-13,WB239603
+P133591,444185,PLA0035957,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,27158471,X,,,,2013-10-13,WB239603
+P133591,444184,PLA0035959,,ET,Harari Region,9.25,42.166672,50,Harari Region,,,ADM1,first-order administrative division,,,,0,X,,,,2013-10-13,WB239603
+P147356,344979,PLA0036127,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba,,,PPLC,capital of a political entity,,,,0,X,,,,2013-11-05,WB264609
+P133133,444181,PLA0036751,,ET,Benishangul-Gumuz Region,11.0,35.5,47,Benishangul-Gumuz Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-02-28,WB269425
+P106855,444180,PLA0034967,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P128891,444180,PLA0033540,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P128891,444183,PLA0033542,,ET,Gambela Region,7.8333302,34.5,49,Gambela,,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P101473,444182,PLA0034597,,ET,Dire Dawa Region,9.5670004,42.014,48,Dire Dawa Region,,,ADM1,first-order administrative division,,,,0,,X,,,2013-02-11,WB161815
+P076735,339284,PLA0035479,,ET,D?r?,8.5,39.416672,51,Oromiya Region,,,P,"city, village,...",,PPL,populated place,0,X,X,,,2013-08-14,WB239603
+P128891,444188,PLA0033600,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P133133,444187,PLA0036740,,ET,Tigray Region,14.16667,38.833328,53,Tigray Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-02-26,WB176411
+P133591,444179,PLA0035966,,ET,Afar Region,12.0,41.5,45,Afar Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,1454366,X,,,,2013-10-13,WB239603
+P133133,444185,PLA0036750,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-02-28,WB269425
+P133591,444180,PLA0035958,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,,,,2013-10-13,WB239603
+P133133,444188,PLA0036741,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,X,,,,2014-02-28,WB269425
+P117731,444185,PLA0034991,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,,X,,,2013-05-08,WB379174
+P122478,344979,PLA0040938,,ET,Addis Ababa,9.0249701,38.746891,,,,,PPLC,capital of a political entity,,P,,0,,,,,2014-10-21,RFC-PROJECTS
+P106855,444179,PLA0034958,,ET,Afar Region,12.0,41.5,45,Afar Region,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P106855,444182,PLA0034959,,ET,Dire Dawa Region,9.5670004,42.014,48,Dire Dawa Region,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P133591,444181,PLA0035913,,ET,Benishangul-Gumuz Region,11.0,35.5,47,Benishangul-Gumuz Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,,,,2013-10-13,WB239603
+P133591,444186,PLA0035977,,ET,Somali Region,7.0,44.0,52,Somali Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,,,,2013-10-13,WB239603
+P133591,444183,PLA0035978,,ET,Gambela,7.8333302,34.5,49,Gambela,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,,,,2013-10-13,WB239603
+P106855,444181,PLA0034953,,ET,Benishangul-Gumuz Region,11.0,35.5,47,Benishangul-Gumuz Region,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P128891,444179,PLA0033539,,ET,Afar Region,12.0,41.5,45,Afar Region,,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P128891,444181,PLA0033541,,ET,Benishangul-Gumuz Region,11.0,35.5,47,Benishangul-Gumuz Region,,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P128891,444185,PLA0033543,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P128891,444186,PLA0033614,,ET,Somali Region,7.0,44.0,52,Somali Region,,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P128891,444184,PLA0033599,,ET,Harari Region,9.25,42.166672,50,Harari Region,,,ADM1,first-order administrative division,,,,0,,X,,,2012-08-10,WB20023
+P122764,444178,PLA0032866,,ET,Adis Abeba Astedader,9.0,38.75,44,Adis Abeba Astedader,,,ADM1,first-order administrative division,,,,0,X,,,,2012-04-09,WB15364
+P117731,444179,PLA0034992,,ET,Afar Region,12.0,41.5,45,Afar Region,,,ADM1,first-order administrative division,,,,0,,X,,,2013-05-08,WB379174
+P106855,444186,PLA0034960,,ET,Somali Region,7.0,44.0,52,Somali Region,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P105711,344979,PLA0034983,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba,,,PPLC,capital of a political entity,,,,0,,X,,,2013-05-03,WB176411
+P106855,444185,PLA0034843,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,X,,,2013-03-28,WB159704
+P130276,444179,PLA0034949,,ET,Afar Region,12.0,41.5,45,Afar Region,,,ADM1,first-order administrative division,,,,0,,X,,,2013-04-24,WB268876
+P130276,444186,PLA0034956,,ET,Somali Region,7.0,44.0,52,Somali Region,,,ADM1,first-order administrative division,,,,0,,X,,,2013-04-24,WB268876
+P130276,444188,PLA0034957,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,,X,,,2013-04-24,WB268876
+P076735,444187,PLA0035480,,ET,Tigray Region,14.16667,38.833328,53,Tigray Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,X,,,2013-08-14,WB239603
+P106855,444183,PLA0034974,,ET,Gambela Region,7.8333302,34.5,49,Gambela,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P106855,444178,PLA0034943,,ET,Adis Abeba Astedader,9.0,38.75,44,Adis Abeba,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P106855,444179,PLA0034952,,ET,Afar Region,12.0,41.5,45,Afar Region,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P106855,444187,PLA0034975,,ET,Tigray Region,14.16667,38.833328,53,Tigray Region,,,ADM1,first-order administrative division,,,,0,X,X,,,2013-04-25,WB159704
+P076735,444181,PLA0035481,,ET,Benishangul-Gumuz Region,11.0,35.5,47,Benishangul-Gumuz Region,,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,X,,,2013-08-14,WB239603
+P076735,444188,PLA0035505,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,A,"country, state, region,...",,ADM1,first-order administrative division,0,X,X,,,2013-08-14,WB239603
+P126579,444185,PLA0032932,,ET,Oromiya Kilil,8.0,39.0,51,Oromiya Kilil,,,ADM1,first-order administrative division,,,,0,X,,,,2012-04-27,WB21098
+P133592,444180,PLA0037578,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444182,PLA0037581,,ET,Dire Dawa Region,9.5670004,42.014,48,Dire Dawa Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444180,PLA0037577,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444180,PLA0037579,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444180,PLA0037580,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P119893,444180,PLA0037703,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,,X,,,2014-06-18,WB339183
+P133592,444188,PLA0037563,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P119893,444185,PLA0037722,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,,X,,,2014-06-18,WB339183
+P133410,444185,PLA0048266,,ET,Oromiya Region,8.0,39.0,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-11-17,RFC-PROJECTS
+P133410,444180,PLA0048267,,ET,Amhara Region,11.5,38.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-11-17,RFC-PROJECTS
+P133410,444181,PLA0048268,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-11-17,RFC-PROJECTS
+P119893,444188,PLA0037744,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,,X,,,2014-06-18,WB339183
+P133410,444188,PLA0048269,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-11-17,RFC-PROJECTS
+P133410,444183,PLA0048270,,ET,Gambela Region,7.8333302,34.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-11-17,RFC-PROJECTS
+P133410,444187,PLA0048271,,ET,Tigray Region,14.16667,38.833328,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-11-17,RFC-PROJECTS
+P120368,337996,PLA0048670,,ET,Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,PCLI,,0,,,,,2014-11-17,RFC-PROJECTS
+P133592,444185,PLA0037561,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444183,PLA0037551,,ET,Gambela Region,7.8333302,34.5,49,Gambela,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444185,PLA0037582,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444188,PLA0037583,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P119893,444187,PLA0037738,,ET,Tigray Region,14.16667,38.833328,53,Tigray Region,,,ADM1,first-order administrative division,,,,0,,X,,,2014-06-18,WB339183
+P133592,6913519,PLA0037559,,ET,Semera,11.79342,41.005779,45,Afar Region,,,PPLA,seat of a first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P129828,444185,PLA0042122,,ET,Oromiya Region,8.0,39.0,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444186,PLA0042123,,ET,Somali Region,7.0,44.0,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444179,PLA0042124,,ET,Afar Region,12.0,41.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444181,PLA0042125,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444187,PLA0042126,,ET,Tigray Region,14.16667,38.833328,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444183,PLA0042127,,ET,Gambela Region,7.8333302,34.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444182,PLA0042128,,ET,Dire Dawa Region,9.5670004,42.014,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444180,PLA0042129,,ET,Amhara Region,11.5,38.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444188,PLA0042130,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,344979,PLA0042131,,ET,Addis Ababa,9.0249701,38.746891,,,,,PPLC,capital of a political entity,,P,,0,,,,,2014-10-21,RFC-PROJECTS
+P129828,444184,PLA0042132,,ET,Harari Region,9.25,42.166672,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P133592,444185,PLA0037569,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,337712,PLA0037558,,ET,Finote Selam,10.7,37.26667,46,Amhara Region,,,PPL,populated place,,,,0,X,,,,2014-06-05,WB165448
+P117956,337996,PLA0048512,,ET,Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,PCLI,,0,,,,,2014-11-17,RFC-PROJECTS
+P143302,444178,PLA0038118,,ET,Adis Abeba Astedader,9.0,38.75,44,Adis Abeba,,,ADM1,first-order administrative division,,,,0,X,,,,2014-09-08,WB402247
+P133613,444185,PLA0037740,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,,X,,,2014-06-20,WB317933
+P133613,444179,PLA0037741,,ET,Afar Region,12.0,41.5,45,Afar Region,,,ADM1,first-order administrative division,,,,0,,X,,,2014-06-20,WB317933
+P131118,444185,PLA0037215,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-04-25,WB377259
+P133592,444187,PLA0037595,,ET,Tigray Region,14.16667,38.833328,53,Tigray Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P119051,337996,PLA0048890,,ET,Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,PCLI,,0,,,,,2014-11-17,RFC-PROJECTS
+P130694,337996,PLA0046475,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2014-11-12,RFC-PROJECTS
+P130888,337996,PLA0044025,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P119893,444178,PLA0037727,,ET,Adis Abeba Astedader,9.0,38.75,44,Adis Abeba,,,ADM1,first-order administrative division,,,,0,,X,,,2014-06-18,WB339183
+P129534,337996,PLA0044474,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P119893,444182,PLA0037723,,ET,Dire Dawa Region,9.5670004,42.014,48,Dire Dawa Region,,,ADM1,first-order administrative division,,,,0,,X,,,2016-04-21,WB317933
+P133592,444186,PLA0037562,,ET,Somali Region,7.0,44.0,52,Somali Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P127507,444187,PLA0044379,,ET,Tigray Region,14.16667,38.833328,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P127507,444180,PLA0044382,,ET,Amhara Region,11.5,38.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P112600,337996,PLA0044095,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2014-10-21,RFC-PROJECTS
+P104523,337996,PLA0045926,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2014-11-06,RFC-PROJECTS
+P133592,444185,PLA0037586,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444180,PLA0037550,,ET,Amhara Region,11.5,38.5,46,Amhara Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444185,PLA0037560,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P143302,344979,PLA0042736,,ET,Addis Ababa,9.0249701,38.746891,,,,,PPLC,capital of a political entity,,P,,0,,,,,2014-10-21,RFC-PROJECTS
+P133592,444185,PLA0037553,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444185,PLA0037584,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444187,PLA0037594,,ET,Tigray Region,14.16667,38.833328,53,Tigray Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444185,PLA0037570,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444188,PLA0037571,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P133592,444185,PLA0037588,,ET,Oromiya Region,8.0,39.0,51,Oromiya Region,,,ADM1,first-order administrative division,,,,0,X,,,,2014-06-05,WB165448
+P096323,335615,PLA0051339,,ET,Gumar,10.5,36.916672,46,Amhara,,,PPL,populated place,,,,0,,X,,,2015-06-12,WB88572
+P151819,8643574,PLA0057965,,ET,Kolfe Keranio,9.0141,38.70539,,,,,P.PPLX,section of populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,338660,PLA0057966,,ET,Domo,7.89139,46.85083,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,326282,PLA0057967,,ET,Warder,6.97444,45.34083,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,333516,PLA0057968,,ET,Kebri Dahar,6.74,44.27806,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,343143,PLA0057969,,ET,Aware,8.25611,44.15667,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,338666,PLA0057970,,ET,Dolo Odo,4.17861,42.05889,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,330415,PLA0057971,,ET,Moyale,3.54092,39.05279,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P156251,444178,PLA0051582,,ET,Adis Abeba Astedader,9.0,38.75,44,Adis Abeba,,,ADM1,first-order administrative division,,,,0,X,,,,2015-09-29,WB434159
+P148591,444180,PLA0049387,,ET,Amhara Region,11.5,38.5,46,Amhara,,,ADM1,first-order administrative division,,,,0,X,,,,2015-01-12,WB234246
+P148591,444183,PLA0049389,,ET,Gambela Region,7.8333302,34.5,49,Gambela,,,ADM1,first-order administrative division,,,,0,X,,,,2015-01-12,WB234246
+P148591,444188,PLA0050645,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.727299,54,"Southern Nations, Nationalities, and People's Region",,,ADM1,first-order administrative division,,,,0,X,,,,2015-01-12,WB234246
+P154680,327932,PLA0053574,,ET,Lake Tana,12.0,12.0,,,,,H.LK,lake,,,,0,,,,,2016-04-29,RFC-PROJECTS
+P154680,334000,PLA0053575,,ET,Jama,10.41667,10.41667,,,,,P.PPL,populated place,,,,0,,,,,2016-04-29,RFC-PROJECTS
+P154680,329631,PLA0053576,,ET,Ribi,8.64136,8.64136,,,,,P.PPL,populated place,,,,0,,,,,2016-04-29,RFC-PROJECTS
+P154680,335613,PLA0053577,,ET,Gumara Shet',11.9,11.9,,,,,H.STM,stream,,,,0,,,,,2016-04-29,RFC-PROJECTS
+P154680,337996,PLA0053578,,ET,Federal Democratic Republic of Ethiopia,9.0,9.0,,,,,A.PCLI,independent political entity,,,,0,,,,,2016-04-29,RFC-PROJECTS
+P154680,342429,PLA0053579,,ET,Belesa,12.58333,12.58333,,,,,L.LCTY,locality,,,,0,,,,,2016-04-29,RFC-PROJECTS
+P148591,444182,PLA0049388,,ET,Dire Dawa Region,9.5670004,42.014,48,Dire Dawa,,,ADM1,first-order administrative division,,,,0,X,,,,2015-01-12,WB234246
+P096323,342884,PLA0051320,,ET,Bahir Dar,11.59364,37.39077,46,Amhara,,,PPLA,seat of a first-order administrative division,,,,0,,X,,,2015-06-12,WB88572
+P096323,333902,PLA0051328,,ET,Jema,10.55,37.866669,46,Amhara,,,PPL,populated place,,,,0,,X,,,2015-06-12,WB88572
+P151819,8643570,PLA0057898,,ET,Bole,8.98311,38.81009,,,,,P.PPLX,section of populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,325913,PLA0057899,,ET,Yeka Bole Bota,9.0373,38.835,,,,,L.LCTY,locality,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,444178,PLA0057900,,ET,?d?s ?beba ?stedader,9.0,38.75,,,,,ADM1,first-order administrative division,,A,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,8051202,PLA0057901,,ET,Akaki Kality,8.89643,38.78908,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,333000,PLA0057902,,ET,K'irk'os,9.64808,39.36567,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,8643572,PLA0057903,,ET,Gullele,9.06809,38.74206,,,,,P.PPLX,section of populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,8643565,PLA0057964,,ET,Addis Ketema,9.03336,38.73158,,,,,P.PPLX,section of populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P148591,444185,PLA0050644,,ET,Oromiya Region,8.0,39.0,51,Oromiya,,,ADM1,first-order administrative division,,,,0,X,,,,2015-01-12,WB234246
+P151819,331259,PLA0057972,,ET,Mega,4.05,38.3,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,330132,PLA0057973,,ET,Negele,7.68333,39.25,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,328688,PLA0057974,,ET,Shashemene,8.78333,38.71667,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,338726,PLA0057975,,ET,Dodola,6.98333,39.18333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,336348,PLA0057976,,ET,Goba,9.44778,42.34306,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,339594,PLA0057977,,ET,Degeh Bur,8.22056,43.55722,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,335035,PLA0057978,,ET,Harar,9.31387,42.11815,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,338832,PLA0057979,,ET,Dire Dawa,9.59306,41.86611,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,343135,PLA0057980,,ET,Awash,8.7,38.61667,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,330186,PLA0057981,,ET,Nazret,8.55,39.26667,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,343370,PLA0057982,,ET,Asela,7.95,39.13333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,334609,PLA0057983,,ET,Hosa'ina,7.58333,37.88333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P000755,344979,PLA0052320,,ET,Addis Ababa,9.0249701,38.746891,44,Adis Abeba,,,PPLC,capital of a political entity,,,,0,,X,,,2016-02-22,WB220351
+P148591,444184,PLA0050641,,ET,Harari Region,9.25,42.166672,50,Harari,,,ADM1,first-order administrative division,,,,0,X,,,,2015-01-12,WB234246
+P096323,444180,PLA0051338,,ET,Amhara Region,11.5,38.5,46,Amhara,,,ADM1,first-order administrative division,,,,0,,X,,,2015-06-12,WB88572
+P148447,337996,PLA0055041,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2016-06-30,RFC-PROJECTS
+P148591,444181,PLA0050640,,ET,Benishangul-Gumuz Region,11.0,35.5,47,Binshangul Gumuz,,,ADM1,first-order administrative division,,,,0,X,,,,2015-01-12,WB234246
+P151847,338832,PLA0055642,,ET,Dire Dawa,9.59306,41.86611,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-07,RFC-PROJECTS
+P151847,344979,PLA0055643,,ET,Addis Ababa,9.02497,38.74689,,,,,P.PPLC,capital of a political entity,,,,0,,,,,2016-07-07,RFC-PROJECTS
+P150922,344979,PLA0054347,,ET,Addis Ababa,9.02497,38.74689,,,,,P.PPLC,capital of a political entity,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,337996,PLA0054348,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2016-06-09,RFC-PROJECTS
+P148591,444187,PLA0050646,,ET,Tigray Region,14.16667,38.833328,53,Tigray,,,ADM1,first-order administrative division,,,,0,X,,,,2015-01-12,WB234246
+P119893,444184,PLA0053359,,ET,Harari Region,9.25,42.166672,50,Harari,,,ADM1,first-order administrative division,,,,0,X,,,,2016-04-21,WB317933
+P096323,8643771,PLA0051310,,ET,Assosa Maekel,10.16667,34.52,47,Binshangul Gumuz,,,PPL,populated place,,,,0,,X,,,2015-06-12,WB88572
+P146883,444179,PLA0054097,,ET,Afar Region,12.0,41.5,45,Afar,,,ADM1,first-order administrative division,,,,0,,X,,,2016-05-25,WB328162
+P150922,444187,PLA0054336,,ET,Tigray Region,14.16667,38.83333,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,444188,PLA0054337,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.7273,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,444186,PLA0054338,,ET,Somali Region,7.0,44.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,444185,PLA0054339,,ET,Oromiya Region,8.0,39.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P000755,344970,PLA0051780,,ET,Adis Amba,9.1555204,41.080318,,,,,P.PPL,populated place,,,,0,,,,,2016-01-04,RFC-PROJECTS
+P000755,343810,PLA0051781,,ET,Annaculu,8.1999998,42.933331,,,,,P.PPL,populated place,,,,0,,,,,2016-01-04,RFC-PROJECTS
+P000755,332288,PLA0051782,,ET,Lalibela,12.03219,39.047562,,,,,P.PPL,populated place,,,,0,,,,,2016-01-04,RFC-PROJECTS
+P000755,331089,PLA0051783,,ET,Melkasa,8.3999996,39.333328,,,,,PPL,populated place,,P,,0,,,,,2016-01-04,RFC-PROJECTS
+P000755,444179,PLA0051864,,ET,Afar Region,12.0,41.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2016-01-04,RFC-PROJECTS
+P150922,444184,PLA0054340,,ET,Harari Region,9.25,42.16667,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,444183,PLA0054341,,ET,Gambela Region,7.83333,34.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,444182,PLA0054342,,ET,Dire Dawa Region,9.567,42.014,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P156400,444178,PLA0051446,,ET,Adis Abeba Astedader,9.0,38.75,44,Adis Abeba,,,ADM1,first-order administrative division,,,,0,X,,,,2015-10-14,WB171328
+P150922,444181,PLA0054343,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,444180,PLA0054344,,ET,Amhara Region,11.5,38.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,444178,PLA0054346,,ET,Adis Abeba Astedader,9.0,38.75,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P150922,444179,PLA0054345,,ET,Afar Region,12.0,41.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2016-06-09,RFC-PROJECTS
+P151712,345504,PLA0057884,,ET,Adama,9.53333,38.83333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,339219,PLA0057885,,ET,Dese,11.13333,39.63333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,338832,PLA0057886,,ET,Dire Dawa,9.59306,41.86611,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,335035,PLA0057887,,ET,Harar,9.31387,42.11815,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,337405,PLA0057888,,ET,Gambela,8.25,34.58333,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,343137,PLA0057889,,ET,Hawassa,7.06205,38.47635,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,343292,PLA0057890,,ET,Asosa,10.06667,34.53333,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,333795,PLA0057891,,ET,Jijiga,9.35,42.8,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,343409,PLA0057892,,ET,Asaita,11.56838,41.43869,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,331180,PLA0057893,,ET,Mekele,13.49667,39.47528,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P151712,344979,PLA0057894,,ET,Addis Ababa,9.02497,38.74689,,,,,P.PPLC,capital of a political entity,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P153713,337996,PLA0061901,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P151819,326320,PLA0057984,,ET,Wendo,9.73333,37.2,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,10376725,PLA0057985,,ET,Awasa Zuria,7.0,38.5,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,328246,PLA0057986,,ET,Sodo,8.58333,35.81667,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,341741,PLA0057987,,ET,Bonga,8.18333,34.85,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,333773,PLA0057988,,ET,Jima,9.53333,38.1,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,336495,PLA0057989,,ET,Gimbi,9.39927,39.27024,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,335942,PLA0057990,,ET,Gore,8.3443,36.08654,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,337405,PLA0057991,,ET,Gambela,8.25,34.58333,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,343292,PLA0057992,,ET,Asosa,10.06667,34.53333,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,342884,PLA0057993,,ET,Bahir Dar,11.59364,37.39077,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,339708,PLA0057994,,ET,Debre Mark'os,10.35,37.73333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,343409,PLA0057995,,ET,Asaita,11.56838,41.43869,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,339219,PLA0057996,,ET,Dese,11.13333,39.63333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,326406,PLA0057997,,ET,Weldiya,11.8277,39.59164,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,328021,PLA0057998,,ET,Tabor,10.05,39.78333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,336015,PLA0057999,,ET,Gonder,11.5,39.15,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,327679,PLA0058000,,ET,Terara,11.21667,38.25,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,334718,PLA0058001,,ET,Humera,14.29059,36.60808,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,331180,PLA0058002,,ET,Mekele,13.49667,39.47528,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,344420,PLA0058003,,ET,Axum,14.12109,38.72337,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P151819,345149,PLA0058004,,ET,Adigrat,14.277,39.462,,,,,P.PPL,populated place,,,,0,,,,,2016-07-22,RFC-PROJECTS
+P155563,444184,PLA0057835,,ET,Harari Region,9.25,42.16667,,,,,ADM1,first-order administrative division,,A,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,444187,PLA0057836,,ET,Tigray Region,14.16667,38.83333,,,,,ADM1,first-order administrative division,,A,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,444185,PLA0057837,,ET,Oromiya Region,8.0,39.0,,,,,ADM1,first-order administrative division,,A,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,444180,PLA0057838,,ET,Amhara Region,11.5,38.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7670665,PLA0057839,,ET,Dangila,11.41667,36.66667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,339628,PLA0057840,,ET,Dedere,11.18333,39.15,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,342855,PLA0057841,,ET,Bako,9.13333,37.05,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,337735,PLA0057842,,ET,Finchawa,9.9,37.45,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,337084,PLA0057843,,ET,Gedo,8.56667,39.33333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7670629,PLA0057844,,ET,Ambo,9.0,37.75,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7670636,PLA0057845,,ET,Guduru,9.5,37.58333,,,,,ADM3,third-order administrative division,,A,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,330764,PLA0057846,,ET,Metu,8.3,35.58333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,335942,PLA0057847,,ET,Gore,8.3443,36.08654,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7869861,PLA0057848,,ET,South Gondar Zone,11.8385,38.09954,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7670665,PLA0057849,,ET,Dangila,11.41667,36.66667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7648556,PLA0057850,,ET,Mecha,11.41667,37.16667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7670660,PLA0057851,,ET,Bahir Dar Zuria,11.25,37.16667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,8643793,PLA0057852,,ET,Abay Chomen,9.66667,37.33333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,334615,PLA0057853,,ET,Horo,9.83333,36.3,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7910079,PLA0057854,,ET,Wolayta Sodo,6.86,37.76159,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,336014,PLA0057855,,ET,Gondar,12.6,37.46667,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,328689,PLA0057856,,ET,Shashemen?,7.2,38.6,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,339707,PLA0057857,,ET,Debre Mark'os Awraja,10.25,37.66667,,,,,A.ADMD,administrative division,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,345149,PLA0057858,,ET,Adigrat,14.277,39.462,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,335035,PLA0057859,,ET,Harar,9.31387,42.11815,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,331471,PLA0057860,,ET,Masha,11.23333,39.06667,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,330764,PLA0057861,,ET,Metu,8.3,35.58333,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,328709,PLA0057862,,ET,Shambu,9.56667,37.1,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,337735,PLA0057863,,ET,Finchawa,9.9,37.45,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,343050,PLA0057864,,ET,?ykel,12.55,37.06667,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,342989,PLA0057865,,ET,Azezo,12.55,37.42556,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,333772,PLA0057866,,ET,J?ma,7.66667,36.83333,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,343137,PLA0057867,,ET,Hawassa,7.06205,38.47635,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,338832,PLA0057868,,ET,Dire Dawa,9.59306,41.86611,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,345502,PLA0057869,,ET,?dama,10.70587,39.55201,,,,,PPL,populated place,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,8643760,PLA0057870,,ET,Dessie Zuria,11.16667,39.33333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,342884,PLA0057871,,ET,Bahir Dar,11.59364,37.39077,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,7667784,PLA0057872,,ET,Mek'ele,13.49614,39.47353,,,,,P.PPL,populated place,,,,0,,,,,2016-07-20,RFC-PROJECTS
+P155563,444178,PLA0057873,,ET,?d?s ?beba ?stedader,9.0,38.75,,,,,ADM1,first-order administrative division,,A,,0,,,,,2016-07-20,RFC-PROJECTS
+P152822,343117,PLA0057191,,ET,Awben,9.04722,43.09917,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,341857,PLA0057192,,ET,Bogol Manyo,4.5175,41.53639,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,338674,PLA0057193,,ET,Dollo,6.91667,45.08333,,,,,L.LCTY,locality,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,343374,PLA0057194,,ET,Asegeda,13.2027,39.58949,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,7670658,PLA0057195,,ET,Tahtay Adiyabo,14.33333,37.83333,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,334050,PLA0057196,,ET,Itang,8.2,34.26667,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,345711,PLA0057197,,ET,Abol,7.7,34.1,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,336194,PLA0057198,,ET,Gogo,7.58333,34.5,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,342788,PLA0057199,,ET,Bambesi,9.75,34.73333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,8643801,PLA0057200,,ET,Mao-Komo Liyou,9.5,34.3333,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P152822,343409,PLA0057201,,ET,Asaita,11.56838,41.43869,,,,,P.PPL,populated place,,,,0,,,,,2016-07-13,RFC-PROJECTS
+P148850,345844,PLA0060324,,ET,Abaya Hayk',6.33333,37.83333,,,,,H.LK,lake,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,328688,PLA0060325,,ET,Shashemene,8.78333,38.71667,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,344267,PLA0060326,,ET,`Alem T'ena,8.3,38.95,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,332264,PLA0060327,,ET,Langano,7.63333,38.7,,,,,PPL,populated place,,P,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,7667785,PLA0060328,,ET,Koka,8.43442,39.0308,,,,,PPL,populated place,,P,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,327556,PLA0060329,,ET,T'ik'ur Wiha,13.21667,38.06667,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,328714,PLA0060330,,ET,Shala H?yk?,7.48333,38.53333,,,,,LK,lake,,H,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,325578,PLA0060331,,ET,Ziway H?yk?,8.0,38.83333,,,,,LK,lake,,H,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,331162,PLA0060332,,ET,Mek'i,9.33333,38.93333,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,343135,PLA0060333,,ET,Awash,8.7,38.61667,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,341482,PLA0060334,,ET,Bulbula,9.21667,38.5,,,,,PPL,populated place,,P,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,332263,PLA0060335,,ET,Langano Hayk',7.6,38.71667,,,,,H.LK,lake,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,342636,PLA0060336,,ET,Batu Shet?,8.98333,38.23333,,,,,STM,stream,,H,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,332916,PLA0060337,,ET,K?ok?a Gidib,8.46667,39.15,,,,,DAM,dam,,S,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,6957928,PLA0060338,,ET,Great Rift Valley,5.0,37.0,,,,,VAL,valley,,T,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,343663,PLA0060339,,ET,Arba Minch',6.03333,37.55,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,8643798,PLA0060340,,ET,Arsi Negele,7.3333,38.6667,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,342637,PLA0060341,,ET,Batu,6.91667,39.73333,,,,,T.MT,mountain,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,338726,PLA0060342,,ET,Dodola,6.98333,39.18333,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,344979,PLA0060343,,ET,Addis Ababa,9.02497,38.74689,,,,,P.PPLC,capital of a political entity,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P148850,343137,PLA0060344,,ET,Hawassa,7.06205,38.47635,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,327653,PLA0060936,,ET,Teru,12.4,40.3,,,,,L.LCTY,locality,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,8643594,PLA0060937,,ET,Simurobi Gele'alo,10.0,40.16667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,339653,PLA0060938,,ET,Debub,13.0,39.6,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,328054,PLA0060939,,ET,Surma,6.41746,35.47385,,,,,L.LCTY,locality,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,335160,PLA0060940,,ET,Hamer Koke,5.15,36.75,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,341449,PLA0060941,,ET,Bume,5.16667,35.93333,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,339655,PLA0060942,,ET,Debu,9.26667,40.1,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,342176,PLA0060943,,ET,Bidu,9.5,38.43333,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,8643591,PLA0060944,,ET,Yalo,12.66667,40.0,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,444996,PLA0060945,,ET,Misrak Gashamo,8.1,45.36667,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,330879,PLA0060946,,ET,Mersin Galgalo,7.61028,44.93722,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,8643591,PLA0060947,,ET,Yalo,12.66667,40.0,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,344770,PLA0060948,,ET,Afambo,11.47704,41.68403,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,330415,PLA0060949,,ET,Moyale,3.54092,39.05279,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,333795,PLA0060950,,ET,Jijiga,9.35,42.8,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,328553,PLA0060951,,ET,Shilabo,6.09167,44.76361,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,330608,PLA0060952,,ET,Miya,9.13333,35.26667,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,326036,PLA0060953,,ET,Yabelo,4.88333,38.08333,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,330415,PLA0060954,,ET,Moyale,3.54092,39.05279,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,327748,PLA0060955,,ET,Teltele,9.96667,38.08333,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,338858,PLA0060956,,ET,Dire,4.98333,37.1,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P150006,338965,PLA0060957,,ET,Dilo,9.28333,38.65,,,,,P.PPL,populated place,,,,0,,,,,2016-10-17,RFC-PROJECTS
+P163350,339686,PLA0067908,,ET,Debre Tabor,11.85,38.01667,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,59759,PLA0067909,,ET,Ferfer,5.08361,45.12806,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,338666,PLA0067910,,ET,Dolo Odo,4.17861,42.05889,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,330415,PLA0067911,,ET,Moyale,3.54092,39.05279,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,331257,PLA0067912,,ET,Megala,8.33737,41.20387,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,326036,PLA0067913,,ET,Yabelo,4.88333,38.08333,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,330132,PLA0067914,,ET,Negele,7.68333,39.25,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,326282,PLA0067915,,ET,Warder,6.97444,45.34083,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,333516,PLA0067916,,ET,Kebri Dahar,6.74,44.27806,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,334294,PLA0067917,,ET,Imi,6.46028,42.14194,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,326320,PLA0067918,,ET,Wendo,9.73333,37.2,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,338726,PLA0067919,,ET,Dodola,6.98333,39.18333,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,328247,PLA0067920,,ET,Sodo,6.9,37.75,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,336348,PLA0067921,,ET,Goba,9.44778,42.34306,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,328688,PLA0067922,,ET,Shashemene,8.78333,38.71667,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,334609,PLA0067923,,ET,Hosa'ina,7.58333,37.88333,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,341742,PLA0067924,,ET,Bonga,7.28333,36.23333,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,333770,PLA0067925,,ET,Jima,9.28333,37.1,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,338660,PLA0067926,,ET,Domo,7.89139,46.85083,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,343370,PLA0067927,,ET,Asela,7.95,39.13333,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,335942,PLA0067928,,ET,Gore,8.3443,36.08654,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,326355,PLA0067929,,ET,Wolkite,8.28333,37.78333,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,343143,PLA0067930,,ET,Aware,8.25611,44.15667,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,339594,PLA0067931,,ET,Degeh Bur,8.22056,43.55722,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,343134,PLA0067932,,ET,Awash,8.98333,40.16667,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,330186,PLA0067933,,ET,Nazret,8.55,39.26667,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,330118,PLA0067934,,ET,Nek'emte,9.08333,36.55,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,336495,PLA0067935,,ET,Gimbi,9.39927,39.27024,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,339708,PLA0067936,,ET,Debre Mark'os,10.35,37.73333,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,339219,PLA0067937,,ET,Dese,11.13333,39.63333,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,326406,PLA0067938,,ET,Weldiya,11.8277,39.59164,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,336015,PLA0067939,,ET,Gonder,11.5,39.15,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,345149,PLA0067940,,ET,Adigrat,14.277,39.462,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,344420,PLA0067941,,ET,Axum,14.12109,38.72337,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P163350,334718,PLA0067942,,ET,Humera,14.29059,36.60808,,,,,P.PPL,populated place,,,,0,,,,,2017-07-13,RFC-PROJECTS
+P158987,344979,PLA0068354,,ET,Addis Ababa,9.02497,38.74689,,,,,PPLC,capital of a political entity,,P,,0,,,,,2017-09-27,RFC-PROJECTS
+P159798,337996,PLA0068466,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2017-10-03,RFC-PROJECTS
+P157716,329336,PLA0068481,,ET,Samr?,13.21245,39.15204,,,,,PPL,populated place,,P,,0,,,,,2017-10-03,RFC-PROJECTS
+P157716,9645302,PLA0068482,,ET,Saesi Tsabamba,14.25,39.667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2017-10-03,RFC-PROJECTS
+P157716,444187,PLA0068483,,ET,Tigray Region,14.16667,38.83333,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2017-10-03,RFC-PROJECTS
+P156433,339594,PLA0065874,,ET,Degeh Bur,8.22056,43.55722,,,,,PPL,populated place,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,343663,PLA0065875,,ET,Arba Minch',6.03333,37.55,,,,,P.PPL,populated place,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,343370,PLA0065876,,ET,Asela,7.95,39.13333,,,,,P.PPL,populated place,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,330118,PLA0065877,,ET,Nek'emte,9.08333,36.55,,,,,P.PPL,populated place,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,328689,PLA0065878,,ET,Shashemen?,7.2,38.6,,,,,PPL,populated place,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,339219,PLA0065879,,ET,Des?,11.13333,39.63333,,,,,PPL,populated place,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,345149,PLA0065880,,ET,Adigrat,14.277,39.462,,,,,P.PPL,populated place,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,328247,PLA0065881,,ET,Sodo,6.9,37.75,,,,,PPL,populated place,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,333772,PLA0065882,,ET,J?ma,7.66667,36.83333,,,,,PPL,populated place,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,331958,PLA0065883,,ET,Log?ya,11.72615,40.9797,,,,,PPL,populated place,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,6913519,PLA0065884,,ET,Semera,11.79342,41.00578,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,343291,PLA0065885,,ET,Asosa,10.0,34.5,,,,,ADM2,second-order administrative division,,A,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,337405,PLA0065886,,ET,Gamb?la,8.25,34.58333,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,333795,PLA0065887,,ET,Jijiga,9.35,42.8,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,444184,PLA0065888,,ET,Harari Region,9.25,42.16667,,,,,ADM1,first-order administrative division,,A,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,342884,PLA0065889,,ET,Bahir Dar,11.59364,37.39077,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,343137,PLA0065890,,ET,Hawassa,7.06205,38.47635,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,345503,PLA0065891,,ET,Adama,10.43807,39.39749,,,,,P.PPL,populated place,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P174874,337996,PLA0086301,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2021-03-11,RFC-PROJECTS
+P156590,330488,PLA0066107,,ET,Mojo,9.76667,36.66667,,,,,P.PPL,populated place,,,,0,,,,,2017-07-05,RFC-PROJECTS
+P156433,8643579,PLA0065892,,ET,Mekelle,13.49781,39.54391,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,444182,PLA0065893,,ET,Dire Dawa Region,9.567,42.014,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,339733,PLA0065894,,ET,Debre Birhan,12.61667,37.48333,,,,,P.PPL,populated place,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,341981,PLA0065895,,ET,Bishoftu,9.1,37.25,,,,,PPL,populated place,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,336014,PLA0065896,,ET,Gondar,12.6,37.46667,,,,,P.PPL,populated place,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,8051202,PLA0065897,,ET,Akaki Kality,8.89643,38.78908,,,,,P.PPL,populated place,,,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,332636,PLA0065898,,ET,Koteb? Shet?,8.96667,38.83333,,,,,STM,stream,,H,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,344979,PLA0065899,,ET,Addis Ababa,9.02497,38.74689,,,,,PPLC,capital of a political entity,,P,,0,,,,,2017-06-28,RFC-PROJECTS
+P156433,337996,PLA0065900,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2017-06-28,RFC-PROJECTS
+P160279,344979,PLA0064119,,ET,Addis Ababa,9.02497,38.74689,,,,,P.PPLC,capital of a political entity,,,,0,,,,,2017-05-17,RFC-PROJECTS
+P163608,444188,PLA0068065,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.7273,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2017-08-08,RFC-PROJECTS
+P163608,444181,PLA0068066,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2017-08-08,RFC-PROJECTS
+P163608,444183,PLA0068067,,ET,Gambela Region,7.83333,34.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2017-08-08,RFC-PROJECTS
+P163608,444179,PLA0068068,,ET,Afar Region,12.0,41.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2017-08-08,RFC-PROJECTS
+P163226,342884,PLA0072475,,ET,Bahir Dar,11.59364,37.39077,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2018-06-21,RFC-PROJECTS
+P163226,343137,PLA0072476,,ET,Hawassa,7.06205,38.47635,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2018-06-21,RFC-PROJECTS
+P163226,331180,PLA0072477,,ET,Mekele,13.49667,39.47528,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2018-06-21,RFC-PROJECTS
+P163226,7670629,PLA0072478,,ET,Ambo,9.0,37.75,,,,,ADM3,third-order administrative division,,A,,0,,,,,2018-06-21,RFC-PROJECTS
+P163226,337996,PLA0072479,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2018-06-21,RFC-PROJECTS
+P163226,444178,PLA0072480,,ET,?d?s ?beba ?stedader,9.0,38.75,,,,,ADM1,first-order administrative division,,A,,0,,,,,2018-06-21,RFC-PROJECTS
+P163226,330186,PLA0072481,,ET,Nazr?t,8.55,39.26667,,,,,PPL,populated place,,P,,0,,,,,2018-06-21,RFC-PROJECTS
+P163226,339219,PLA0072482,,ET,Des?,11.13333,39.63333,,,,,PPL,populated place,,P,,0,,,,,2018-06-21,RFC-PROJECTS
+P162304,337996,PLA0069224,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2017-10-31,RFC-PROJECTS
+P160395,444178,PLA0070108,,ET,Adis Abeba Astedader,9.0,38.75,44,Addis Ababa,,,ADM1,first-order administrative division,,,,0,X,,,,2018-03-13,WB446092
+P161060,444187,PLA0071268,,ET,Tigray Region,14.16667,38.83333,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444188,PLA0071269,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.7273,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444186,PLA0071270,,ET,Somali Region,7.0,44.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444185,PLA0071271,,ET,Oromiya Region,8.0,39.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444184,PLA0071272,,ET,Harari Region,9.25,42.16667,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444183,PLA0071273,,ET,Gambela Region,7.83333,34.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444182,PLA0071324,,ET,Dire Dawa Region,9.567,42.014,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444181,PLA0071325,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444180,PLA0071326,,ET,Amhara Region,11.5,38.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444179,PLA0071327,,ET,Afar Region,12.0,41.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P161060,444178,PLA0071328,,ET,Adis Abeba Astedader,9.0,38.75,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-05-23,RFC-PROJECTS
+P159382,328367,PLA0071362,,ET,Silti,7.96667,38.28333,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,332087,PLA0071363,,ET,Lemo Bota,5.5,37.83333,,,,,L.LCTY,locality,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,332816,PLA0071414,,ET,Konso,5.25,37.5,,,,,L.LCTY,locality,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,7874084,PLA0071415,,ET,Humbo,6.66667,37.83333,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,331934,PLA0071416,,ET,Loma,6.86667,37.36667,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,9645304,PLA0071417,,ET,Hintalo Wajirat,13.167,39.667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,344796,PLA0071418,,ET,Adwa Awraja,14.16667,39.16667,,,,,A.ADMD,administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8643771,PLA0071419,,ET,Assosa Maekel,10.16667,34.52,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,10400279,PLA0071420,,ET,Abobo (woreda),7.83333,34.5,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8621033,PLA0071421,,ET,Dahna,10.61744,39.82717,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8643703,PLA0071422,,ET,Lay Armachiho,13.0,37.1667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,9613439,PLA0071423,,ET,Fogera,11.97,37.68,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8643627,PLA0071424,,ET,Guzamn,10.5,37.5,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,11184162,PLA0071425,,ET,Faggeta Lekoma,11.33333,36.75,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,339215,PLA0071426,,ET,Dese Zuriya Awraja,11.25,39.58333,,,,,A.ADMD,administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8643712,PLA0071427,,ET,Basona Werana,9.8333,39.3333,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8621155,PLA0071428,,ET,Moret and Jiru,9.87448,39.31042,,,,,L.LCTY,locality,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,7648556,PLA0071429,,ET,Mecha,11.41667,37.16667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,7670660,PLA0071430,,ET,Bahir Dar Zuria,11.25,37.16667,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8335156,PLA0071431,,ET,Libo Kemkem,12.2,37.4,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,340358,PLA0071432,,ET,Dabat,12.98417,37.765,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,345842,PLA0071433,,ET,Abaye,9.09139,41.51139,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,341690,PLA0071434,,ET,Bore,7.86667,37.03333,,,,,T.MTS,mountains,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,338880,PLA0071435,,ET,Dinsho,7.1,39.78333,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,345504,PLA0071436,,ET,Adama,9.53333,38.83333,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,330120,PLA0071437,,ET,Nejo,9.5,35.5,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,331151,PLA0071438,,ET,Meko,9.95,38.4,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,7670630,PLA0071439,,ET,Becho,8.58333,38.25,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,333224,PLA0071440,,ET,Kersa Dek,5.21667,39.83333,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,339714,PLA0071441,,ET,Debre Libanos,9.71667,38.86667,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,332763,PLA0071442,,ET,Kore,9.56667,38.95,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,329605,PLA0071443,,ET,Robe,9.60827,39.1355,,,,,P.PPL,populated place,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8335159,PLA0071444,,ET,Tulo,9.16,41.0,,,,,A.ADM3,third-order administrative division,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P159382,8606636,PLA0071445,,ET,Combolcha,9.35797,39.22455,,,,,H.STM,stream,,,,0,,,,,2018-05-25,RFC-PROJECTS
+P165581,337996,PLA0072583,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2018-06-25,RFC-PROJECTS
+P163438,7839144,PLA0073696,,ET,Bale,6.92193,40.45258,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,7732039,PLA0073697,,ET,Borena Zone,4.94952,38.20915,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,345490,PLA0073698,,ET,Adami Tulu,7.86667,38.7,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,338725,PLA0073699,,ET,Dodota,8.63333,38.76667,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,332087,PLA0073700,,ET,Lemo Bota,5.5,37.83333,,,,,L.LCTY,locality,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,340121,PLA0073701,,ET,Dalocha,7.78333,38.25,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,330534,PLA0073702,,ET,Mizan Teferi,6.99674,35.58948,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,334902,PLA0073703,,ET,Harshin,9.21694,43.58778,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P173398,337996,PLA0087857,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2021-06-08,RFC-PROJECTS
+P163438,345550,PLA0073704,,ET,Adadale,7.83333,44.31667,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,343017,PLA0073705,,ET,Aysha,10.75542,42.57368,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,342361,PLA0073706,,ET,Berahile,13.86167,40.02157,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,339190,PLA0073707,,ET,Dewes,10.34381,39.522,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,338158,PLA0073708,,ET,Elda ar,12.05246,41.92336,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,344169,PLA0073709,,ET,Albuko,10.76149,39.55121,,,,,P.PPL,populated place,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,444187,PLA0073710,,ET,Tigray Region,14.16667,38.83333,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,444188,PLA0073711,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.7273,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,444186,PLA0073712,,ET,Somali Region,7.0,44.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,444185,PLA0073713,,ET,Oromiya Region,8.0,39.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,444184,PLA0073714,,ET,Harari Region,9.25,42.16667,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,444182,PLA0073715,,ET,Dire Dawa Region,9.567,42.014,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,444180,PLA0073716,,ET,Amhara Region,11.5,38.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P163438,444179,PLA0073717,,ET,Afar Region,12.0,41.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P162228,337996,PLA0074640,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2018-09-12,RFC-PROJECTS
+P155859,337996,PLA0074626,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2018-09-12,RFC-PROJECTS
+P156475,329607,PLA0071239,,ET,Rob?,7.13333,40.0,,,,,PPL,populated place,,P,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,330764,PLA0071240,,ET,Metu,8.3,35.58333,,,,,PPL,populated place,,P,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,328689,PLA0071241,,ET,Shashemen?,7.2,38.6,,,,,PPL,populated place,,P,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,333794,PLA0071242,,ET,Jijiga,9.66667,38.75,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,330415,PLA0071243,,ET,Moyale,3.54092,39.05279,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,331259,PLA0071364,,ET,Mega,4.05,38.3,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7732039,PLA0071365,,ET,Borena Zone,4.94952,38.20915,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,326036,PLA0071366,,ET,Yabelo,4.88333,38.08333,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,330132,PLA0071367,,ET,Negele,7.68333,39.25,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,8299785,PLA0071368,,ET,Guji Zone,5.588,39.067,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7839144,PLA0071369,,ET,Bale,6.92193,40.45258,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7732970,PLA0071370,,ET,East Harerghe Zone,8.70114,42.00241,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7732969,PLA0071371,,ET,West Harerghe Zone,8.67245,40.84885,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,336348,PLA0071372,,ET,Goba,9.44778,42.34306,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,338726,PLA0071373,,ET,Dodola,6.98333,39.18333,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,343124,PLA0071374,,ET,Awasi,9.9,38.63333,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,343135,PLA0071375,,ET,Awash,8.7,38.61667,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,328688,PLA0071376,,ET,Shashemene,8.78333,38.71667,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,343450,PLA0071377,,ET,Arsi Zone,7.5,39.5,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,343370,PLA0071378,,ET,Asela,7.95,39.13333,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,330186,PLA0071379,,ET,Nazret,8.55,39.26667,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7670720,PLA0071380,,ET,East Shewa Zone,8.21353,38.84809,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7670714,PLA0071381,,ET,North Shewa Zone,9.66915,38.8124,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7670717,PLA0071382,,ET,South West Shewa,8.60917,38.23534,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7670715,PLA0071383,,ET,West Shewa Zone,9.13948,37.85016,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,334615,PLA0071384,,ET,Horo,9.83333,36.3,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,333766,PLA0071385,,ET,Jimma Zone,7.66667,37.0,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,330118,PLA0071386,,ET,Nek'emte,9.08333,36.55,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7670721,PLA0071387,,ET,East Wellega Zone,9.51928,36.75762,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,337404,PLA0071388,,ET,Gambela,8.6,40.25,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,335942,PLA0071389,,ET,Gore,8.3443,36.08654,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7732965,PLA0071390,,ET,Illubabor Zone,8.27526,35.75596,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,336495,PLA0071391,,ET,Gimbi,9.39927,39.27024,,,,,P.PPL,populated place,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P156475,7732966,PLA0071392,,ET,West Wellega Zone,9.17283,35.05279,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-05-24,RFC-PROJECTS
+P163383,11239666,PLA0093598,,ET,Ezha,8.15372,37.99416,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,326332,PLA0093599,,ET,Wenago Bota,6.3,38.2,,,,,,locality,,,,0,,,,,2022-09-19,WB563789
+P163383,327941,PLA0093600,,ET,Tambaro,7.2,37.53333,,,,,,mountain,,,,0,,,,,2022-09-19,WB563789
+P163383,8643827,PLA0093601,,ET,Soro,7.5,37.5833,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,337389,PLA0093602,,ET,Gamo Gofa Kifle Hager,5.75,37.0,,,,,,administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,336461,PLA0093603,,ET,Gine,6.55,37.35,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,336488,PLA0093604,,ET,Gimbo,7.4,36.23333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,335586,PLA0093605,,ET,Gumer,8.1,38.2,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,336774,PLA0093606,,ET,GÄ?sha,6.50615,35.57729,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,336986,PLA0093607,,ET,Gelta,6.0,36.6,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,7670680,PLA0093608,,ET,Yem,7.83333,37.5,,,,,,second-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,7649239,PLA0093609,,ET,Meinit Woreda,6.5,35.75,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,331472,PLA0093610,,ET,Masha,7.73333,35.48333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643829,PLA0093611,,ET,Mareka,7.1667,37.1667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,331934,PLA0093612,,ET,Loma,6.86667,37.36667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,11750821,PLA0093613,,ET,Konta,6.87066,36.5726,,,,,,second-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,340980,PLA0093614,,ET,Cheha,8.13333,37.76667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,341476,PLA0093615,,ET,Bule,6.3,38.41667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643814,PLA0093616,,ET,Boloso Sore,7.0833,37.66667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,7670681,PLA0093617,,ET,Basketo,6.25,36.58333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643830,PLA0093618,,ET,Arbegona,6.6667,38.75,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,343869,PLA0093619,,ET,Angach'a,7.33333,37.85,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643759,PLA0093620,,ET,Farta,12.0,38.0,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,336372,PLA0093621,,ET,Waliso,8.53417,37.96515,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,326352,PLA0093622,,ET,Welmera Ä?dÄ«s,9.08333,38.51667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,343121,PLA0093623,,ET,Ä?watâ??a Shetâ??,5.05,39.11667,,,,,,stream,,,,0,,,,,2022-09-19,WB563789
+P163383,8643769,PLA0093624,,ET,Tiro Afeta,7.91667,37.33333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,11239793,PLA0093625,,ET,Sigmo,7.83,36.083,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643783,PLA0093626,,ET,Sibu Sire,9.0833,36.8333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,328738,PLA0093627,,ET,Seyo,9.56667,38.98333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,10381195,PLA0093628,,ET,Kersana Malima,8.5,38.58333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643773,PLA0093629,,ET,Kersa,7.75,37.08333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643789,PLA0093630,,ET,Jimma Arjo,8.66667,36.66666,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,334615,PLA0093631,,ET,Horo,9.83333,36.3,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,11237595,PLA0093632,,ET,Haro Maya,9.36534,41.98734,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,332863,PLA0093633,,ET,Koma,8.45,36.86667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,7670633,PLA0093634,,ET,Gimbichu,8.83333,39.16667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,336494,PLA0093635,,ET,GÄ«mbÄ«,9.45,39.26667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,329410,PLA0093636,,ET,Sajo,7.81667,36.51667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,342513,PLA0093637,,ET,Beigi,9.33333,34.48333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,329114,PLA0093638,,ET,Sebeta,8.91667,38.61667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,10400288,PLA0093639,,ET,Sasiga (woreda),9.16667,36.5,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,329881,PLA0093640,,ET,Omo Nada,7.63333,37.25,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,330061,PLA0093641,,ET,Nopa,8.06667,35.15,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,330764,PLA0093642,,ET,Metu,8.3,35.58333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,331620,PLA0093643,,ET,Mana,6.93333,40.65,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,332281,PLA0093644,,ET,Lalo Kâ??Ä«lÄ?,8.91667,35.35,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P164429,11750841,PLA0073602,,ET,Akaki Kaliti,8.89855,38.80448,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2018-07-13,RFC-PROJECTS
+P164429,344979,PLA0073603,,ET,Addis Ababa,9.02497,38.74689,,,,,PPLC,capital of a political entity,,P,,0,,,,,2018-07-13,RFC-PROJECTS
+P164429,337996,PLA0073604,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2018-07-13,RFC-PROJECTS
+P163383,332367,PLA0093645,,ET,Kuyu,9.86667,38.35,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,337535,PLA0093646,,ET,Gach'i,9.23333,35.91667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,338294,PLA0093647,,ET,Ejere,9.91667,38.51667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,7670628,PLA0093648,,ET,Dendi,8.91667,38.16667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,339589,PLA0093649,,ET,Degem,9.83333,38.61667,,,,,,hill,,,,0,,,,,2022-09-19,WB563789
+P163383,343953,PLA0093650,,ET,Amuru,9.98333,36.96667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,342297,PLA0093651,,ET,Berga Wenz,8.91667,38.33333,,,,,,stream,,,,0,,,,,2022-09-19,WB563789
+P163383,345575,PLA0093652,,ET,Adaa,9.3,38.16667,,,,,,locality,,,,0,,,,,2022-09-19,WB563789
+P163383,345689,PLA0093653,,ET,Abote,9.86667,38.45,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,9645299,PLA0093654,,ET,Abergele,13.33,38.83,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,329336,PLA0093655,,ET,SamrÄ?,13.21245,39.15204,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,7670652,PLA0093656,,ET,Raya Azebo,12.66667,39.75,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,11184163,PLA0093657,,ET,Medebay Zana,14.0,38.41667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,7670654,PLA0093658,,ET,Endamehoni,12.75,39.5,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643571,PLA0093659,,ET,Ganta Afeshum,14.33333,39.25,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,338082,PLA0093660,,ET,Enderta,13.71044,39.61793,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,9645301,PLA0093661,,ET,Atsbi Wonberta,13.67,39.75,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,344797,PLA0093662,,ET,Adwa,14.16347,38.89924,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643785,PLA0093663,,ET,Yaso,10.0,36.0,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643771,PLA0093664,,ET,Assosa Maekel,10.16667,34.52,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643776,PLA0093665,,ET,Oda Godere,10.1667,35.1667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,339159,PLA0093666,,ET,Dibate,10.65,36.21667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,339664,PLA0093667,,ET,Debre Zeyit,10.58333,35.8,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,332906,PLA0093668,,ET,Koko,10.28333,36.11667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,11750813,PLA0093669,,ET,Kemashi,9.84,35.78035,,,,,,second-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,340004,PLA0093670,,ET,Dangur,11.36667,35.95,,,,,,mountains,,,,0,,,,,2022-09-19,WB563789
+P163383,343291,PLA0093671,,ET,Asosa,10.0,34.5,,,,,,second-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,342788,PLA0093672,,ET,Bambesi,9.75,34.73333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,333787,PLA0093673,,ET,Jikawo,8.36667,33.76667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8392174,PLA0093674,,ET,Larre,8.30236,33.89133,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,10400278,PLA0093675,,ET,Itang (woreda),8.25,34.16667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,11184166,PLA0093676,,ET,Godere,7.33333,35.16667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,444183,PLA0093677,,ET,Gambela Region,7.83333,34.5,,,,,,first-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,345714,PLA0093678,,ET,Abobo,7.85,34.55,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643627,PLA0093679,,ET,Guzamn,10.5,37.5,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,326659,PLA0093680,,ET,Wala,12.18333,39.3,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,327700,PLA0093681,,ET,Tenta,10.78333,38.4,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643681,PLA0093682,,ET,Tach Gayint,11.75,38.33333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,328962,PLA0093683,,ET,Sek'ot'a,12.63056,39.03472,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,329415,PLA0093684,,ET,Saint,10.91667,38.65,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8335153,PLA0093685,,ET,Meket,12.0,38.45,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643629,PLA0093686,,ET,Machakel,11.6667,37.3333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8335155,PLA0093687,,ET,Lay Gayint,12.0,38.2,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,7670672,PLA0093688,,ET,Kewet,10.16667,39.75,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643687,PLA0093689,,ET,Dega Damot,11.08333,37.41667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P177654,337996,PLA0093907,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2022-10-10,WB563789
+P179092,444179,PLA0094094,,ET,Afar Region,12.0,41.5,,,,,,first-order administrative division,,,,0,,,,,2022-11-07,WB563789
+P163383,339473,PLA0093690,,ET,Dembech'a,10.55,37.48333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,7670659,PLA0093691,,ET,Jabi Tehnan,10.83333,37.16667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643700,PLA0093692,,ET,Jan Amora,12.9833,38.1167,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,11184162,PLA0093693,,ET,Faggeta Lekoma,11.33333,36.75,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,334177,PLA0093694,,ET,Inewari,9.8924,39.14649,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643610,PLA0093695,,ET,Enbise Sar Midir,11.08333,38.25,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,335010,PLA0093696,,ET,Harewo,10.66955,39.42867,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,339190,PLA0093697,,ET,Dewes,10.34381,39.522,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,9613438,PLA0093698,,ET,Ebenat,12.17,38.08,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,339517,PLA0093699,,ET,Delante,11.16667,39.48333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643606,PLA0093700,,ET,Debay Telatgen,10.75,37.83333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,340760,PLA0093701,,ET,Chilwa,10.85519,39.33336,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,7670664,PLA0093702,,ET,Guangua,11.0,36.33333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,341397,PLA0093703,,ET,Bure,10.7,37.06667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,341665,PLA0093704,,ET,Borena,10.74916,38.75934,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643602,PLA0093705,,ET,Baso Liben,10.16667,37.58333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643605,PLA0093706,,ET,Bibugn,11.0,37.58333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8335154,PLA0093707,,ET,Artuma Fursi,10.4,40.15,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,7670671,PLA0093708,,ET,Antsokiyana Gemza,10.75,39.66667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,344318,PLA0093709,,ET,Alefa,11.95,36.86667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,339856,PLA0093710,,ET,Dawint,11.46667,38.98333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643714,PLA0093711,,ET,Berehet,9.3333,39.5,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8606570,PLA0093712,,ET,Angolela and Tera,9.48104,39.36434,,,,,,locality,,,,0,,,,,2022-09-19,WB563789
+P163383,331188,PLA0093713,,ET,Mek'dela,11.55,38.28333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643703,PLA0093714,,ET,Lay Armachiho,13.0,37.1667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,8643698,PLA0093715,,ET,Gondar Zuria,12.6667,37.3333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,340008,PLA0093716,,ET,Dangila,11.26667,36.83333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,329775,PLA0093717,,ET,Quarib,11.06667,37.8,,,,,,mountain,,,,0,,,,,2022-09-19,WB563789
+P163383,7648556,PLA0093718,,ET,Mecha,11.41667,37.16667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,335989,PLA0093719,,ET,Gonj,11.21667,37.66667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643608,PLA0093720,,ET,Enarj Enawga,10.83333,38.08333,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,9645304,PLA0093721,,ET,Hintalo Wajirat,13.167,39.667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,9645302,PLA0093722,,ET,Saesi Tsabamba,14.25,39.667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,11257273,PLA0093723,,ET,Kilte Awulaelo,13.75,39.5,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,334838,PLA0093724,,ET,Hawzen,13.97841,39.42974,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,330911,PLA0093725,,ET,Merhib,13.64898,39.24802,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,11257267,PLA0093726,,ET,Tselemti,13.66667,38.16667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,340093,PLA0093727,,ET,Dama,6.4,38.46667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,326736,PLA0093728,,ET,Wabera,9.23333,34.51667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,340154,PLA0093729,,ET,Dale Shet',8.63333,39.96667,,,,,,stream,,,,0,,,,,2022-09-19,WB563789
+P163383,328906,PLA0093730,,ET,Sembo,9.41943,39.35295,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,328676,PLA0093731,,ET,Shebe,7.5,36.51667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,333953,PLA0093732,,ET,Jate,9.45,38.83333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,333973,PLA0093733,,ET,Jardega,9.81667,37.05,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,338458,PLA0093734,,ET,Dulecha,9.51667,37.06667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,332137,PLA0093735,,ET,Lek'a,9.08333,38.46667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,341680,PLA0093736,,ET,Boreda,9.3354,41.28569,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,340672,PLA0093737,,ET,Ch'ok'orsa,9.65,36.88333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,341842,PLA0093738,,ET,Boji,9.48333,34.91667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,344455,PLA0093739,,ET,Akako,9.58333,38.75,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,327426,PLA0093740,,ET,Tole,8.51667,38.26667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,11257894,PLA0093741,,ET,Meta Robi,9.33333,38.16667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,333961,PLA0093742,,ET,Jarso,10.05,38.3,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,336425,PLA0093743,,ET,Girar,9.68333,38.71667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,338520,PLA0093744,,ET,Dugda,8.78333,38.3,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,325579,PLA0093745,,ET,Ziway,7.93333,38.71667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,330315,PLA0093746,,ET,Munesa,7.58333,38.9,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,327461,PLA0093747,,ET,T'iyo,8.61667,39.4,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643813,PLA0093748,,ET,Kindo Koisha,6.8333,37.5,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,336951,PLA0093749,,ET,Gena Bosa,7.01667,37.23333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,8643825,PLA0093750,,ET,Melkoza,6.5,36.6667,,,,,,third-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,327450,PLA0093751,,ET,Toch'a,7.08333,37.03333,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,336049,PLA0093752,,ET,Gombora Shet',7.68333,37.53333,,,,,,stream,,,,0,,,,,2022-09-19,WB563789
+P169078,337996,PLA0079504,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2019-08-27,RFC-PROJECTS
+P167794,444183,PLA0079048,,ET,Gambela Region,7.83333,34.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2019-07-12,RFC-PROJECTS
+P167794,444182,PLA0079049,,ET,Dire Dawa Region,9.567,42.014,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-12,RFC-PROJECTS
+P167794,444181,PLA0079050,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-12,RFC-PROJECTS
+P167794,444179,PLA0079051,,ET,Afar Region,12.0,41.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-12,RFC-PROJECTS
+P167794,444188,PLA0079052,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.7273,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-12,RFC-PROJECTS
+P167794,444180,PLA0079053,,ET,Amhara Region,11.5,38.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-12,RFC-PROJECTS
+P167794,444185,PLA0079054,,ET,Oromiya Region,8.0,39.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2019-07-12,RFC-PROJECTS
+P163399,337996,PLA0075533,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2018-12-06,RFC-PROJECTS
+P167357,337996,PLA0075446,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2018-11-26,RFC-PROJECTS
+P169051,337996,PLA0079651,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2019-09-19,RFC-PROJECTS
+P166316,444178,PLA0075148,,ET,Adis Abeba Astedader,9.0,38.75,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2018-10-03,RFC-PROJECTS
+P169064,337996,PLA0081128,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2020-04-27,RFC-PROJECTS
+P164336,7729829,PLA0078699,,ET,South Omo,5.46208,36.40148,,,,,ADM2,second-order administrative division,,A,,0,,,,,2019-07-10,RFC-PROJECTS
+P164336,9855939,PLA0078700,,ET,Kuraz,4.91667,36.08333,,,,,ADM3,third-order administrative division,,A,,0,,,,,2019-07-10,RFC-PROJECTS
+P164336,344979,PLA0078701,,ET,Addis Ababa,9.02497,38.74689,,,,,PPLC,capital of a political entity,,P,,0,,,,,2019-07-10,RFC-PROJECTS
+P164336,444183,PLA0078702,,ET,Gambela Region,7.83333,34.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-10,RFC-PROJECTS
+P164336,444186,PLA0078703,,ET,Somali Region,7.0,44.0,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-10,RFC-PROJECTS
+P164336,444181,PLA0078714,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-10,RFC-PROJECTS
+P164336,444179,PLA0078715,,ET,Afar Region,12.0,41.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2019-07-10,RFC-PROJECTS
+P164336,337996,PLA0078716,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2019-07-10,RFC-PROJECTS
+P166813,337996,PLA0078619,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2019-07-10,RFC-PROJECTS
+P179041,444188,PLA0093869,,ET,,6.05862,36.7273,,,,,,first-order administrative division,,,,0,,,,,2022-10-05,WB563779
+P179041,8299784,PLA0093870,,ET,Sidama Zone,6.718,38.448,,,,,,second-order administrative division,,,,0,,,,,2022-10-05,WB563779
+P163383,343883,PLA0093753,,ET,Andracha,7.2,36.26667,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,341339,PLA0093754,,ET,Bursa,6.58333,38.6,,,,,,populated place,,,,0,,,,,2022-09-19,WB563789
+P163383,444180,PLA0093755,,ET,Amhara Region,11.5,38.5,,,,,,first-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P163383,444181,PLA0093756,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,,first-order administrative division,,,,0,,,,,2022-09-19,WB563789
+P171037,337996,PLA0080934,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2020-04-17,RFC-PROJECTS
+P173750,337996,PLA0087226,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2021-05-19,RFC-PROJECTS
+P171034,337996,PLA0088460,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2021-06-23,RFC-PROJECTS
+P168074,444188,PLA0087489,,ET,"Southern Nations, Nationalities, and People's Region",6.05862,36.7273,,,,,ADM1,first-order administrative division,,A,,0,,,,,2021-05-24,RFC-PROJECTS
+P172479,337996,PLA0087093,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2021-05-19,RFC-PROJECTS
+P168074,444181,PLA0087490,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2021-05-24,RFC-PROJECTS
+P168074,444184,PLA0087491,,ET,Harari Region,9.25,42.16667,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2021-05-24,RFC-PROJECTS
+P168074,444183,PLA0087492,,ET,Gambela Region,7.83333,34.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2021-05-24,RFC-PROJECTS
+P168074,444187,PLA0087493,,ET,Tigray Region,14.16667,38.83333,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2021-05-24,RFC-PROJECTS
+P168074,444185,PLA0087624,,ET,Oromiya Region,8.0,39.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2021-05-24,RFC-PROJECTS
+P168074,444180,PLA0087625,,ET,Amhara Region,11.5,38.5,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2021-05-24,RFC-PROJECTS
+P168074,337996,PLA0087626,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2021-05-24,RFC-PROJECTS
+P175853,337996,PLA0086684,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2021-04-21,RFC-PROJECTS
+P174385,337996,PLA0086743,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2021-05-03,RFC-PROJECTS
+P167916,337996,PLA0082071,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2020-06-03,RFC-PROJECTS
+P171967,337996,PLA0087300,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2021-05-19,RFC-PROJECTS
+P172848,337996,PLA0086504,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2021-04-05,RFC-PROJECTS
+P172462,444185,PLA0083094,,ET,Oromiya Region,8.0,39.0,,,,,A.ADM1,first-order administrative division,,,,0,,,,,2020-07-07,RFC-PROJECTS
+P172462,444180,PLA0083095,,ET,Amhara Region,11.5,38.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2020-07-07,RFC-PROJECTS
+P172462,327580,PLA0083096,,ET,Tigray Kifle H?ger,13.5,39.5,,,,,ADMD,administrative division,,A,,0,,,,,2020-07-07,RFC-PROJECTS
+P172462,337996,PLA0083097,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2020-07-07,RFC-PROJECTS
+P161305,337756,PLA0086483,,ET,Fik,8.13805,42.29345,,,,,P.PPL,populated place,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,330186,PLA0087033,,ET,Nazret,8.55,39.26667,,,,,P.PPL,populated place,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,343137,PLA0087034,,ET,Hawassa,7.06205,38.47635,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,330132,PLA0087035,,ET,Negele,7.68333,39.25,,,,,P.PPL,populated place,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,337741,PLA0087036,,ET,Filtu,5.11667,40.65,,,,,P.PPL,populated place,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,338668,PLA0087037,,ET,Dolo Bay,4.18333,42.08333,,,,,P.PPL,populated place,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,59759,PLA0087038,,ET,Ferfer,5.08361,45.12806,,,,,P.PPL,populated place,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,334294,PLA0087039,,ET,Imi,6.46028,42.14194,,,,,P.PPL,populated place,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,342965,PLA0087040,,ET,Babile,9.22556,42.33222,,,,,P.PPL,populated place,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,335035,PLA0087041,,ET,Harar,9.31387,42.11815,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,338832,PLA0087042,,ET,Dire Dawa,9.59306,41.86611,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,344979,PLA0087043,,ET,Addis Ababa,9.02497,38.74689,,,,,P.PPLC,capital of a political entity,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P161305,337996,PLA0087047,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2021-05-18,RFC-PROJECTS
+P173702,337996,PLA0088179,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,7729829,PLA0088191,,ET,South Omo,5.46208,36.40148,,,,,A.ADM2,second-order administrative division,,,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,329839,PLA0088192,,ET,Oro,8.63333,37.15,,,,,P.PPL,populated place,,,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,335035,PLA0088193,,ET,Harar,9.31387,42.11815,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,338832,PLA0088194,,ET,Dire Dawa,9.59306,41.86611,,,,,P.PPLA,seat of a first-order administrative division,,,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,329933,PLA0088199,,ET,Ogaadeen,8.0,44.0,,,,,RGN,region,,L,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,444185,PLA0088208,,ET,Oromiya Region,8.0,39.0,,,,,ADM1,first-order administrative division,,A,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,444181,PLA0088209,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,444178,PLA0088210,,ET,?d?s ?beba ?stedader,9.0,38.75,,,,,ADM1,first-order administrative division,,A,,0,,,,,2021-06-08,RFC-PROJECTS
+P169943,337996,PLA0087313,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2021-05-24,RFC-PROJECTS
+P173702,444180,PLA0088213,,ET,Amhara Region,11.5,38.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,327580,PLA0088214,,ET,Tigray Kifle H?ger,13.5,39.5,,,,,ADMD,administrative division,,A,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,444179,PLA0088218,,ET,Afar Region,12.0,41.5,,,,,ADM1,first-order administrative division,,A,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,444186,PLA0088220,,ET,Somali Region,7.0,44.0,,,,,ADM1,first-order administrative division,,A,,0,,,,,2021-06-08,RFC-PROJECTS
+P173702,337405,PLA0088221,,ET,Gamb?la,8.25,34.58333,,,,,PPLA,seat of a first-order administrative division,,P,,0,,,,,2021-06-08,RFC-PROJECTS
+P174206,337996,PLA0084944,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,PCLI,independent political entity,,A,,0,,,,,2020-09-21,RFC-PROJECTS
+P175045,337996,PLA0087875,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,A.PCLI,independent political entity,,,,0,,,,,2021-06-08,RFC-PROJECTS
+P178434,337996,PLA0092569,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2022-07-15,WB563779
+P178566,337996,PLA0092883,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2022-07-20,WB563789
+P178047,444180,PLA0093076,,ET,,11.5,38.5,,,,,,first-order administrative division,,,,0,,,,,2022-07-20,WB563789
+P178047,444181,PLA0093077,,ET,,11.0,35.5,,,,,,first-order administrative division,,,,0,,,,,2022-07-20,WB563789
+P178047,444187,PLA0093078,,ET,,14.16667,38.83333,,,,,,first-order administrative division,,,,0,,,,,2022-07-20,WB563789
+P178047,444179,PLA0093079,,ET,,12.0,41.5,,,,,,first-order administrative division,,,,0,,,,,2022-07-20,WB563789
+P178047,444183,PLA0093080,,ET,,7.83333,34.5,,,,,,first-order administrative division,,,,0,,,,,2022-07-20,WB563789
+P178047,444186,PLA0093081,,ET,,7.0,44.0,,,,,,first-order administrative division,,,,0,,,,,2022-07-20,WB563789
+P176181,337996,PLA0095446,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2023-07-07,WB563789
+P179092,444182,PLA0094095,,ET,Dire Dawa Region,9.567,42.014,,,,,,first-order administrative division,,,,0,,,,,2022-11-07,WB563789
+P179092,444180,PLA0094096,,ET,Amhara Region,11.5,38.5,,,,,,first-order administrative division,,,,0,,,,,2022-11-07,WB563789
+P179092,444184,PLA0094097,,ET,Harari Region,9.25,42.16667,,,,,,first-order administrative division,,,,0,,,,,2022-11-07,WB563789
+P179092,444186,PLA0094098,,ET,Somali Region,7.0,44.0,,,,,,first-order administrative division,,,,0,,,,,2022-11-07,WB563789
+P179092,444185,PLA0094099,,ET,Oromiya Region,8.0,39.0,,,,,,first-order administrative division,,,,0,,,,,2022-11-07,WB563789
+P179092,8299784,PLA0094100,,ET,Sidama Zone,6.718,38.448,,,,,,second-order administrative division,,,,0,,,,,2022-11-07,WB563789
+P176564,337996,PLA0090597,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2022-01-27,WB506328
+P175399,337996,PLA0090507,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2022-01-05,WB506328
+P173763,337996,PLA0091676,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2022-06-02,WB563789
+P174867,337996,PLA0092685,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2022-07-15,WB563779
+P173553,337996,PLA0090646,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2022-01-26,WB506328
+P174485,339191,PLA0096306,,ET,Dewele,11.03472,42.63139,,,,,,populated place,,,,0,,,,,2023-11-28,WB563789
+P174485,342965,PLA0096307,,ET,Babile,9.22556,42.33222,,,,,,populated place,,,,0,,,,,2023-11-28,WB563789
+P174485,330491,PLA0096310,,ET,Mojo,8.58679,39.12111,,,,,,populated place,,,,0,,,,,2023-11-28,WB563789
+P174485,330691,PLA0096312,,ET,Mi'eso,9.23478,40.75593,,,,,,populated place,,,,0,,,,,2023-11-28,WB563789
+P174485,345502,PLA0096315,,ET,Adama,10.70587,39.55201,,,,,,populated place,,,,0,,,,,2023-11-28,WB563789
+P174485,344979,PLA0096316,,ET,Addis Ababa,9.02497,38.74689,,,,,,capital of a political entity,,,,0,,,,,2023-11-28,WB563789
+P174485,335035,PLA0096317,,ET,Harar,9.31387,42.11815,,,,,,seat of a first-order administrative division,,,,0,,,,,2023-11-28,WB563789
+P174485,343134,PLA0096318,,ET,Awash,8.98333,40.16667,,,,,,populated place,,,,0,,,,,2023-11-28,WB563789
+P174485,338832,PLA0096321,,ET,Dire Dawa,9.59306,41.86611,,,,,,seat of a first-order administrative division,,,,0,,,,,2023-11-28,WB563789
+P177881,337996,PLA0096424,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2024-01-08,WB563789
+P176517,333795,PLA0092605,,ET,Jijiga,9.35,42.8,,,,,,seat of a first-order administrative division,,,,0,,,,,2022-07-15,WB563779
+P176517,337996,PLA0092609,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2022-07-15,WB563779
+P175657,337996,PLA0090042,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2021-09-20,WB506328
+P177233,444187,PLA0092566,,ET,Tigray Region,14.16667,38.83333,,,,,,first-order administrative division,,,,0,,,,,2022-07-15,WB563779
+P176327,343125,PLA0094348,,ET,Awash Wenz,11.57403,41.63019,,,,,,stream,,,,0,,,,,2023-01-30,WB563784
+P176327,329880,PLA0094349,,ET,Omo Wenz,4.44468,35.9866,,,,,,stream,,,,0,,,,,2023-01-30,WB563784
+P176327,6942093,PLA0094351,,ET,Rift Valley Lakes,7.53676,38.6499,,,,,,lakes,,,,0,,,,,2023-01-30,WB563784
+P176327,325839,PLA0094352,,ET,YeT'is Isat YeWiha Hayl Elektrik Tabiya,11.48333,37.58333,,,,,,power station,,,,0,,,,,2023-01-30,WB563784
+P176327,377618,PLA0094353,,ET,Baro,8.43379,33.22074,,,,,,stream,,,,0,,,,,2023-01-30,WB563784
+P176327,379791,PLA0094374,,ET,River Akobo,7.79492,33.04611,,,,,,stream,,,,0,,,,,2023-01-30,WB563784
+P176327,7910022,PLA0094375,,ET,Genale Dawa River Basin,4.71878,41.78101,,,,,,drainage basin,,,,0,,,,,2023-01-30,WB563784
+P174516,337996,PLA0090304,,ET,Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2021-11-30,WB506328
+P176997,10376670,PLA0090366,,ET,Dollo,7.25,46.0,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,11750835,PLA0090367,,ET,Korahe,6.66422,44.34131,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,9410038,PLA0090368,,ET,Afder Zone,5.25,43.0,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,444186,PLA0090369,,ET,,7.0,44.0,,,,,,first-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,7732969,PLA0090370,,ET,West Harerghe Zone,8.67245,40.84885,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,444185,PLA0090371,,ET,,8.0,39.0,,,,,,first-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,444179,PLA0090372,,ET,,12.0,41.5,,,,,,first-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,11750832,PLA0090373,,ET,Siti,10.28236,41.85563,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,10400171,PLA0090394,,ET,Fafan,9.25,43.0,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,328673,PLA0090395,,ET,Shebele,9.78583,42.77528,,,,,,populated place,,,,0,,,,,2021-12-10,WB506328
+P176997,338829,PLA0090396,,ET,Dire Dawa Zone,9.567,42.014,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,7732970,PLA0090397,,ET,East Harerghe Zone,8.70114,42.00241,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,8299785,PLA0090398,,ET,Guji Zone,5.588,39.067,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,444188,PLA0090399,,ET,,6.05862,36.7273,,,,,,first-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,7729829,PLA0090400,,ET,South Omo,5.46208,36.40148,,,,,,second-order administrative division,,,,0,,,,,2021-12-10,WB506328
+P176997,337996,PLA0090401,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2021-12-10,WB506328
+P178821,337996,PLA0093083,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2022-07-21,WB563789
+P178633,337996,PLA0094108,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2022-11-07,WB563789
+P171742,444178,PLA0089266,,ET,?d?s ?beba ?stedader,9.0,38.75,,,,,ADM1,first-order administrative division,,A,,0,,,,,2021-07-26,RFC-PROJECTS
+P177600,337996,PLA0091453,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2022-04-26,WB563789
+P177233,444185,PLA0092402,,ET,Oromiya Region,8.0,39.0,,,,,,first-order administrative division,,,,0,,,,,2022-07-15,WB563779
+P177233,444181,PLA0092565,,ET,Benishangul-Gumuz Region,11.0,35.5,,,,,,first-order administrative division,,,,0,,,,,2022-07-15,WB563779
+P177233,444180,PLA0092403,,ET,Amhara Region,11.5,38.5,,,,,,first-order administrative division,,,,0,,,,,2022-07-15,WB563779
+P177233,444179,PLA0092564,,ET,Afar Region,12.0,41.5,,,,,,first-order administrative division,,,,0,,,,,2022-07-15,WB563779
+P175329,337996,PLA0092985,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2022-07-20,WB563789
+P177906,337996,PLA0091000,,ET,Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2022-03-29,WB563789
+P180127,337996,PLA0096546,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2024-02-02,WB563779
+P179804,337996,PLA0096583,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2024-02-06,WB563789
+P179040,337996,PLA0096505,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2024-01-29,WB563789
+P176255,330491,PLA0096688,,ET,Mojo,8.58679,39.12111,,,,,,populated place,,,,0,,,,,2024-02-20,WB563789
+P180799,337996,PLA0096725,,ET,,9.145,40.489673,,,,,,independent political entity,,,,0,,,,,2024-02-29,WB563789
+P181150,337996,PLA0096890,,ET,Federal Democratic Republic of Ethiopia,9.0,39.5,,,,,,independent political entity,,,,0,,,,,2024-05-21,WB563789

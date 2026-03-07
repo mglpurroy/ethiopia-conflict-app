@@ -1,6 +1,15 @@
 .env
 __pycache__/
 *.pyc
+*.pyo
 .venv/
 cache/
 *.log
+tests/
+scripts/
+
+# Large optional data files — not needed for core functionality
+data/eth_pop_2025_CN_100m_R2025A_v1.tif
+
+# Legacy data not used in production
+data/_legacy_nigeria/

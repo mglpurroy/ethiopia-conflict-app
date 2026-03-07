@@ -49,9 +49,11 @@ def get_unit_summary(
         df = df[df['admin1'] == name]
     elif level == 2:
         df = df[df['admin2'] == name]
+    elif level == 3:
+        df = df[df['admin3'] == name]
     else:
         return {
-            "summary": "AI summaries are available for region and zone levels only.",
+            "summary": "AI summaries are available for region, zone, and woreda levels.",
             "generated_at": now.isoformat(),
             "event_count": 0,
         }
@@ -124,7 +126,7 @@ def get_unit_summary(
         "\n\n".join(event_lines) if event_lines else "No detailed event notes available."
     )
 
-    level_label = "region" if level == 1 else "zone"
+    level_label = "region" if level == 1 else ("zone" if level == 2 else "woreda")
     prompt = f"""You are an FCV (Fragility, Conflict, and Violence) specialist on the Ethiopia country team preparing an intelligence brief for internal operational use.
 Analyze the following ACLED conflict data for {name} ({level_label}), Ethiopia.
 

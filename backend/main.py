@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import conflicts, spatial, alerts, actors, exports, meta, trends, absolute
+from routers import conflicts, spatial, alerts, actors, exports, meta, trends, absolute, wb_projects
 
 
 @asynccontextmanager
@@ -53,6 +53,7 @@ app.include_router(exports.router, prefix="/api")
 app.include_router(meta.router, prefix="/api")
 app.include_router(trends.router, prefix="/api")
 app.include_router(absolute.router, prefix="/api")
+app.include_router(wb_projects.router, prefix="/api")
 
 
 @app.get("/api/health")

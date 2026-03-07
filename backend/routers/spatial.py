@@ -10,6 +10,7 @@ from services.spatial_service import (
     get_unit_history,
     get_events_geojson,
     get_classification_geojson,
+    get_psnp_woredas_geojson,
 )
 from services.ai_service import get_unit_summary
 
@@ -129,7 +130,7 @@ def classification(
 
 @router.get("/spatial/unit-summary")
 def unit_summary(
-    level: int = Query(1, ge=1, le=2),
+    level: int = Query(1, ge=1, le=3),
     name: str = Query(''),
     start_year: Optional[int] = Query(None),
     start_month: Optional[int] = Query(None, ge=1, le=12),
@@ -141,6 +142,16 @@ def unit_summary(
     try:
         data = get_unit_summary(level, name, start_year, start_month, end_year, end_month)
         return JSONResponse(content=data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/spatial/psnp-woredas")
+def psnp_woredas():
+    """GeoJSON FeatureCollection of PSNP woreda centroids (EFY 2018 list)."""
+    try:
+        data = get_psnp_woredas_geojson()
+        return JSONResponse(content=data, headers={"Cache-Control": "public, max-age=86400"})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
