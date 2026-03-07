@@ -40,8 +40,7 @@ const TRAJECTORY_ROWS = [
 ];
 
 const STATUS_ROWS = [
-  { dot: '#e5e7eb', label: 'No reported violence',    criteria: 'Zero events recorded in the analysis period.' },
-  { dot: '#fbbf24', label: 'Below threshold',         criteria: 'Events recorded but classification criteria not met.' },
+  { dot: '#d1d5db', label: 'Below threshold',         criteria: 'Zero events recorded, or events recorded but classification thresholds not met.' },
   { dot: '#ef4444', label: 'Conflict-Affected',       criteria: 'Death rate ≥ 2.0 / 100k population AND ≥ 5 deaths AND ≥ 2 events.' },
   { dot: '#7f1d1d', label: 'Highly Conflict-Affected',criteria: 'Death rate ≥ 10.0 / 100k population AND ≥ 20 deaths AND ≥ 3 events.' },
 ];

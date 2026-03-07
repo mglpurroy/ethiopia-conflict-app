@@ -5,6 +5,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Layers, Map as MapIcon, Search, Sparkles, TrendingUp } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from 'recharts';
 
+import ReactMarkdown from 'react-markdown';
+
 import { api } from '@/lib/api';
 import { apiUrl } from '@/lib/apiBase';
 import type { DrillEvent } from '@/components/map/ConflictMap';
@@ -673,7 +675,24 @@ export default function SpatialPage() {
               )}
               {!aiSummaryLoading && aiSummary && (
                 <>
-                  <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{aiSummary.summary}</p>
+                  <div className="text-sm text-gray-700 space-y-1.5">
+                    <ReactMarkdown
+                      components={{
+                        h1: ({ children }) => <p className="text-sm font-bold text-gray-900 mt-3 mb-1">{children}</p>,
+                        h2: ({ children }) => <p className="text-sm font-semibold text-gray-900 mt-3 mb-1">{children}</p>,
+                        h3: ({ children }) => <p className="text-xs font-semibold text-gray-800 mt-2 mb-0.5">{children}</p>,
+                        p:  ({ children }) => <p className="leading-relaxed">{children}</p>,
+                        strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>,
+                        ul: ({ children }) => <ul className="list-disc pl-4 space-y-0.5">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal pl-4 space-y-0.5">{children}</ol>,
+                        li: ({ children }) => <li className="leading-snug">{children}</li>,
+                        hr: () => <hr className="border-gray-200 my-2" />,
+                        em: ({ children }) => <em className="italic">{children}</em>,
+                      }}
+                    >
+                      {aiSummary.summary}
+                    </ReactMarkdown>
+                  </div>
                   <p className="text-xs text-gray-500 mt-2">
                     AI-generated · Based on ACLED data · Verify before operational use
                     {aiSummary.event_count > 0 && ` · ${aiSummary.event_count.toLocaleString()} events`}
