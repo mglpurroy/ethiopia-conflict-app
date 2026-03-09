@@ -105,7 +105,7 @@ function getChoroplethColor(variable: string, level: number, maxDeaths: number, 
     return [
       'case',
       ['==', ['get', 'violence_affected'], true], '#d73027',
-      ['>', ['get', 'ACLED_BRD_total'], 0], '#fd8d3c',
+      ['>', ['get', 'ACLED_BRD_total'], 0], '#d1d5db',
       '#bfdbfe',
     ];
   }
@@ -179,7 +179,7 @@ function getClassificationColor(
     ['coalesce', ['get', 'status_label'], 'Below threshold'],
     'Highly Conflict-Affected', '#b91c1c',
     'Conflict-Affected', '#ef4444',
-    '#f59e0b',
+    '#d1d5db',
   ];
 }
 
@@ -1129,7 +1129,7 @@ export default function ConflictMap({
           {[
             { color: '#b91c1c', label: 'Highly Conflict-Affected' },
             { color: '#ef4444', label: 'Conflict-Affected' },
-            { color: '#f59e0b', label: 'Below threshold' },
+            { color: '#d1d5db', label: 'Below threshold' },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5 mb-0.5">
               <div className="w-4 h-3 rounded-sm border border-gray-200" style={{ background: color }} />
@@ -1165,7 +1165,7 @@ export default function ConflictMap({
           <p className="font-semibold text-gray-700 mb-1.5">Woreda Status</p>
           {[
             { color: '#d73027', label: 'Affected' },
-            { color: '#fd8d3c', label: 'Below threshold' },
+            { color: '#d1d5db', label: 'Below threshold' },
             { color: '#bfdbfe', label: 'No violence' },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5 mb-0.5">
