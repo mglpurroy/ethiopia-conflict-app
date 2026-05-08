@@ -77,6 +77,7 @@ interface ConflictMapProps {
   showWbProjects?: boolean;
   wbStatusFilter?: string[];
   showPsnp?: boolean;
+  show3R4CACE?: boolean;
   showChoropleth?: boolean;
   showBoundaries?: boolean;
   activeEventTypes?: string[];
@@ -273,6 +274,8 @@ const WB_SOURCE_ID = 'wb-projects';
 const WB_LAYER_ID = 'wb-projects-symbols';
 const PSNP_SOURCE_ID = 'psnp-woredas';
 const PSNP_LAYER_ID = 'psnp-woredas-symbols';
+const R4C_SOURCE_ID = '3r4cace-woredas';
+const R4C_LAYER_ID = '3r4cace-woredas-symbols';
 const DENSITY_SOURCE_ID = 'density-heatmap';
 const DENSITY_LAYER_ID = 'density-heatmap-layer';
 
@@ -312,6 +315,7 @@ export default function ConflictMap({
   showWbProjects = false,
   wbStatusFilter = ['Active'],
   showPsnp = false,
+  show3R4CACE = false,
   showChoropleth = true,
   showBoundaries = true,
   activeEventTypes,
@@ -344,6 +348,9 @@ export default function ConflictMap({
   const psnpEnterHandlerRef = useRef<((e: any) => void) | null>(null);
   const psnpLeaveHandlerRef = useRef<(() => void) | null>(null);
   const psnpPopupRef = useRef<maplibregl.Popup | null>(null);
+  const r4cEnterHandlerRef = useRef<((e: any) => void) | null>(null);
+  const r4cLeaveHandlerRef = useRef<(() => void) | null>(null);
+  const r4cPopupRef = useRef<maplibregl.Popup | null>(null);
 
   const onUnitClickRef = useRef(onUnitClick);
   const onDrillDownRef = useRef(onDrillDown);
@@ -418,6 +425,7 @@ export default function ConflictMap({
     if (map.current.getLayer(EVENTS_LAYER_ID)) map.current.moveLayer(EVENTS_LAYER_ID);
     if (map.current.getLayer(WB_LAYER_ID)) map.current.moveLayer(WB_LAYER_ID);
     if (map.current.getLayer(PSNP_LAYER_ID)) map.current.moveLayer(PSNP_LAYER_ID);
+    if (map.current.getLayer(R4C_LAYER_ID)) map.current.moveLayer(R4C_LAYER_ID);
   }, []);
 
   const loadWbProjects = useCallback(async () => {
@@ -572,6 +580,88 @@ export default function ConflictMap({
       console.error('PSNP layer load error:', err);
     }
   }, [showPsnp, removePsnpLayer]);
+
+  const removeR4CLayer = useCallback(() => {
+    if (!map.current) return;
+    if (r4cEnterHandlerRef.current) {
+      map.current.off('mouseenter', R4C_LAYER_ID, r4cEnterHandlerRef.current);
+      r4cEnterHandlerRef.current = null;
+    }
+    if (r4cLeaveHandlerRef.current) {
+      map.current.off('mouseleave', R4C_LAYER_ID, r4cLeaveHandlerRef.current);
+      r4cLeaveHandlerRef.current = null;
+    }
+    if (map.current.getLayer(R4C_LAYER_ID)) map.current.removeLayer(R4C_LAYER_ID);
+    if (map.current.getSource(R4C_SOURCE_ID)) map.current.removeSource(R4C_SOURCE_ID);
+    r4cPopupRef.current?.remove();
+  }, []);
+
+  const loadR4CLayer = useCallback(async () => {
+    if (!map.current) return;
+    if (!show3R4CACE) { removeR4CLayer(); return; }
+    try {
+      const res = await fetch(apiUrl('/api/spatial/3r4cace-woredas'));
+      if (!res.ok) throw new Error(`API error ${res.status}`);
+      const geojson = await res.json();
+      removeR4CLayer();
+      if (!map.current) return;
+
+      if (!map.current.hasImage('r4c-pin')) {
+        const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path fill="white" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`;
+        const img = new Image(32, 32);
+        await new Promise<void>((resolve) => {
+          img.onload = () => {
+            if (map.current && !map.current.hasImage('r4c-pin')) {
+              map.current.addImage('r4c-pin', img, { sdf: true });
+            }
+            resolve();
+          };
+          img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(pinSvg)}`;
+        });
+      }
+      if (!map.current) return;
+
+      map.current.addSource(R4C_SOURCE_ID, { type: 'geojson', data: geojson });
+      map.current.addLayer({
+        id: R4C_LAYER_ID,
+        type: 'symbol',
+        source: R4C_SOURCE_ID,
+        layout: {
+          'icon-image': 'r4c-pin',
+          'icon-size': 0.9,
+          'icon-anchor': 'bottom',
+          'icon-allow-overlap': true,
+        },
+        paint: {
+          'icon-color': '#009e73',
+          'icon-opacity': 0.9,
+        },
+      } as any);
+
+      if (!r4cPopupRef.current) {
+        r4cPopupRef.current = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+      }
+      const popup = r4cPopupRef.current;
+      const enterHandler = (e: any) => {
+        if (!map.current) return;
+        map.current.getCanvas().style.cursor = 'pointer';
+        const props = e.features?.[0]?.properties ?? {};
+        const html = `<div style="font-family:sans-serif;font-size:12px;line-height:1.6">
+          <div style="font-weight:700;margin-bottom:2px">${props.woreda ?? ''}</div>
+          <div style="color:#555;font-size:11px">${props.region ?? ''}</div>
+          <div style="color:#009e73;font-size:10px;margin-top:2px;font-weight:600">3R4CACE Project Woreda</div>
+        </div>`;
+        popup.setLngLat(e.lngLat).setHTML(html).addTo(map.current);
+      };
+      const leaveHandler = () => { if (!map.current) return; map.current.getCanvas().style.cursor = ''; popup.remove(); };
+      r4cEnterHandlerRef.current = enterHandler;
+      r4cLeaveHandlerRef.current = leaveHandler;
+      map.current.on('mouseenter', R4C_LAYER_ID, enterHandler);
+      map.current.on('mouseleave', R4C_LAYER_ID, leaveHandler);
+    } catch (err) {
+      console.error('3R4CACE layer load error:', err);
+    }
+  }, [show3R4CACE, removeR4CLayer]);
 
   /** Remove events layer + source from the map (idempotent). */
   const removeEventsLayer = useCallback(() => {
@@ -996,6 +1086,7 @@ export default function ConflictMap({
       loadEvents();
       loadWbProjects();
       loadPsnpLayer();
+      loadR4CLayer();
       onMapReady?.(map.current!);
     });
 
@@ -1003,10 +1094,12 @@ export default function ConflictMap({
       removeEventsLayer();
       removeWbLayer();
       removePsnpLayer();
+      removeR4CLayer();
       popupRef.current = null;
       eventsPopupRef.current = null;
       wbPopupRef.current = null;
       psnpPopupRef.current = null;
+      r4cPopupRef.current = null;
       map.current?.remove();
     };
   }, []);
@@ -1037,6 +1130,13 @@ export default function ConflictMap({
       loadPsnpLayer();
     }
   }, [loadPsnpLayer]);
+
+  // Load / remove 3R4CACE woredas overlay
+  useEffect(() => {
+    if (map.current?.isStyleLoaded()) {
+      loadR4CLayer();
+    }
+  }, [loadR4CLayer]);
 
   // Apply status filter on WB layer without reloading
   useEffect(() => {
@@ -1304,6 +1404,14 @@ export default function ConflictMap({
             <div className="flex items-center gap-1.5 mb-0.5">
               <div className="w-3 h-3 rounded-full border border-white shadow-sm shrink-0" style={{ background: '#cc79a7' }} />
               <span className="text-gray-600">PSNP Woredas</span>
+            </div>
+          </div>
+        )}
+        {show3R4CACE && (
+          <div className="border-t border-gray-200 mt-2 pt-2">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <div className="w-3 h-3 rounded-full border border-white shadow-sm shrink-0" style={{ background: '#009e73' }} />
+              <span className="text-gray-600">3R4CACE Woredas</span>
             </div>
           </div>
         )}

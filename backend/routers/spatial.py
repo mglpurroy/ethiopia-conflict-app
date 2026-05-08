@@ -11,6 +11,7 @@ from services.spatial_service import (
     get_events_geojson,
     get_classification_geojson,
     get_psnp_woredas_geojson,
+    get_r4c_woredas_geojson,
 )
 from services.ai_service import get_unit_summary
 
@@ -151,6 +152,16 @@ def psnp_woredas():
     """GeoJSON FeatureCollection of PSNP woreda centroids (EFY 2018 list)."""
     try:
         data = get_psnp_woredas_geojson()
+        return JSONResponse(content=data, headers={"Cache-Control": "public, max-age=86400"})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/spatial/3r4cace-woredas")
+def r4c_woredas():
+    """GeoJSON FeatureCollection of 3R4CACE project woreda centroids."""
+    try:
+        data = get_r4c_woredas_geojson()
         return JSONResponse(content=data, headers={"Cache-Control": "public, max-age=86400"})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

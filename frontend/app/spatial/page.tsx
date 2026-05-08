@@ -119,6 +119,7 @@ export default function SpatialPage() {
   const [showEvents, setShowEvents] = useState(false);
   const [showWbProjects, setShowWbProjects] = useState(true);
   const [showPsnp, setShowPsnp] = useState(false);
+  const [show3R4CACE, setShow3R4CACE] = useState(false);
   const [wbStatusFilter, setWbStatusFilter] = useState<string[]>(['Active']);
   const [trajectoryCategories, setTrajectoryCategories] = useState<string[]>(TRAJECTORY_OPTIONS);
 
@@ -570,6 +571,18 @@ export default function SpatialPage() {
                 Show PSNP woredas
               </label>
             </div>
+            <div className="flex items-center gap-2">
+              <input
+                id="show-3r4cace"
+                type="checkbox"
+                checked={show3R4CACE}
+                onChange={(e) => setShow3R4CACE(e.target.checked)}
+                className="accent-[#009e73]"
+              />
+              <label htmlFor="show-3r4cace" className="text-xs font-medium text-gray-600 cursor-pointer">
+                Show 3R4CACE woredas
+              </label>
+            </div>
             {showWbProjects && (
               <div className="ml-5 space-y-1">
                 {(['Active', 'Closed', 'Other'] as const).map((status) => {
@@ -638,6 +651,7 @@ export default function SpatialPage() {
             showWbProjects={showWbProjects}
             wbStatusFilter={wbStatusFilter}
             showPsnp={showPsnp}
+            show3R4CACE={show3R4CACE}
             onDrillDown={handleDrillDown}
             onUnitClick={(props) => setSelectedProps(props)}
             flyToCoords={flyToCoords}

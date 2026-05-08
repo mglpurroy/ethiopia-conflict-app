@@ -926,3 +926,176 @@ def get_psnp_woredas_geojson() -> dict:
     _PSNP_CACHE["psnp"] = result
     _PSNP_CACHE["psnp_ts"] = now
     return result
+
+
+# ---------------------------------------------------------------------------
+# 3R4CACE Woredas overlay
+# ---------------------------------------------------------------------------
+
+_R4C_CACHE: dict = {}
+_R4C_TTL = 3600
+_R4C_FUZZY_THRESHOLD = 0.65
+
+# (Region, Woreda) pairs for the 3R4CACE project
+_R4C_WOREDAS: list[tuple[str, str]] = [
+    ("Benishangul Gumuz", "Mao-Komo"),
+    ("Benishangul Gumuz", "Bullen"),
+    ("Benishangul Gumuz", "Buldigilu wereda"),
+    ("Benishangul Gumuz", "Mandura"),
+    ("Benishangul Gumuz", "Sedal"),
+    ("Afar", "Hadalela"),
+    ("Afar", "Berahle"),
+    ("Afar", "Konaba"),
+    ("Afar", "Ewa"),
+    ("Afar", "Adaar"),
+    ("Amhara", "Jillie TImuga"),
+    ("Amhara", "Kutaber"),
+    ("Amhara", "Nefas Mewucha"),
+    ("Amhara", "Telemt"),
+    ("Amhara", "Worebabo"),
+    ("Amhara", "Ziquala"),
+    ("Amhara", "Weldia-Yejju"),
+    ("Amhara", "Raya Kobo"),
+    ("Amhara", "Efratanagidm"),
+    ("Amhara", "Kombolcha-Borkena"),
+    ("Amhara", "Dessie-Menafesha"),
+    ("Amhara", "Giden"),
+    ("Amhara", "Lay Gayint"),
+    ("Amhara", "Debark"),
+    ("Amhara", "Delanta"),
+    ("Amhara", "Ataye"),
+    ("Amhara", "Meket"),
+    ("Amhara", "Kemessie"),
+    ("Amhara", "Sekota"),
+    ("Amhara", "Dessie Buanbuawuha"),
+    ("Tigray", "Raya Azebo"),
+    ("Tigray", "Neqsege"),
+    ("Tigray", "Emba Alaje"),
+    ("Tigray", "Egela"),
+    ("Tigray", "Tsimbla"),
+    ("Tigray", "Zana"),
+    ("Tigray", "Adet"),
+    ("Tigray", "Maekel Adiabo"),
+    ("Tigray", "Bizet"),
+    ("Tigray", "Gulomkada"),
+    ("Tigray", "Hahaile"),
+    ("Tigray", "Wejerat"),
+    ("Tigray", "Seharti"),
+    ("Tigray", "Embasneiti"),
+    ("Tigray", "Hintalo"),
+    ("Tigray", "Hawzen"),
+    ("Tigray", "Enda Mohoni"),
+    ("Tigray", "Asgede"),
+    ("Tigray", "Abergele"),
+    ("Oromia", "Sasiga"),
+    ("Oromia", "Chobi"),
+    ("Oromia", "Sibu Sire"),
+    ("Oromia", "Bule Hora"),
+    ("Oromia", "Degem"),
+]
+
+# Region name corrections: input value -> shapefile ADM1_EN (none needed; values match)
+_R4C_REGION_FIX: dict[str, str] = {}
+
+# Woreda name corrections: input value -> shapefile ADM3_EN
+_R4C_NAME_FIX: dict[str, str] = {
+    # Benishangul Gumuz
+    "Buldigilu wereda": "Bilidigilu",
+    # Afar
+    "Hadalela": "Hadelela",
+    "Konaba": "Kunneba",
+    "Adaar": "Adar",
+    "Berahle": "Berahile",
+    "Ewa": "Euwa",
+    # Amhara
+    "Jillie TImuga": "Jilye Tumuga",
+    "Nefas Mewucha": "Nefas Mewicha town",
+    "Worebabo": "Worebabu",
+    "Ziquala": "Zequala",
+    "Weldia-Yejju": "Habru",  # Yejju = Habru woreda in N. Wollo
+    "Efratanagidm": "Eferatana Gidem",
+    "Kombolcha-Borkena": "Kombolcha town",
+    "Dessie-Menafesha": "Dessie Zuria",
+    "Giden": "Gidan",
+    "Ataye": "Ataye town",
+    "Kemessie": "Kemisie town",
+    "Dessie Buanbuawuha": "Dessie town",
+    # Tigray
+    "Maekel Adiabo": "Maekel Adiyabo",
+    "Gulomkada": "Gulo Mekeda",
+    "Hahaile": "Hahayle",
+    "Wejerat": "Wajirat",
+    "Seharti": "Saharti",
+    "Embasneiti": "Emba Sieneti",
+    "Enda Mohoni": "Endamehoni",
+    "Abergele": "Abergele (TG)",
+    # Oromia
+    "Chobi": "Cobi",
+}
+
+
+def get_r4c_woredas_geojson() -> dict:
+    """Return a GeoJSON FeatureCollection of 3R4CACE woreda centroids."""
+    now = time.time()
+    if "r4c" in _R4C_CACHE and now - _R4C_CACHE.get("r4c_ts", 0) < _R4C_TTL:
+        return _R4C_CACHE["r4c"]
+
+    boundaries = load_admin_boundaries()
+    gdf = boundaries.get(3, gpd.GeoDataFrame())
+    if gdf.empty:
+        return {"type": "FeatureCollection", "features": []}
+
+    warnings.filterwarnings("ignore")
+    gdf_proj = gdf.to_crs("EPSG:32637")
+    gdf = gdf.copy()
+    centroids = gdf_proj.geometry.centroid.to_crs("EPSG:4326")
+    gdf["centroid_lon"] = centroids.x
+    gdf["centroid_lat"] = centroids.y
+
+    for col in ["ADM3_EN", "ADM1_EN"]:
+        gdf[f"norm_{col}"] = gdf[col].apply(_normalize_name)
+
+    features = []
+    unmatched: list[tuple[str, str]] = []
+    for region, woreda in _R4C_WOREDAS:
+        region_lookup = _R4C_REGION_FIX.get(region, region)
+        woreda_lookup = _R4C_NAME_FIX.get(woreda, woreda)
+        norm_w = _normalize_name(woreda_lookup)
+        norm_r = _normalize_name(region_lookup)
+
+        candidates = gdf[gdf["norm_ADM1_EN"] == norm_r]
+        if candidates.empty:
+            unmatched.append((region, woreda))
+            continue
+
+        match = candidates[candidates["norm_ADM3_EN"] == norm_w]
+        if match.empty and len(norm_w) >= 4:
+            match = candidates[candidates["norm_ADM3_EN"].str.startswith(norm_w[:6], na=False)]
+        if match.empty:
+            match = _fuzzy_match(norm_w, candidates)
+        if match.empty:
+            unmatched.append((region, woreda))
+            continue
+
+        hit = match.iloc[0]
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [float(hit["centroid_lon"]), float(hit["centroid_lat"])],
+            },
+            "properties": {
+                "woreda": woreda,
+                "region": region,
+                "matched_name": str(hit.get("ADM3_EN", "")),
+                "pcode": str(hit.get("ADM3_PCODE", "")),
+            },
+        })
+
+    if unmatched:
+        print(f"3R4CACE unmatched ({len(unmatched)}): {unmatched}")
+
+    result = {"type": "FeatureCollection", "features": features, "unmatched": unmatched}
+    _R4C_CACHE["r4c"] = result
+    _R4C_CACHE["r4c_ts"] = now
+    return result
